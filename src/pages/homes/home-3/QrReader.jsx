@@ -9,6 +9,7 @@ import QrFrame from "../../../assets_scanner/qr-frame.svg";
 
 // axios
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 const QrReader = () => {
@@ -20,33 +21,43 @@ const QrReader = () => {
 
     // Result
     const [scannedResult, setScannedResult] = useState("");
+    const navigate = useNavigate();
 
         // Success
         const onScanSuccess = async (result) => {
-            console.log("result>>>>>>>>>",result); // Object 형식임
+            console.log("result>>>>>>>>>",result); // Object 형식이라네요,,
             // console.log(typeof(result));
             
             const qrData = result.data; // data만 qrData에 넣어준다
             setScannedResult(qrData); // ScannedResult에 스캔한 result.data를 넣어준다
             console.log("qrData>>>>>>>>>", qrData); // 얘를 DB에 저장해보자!
-        
-            let xxxx = {
-                data: qrData
-            }
+            console.log("{qrData}>>>>>>>>>", {qrData}); 
 
-            try {
-                // API 호출 - 데이터 전송
-                const response = await axios.post('http://localhost:8090/bisang/main/qrscan', JSON.stringify(xxxx), {
-                    headers: {
-                        "Content-Type": `application/json`,
-                    },
-                });
-                console.log('Data sent successfully:', response.data);
-    
-                // 여기서 필요한 API 응답 데이터 처리를 추가합니다
-            } catch (error) {
-                console.error('Error sending data:', error);
-            }
+            
+            // QR로 1을 받아서 밑의 링크로 이동하도록 해보자 !
+            // http://localhost:5173/product15_v10/1 
+            console.log("자동으로 이동할 링크 : /product15_v10/", qrData);
+            navigate('/product15_v10/{qrData}');
+
+
+            // // QR Scan 후 스캔 데이터를 DB에 저장할 경우 사용되는 코드
+            // // 데이터를 JSON 형식으로 저장해준다
+            // let xxxx = {
+            //     data: qrData
+            // }
+
+            // try {
+            //     // API 호출 - 데이터 전송 (Spring Boot랑 연동)
+            //     const response = await axios.post('http://localhost:8090/bisang/main/qrscan', JSON.stringify(xxxx), {
+            //         headers: {
+            //             "Content-Type": `application/json`,
+            //         },
+            //     });
+            //     console.log('Data sent successfully:', response.data);
+            //
+            // } catch (error) {
+            //     console.error('Error sending data:', error);
+            // }
         };
 
     // Fail
@@ -59,12 +70,10 @@ const QrReader = () => {
             // Instantiate the QR Scanner
             scanner.current = new QrScanner(videoEl?.current, onScanSuccess, {
                 onDecodeError: onScanFail,
-                // This is the camera facing mode. In mobile devices, "environment" means back camera and "user" means front camera.
+                // "environment"는 후면 카메라, "user"는 전면 카메라
                 preferredCamera: "environment",
-                // This will help us position our "QrFrame.svg" so that user can only scan when qr code is put in between our QrFrame.svg.
                 highlightScanRegion: true,
                 highlightCodeOutline: true,
-                // A custom div which will pair with "highlightScanRegion" option above 👆. This gives us full control over our scan region.
                 overlay: qrBoxEl?.current || undefined,
                 // 1초당 몇번의 스캔을 할 것인지? ex) 1초에 5번 QR 코드 감지한다
                 maxScansPerSecond: 1,
@@ -79,8 +88,8 @@ const QrReader = () => {
                 });
         }
 
-        // Clean up on unmount.
-        // This removes the QR Scanner from rendering and using camera when it is closed or removed from the UI.
+        // Clean up
+        // 스캐너 꺼지면 렌더링에서 QR 스캐너 삭제
         return () => {
             if (!videoEl?.current) {
                 scanner?.current?.stop();
