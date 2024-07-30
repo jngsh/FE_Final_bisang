@@ -73,6 +73,7 @@ import ResetPasswordPage from "./pages/otherPages/reset_password";
 import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
+import AdminPage from "./admin/AdminPage";
 
 function App() {
   useEffect(() => {
@@ -157,6 +158,7 @@ function App() {
             <Route path="contact" element={<ContactPage />} />
 
             <Route path="8" element={<NotFound />} />
+            <Route path="bisang/admin/*" element={<AdminPage />} />
           </Route>
         </Routes>
 
