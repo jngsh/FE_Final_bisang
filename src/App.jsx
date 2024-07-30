@@ -115,6 +115,7 @@ function App() {
             <Route path="product14_v9/:id" element={<ProductDetailsPage14 />} /> */}
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}
             <Route path="product15_v10/:id" element={<ProductDetailsPage15 />} />
+            <Route path="bisang/products/:ProductId" element={<ProductDetailsPage15 />} />
             {/* <Route path="product16_v11/:id" element={<ProductDetailsPage16 />} /> */}
 
             <Route path="product1_simple/:id" element={<ProductDetailsPage1 />} />
