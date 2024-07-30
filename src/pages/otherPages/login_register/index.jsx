@@ -1,9 +1,8 @@
 import Footer1 from "@/components/footers/Footer1";
-
 import Header1 from "@/components/headers/Header1";
 import LoginRegister from "@/components/otherPages/LoginRegister";
-
 import MetaComponent from "@/components/common/MetaComponent";
+
 const metadata = {
   title: "Login Register || Uomo eCommerce Reactjs Template",
   description: "Uomo eCommerce Reactjs Template",
