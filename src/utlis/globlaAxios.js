@@ -3,16 +3,21 @@
 
 //핸드폰으로 할때는 여기서 주소 바꿔주기(모바일, 컴 둘다 열어놓기)
 
-
-
 // src/axiosInstance.js
 import axios from 'axios';
 
+const isLocalhost = window.location.hostname === 'localhost';
+
 const axiosInstance = axios.create({
-  baseURL: 'http://10.10.10.151:8090/bisang', // 실제 API URL로 변경
+  baseURL: 
+  'https://0dbc-58-235-119-39.ngrok-free.app',
+  //  isLocalhost? 'http://localhost:8090' : 'http://10.10.10.151:8090',
+  // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
+    
   },
 });
 
 export default axiosInstance;
+

@@ -1,4 +1,5 @@
 import axiosInstance from '../../../utlis/globlaAxios.js';
+import axios from "axios";
 
 // export default function About() {
 const About =()=>{
@@ -13,10 +14,13 @@ const About =()=>{
             cartId:3 //로그인 된 아이디에 해당하는 카트번호가 입력되도록 수정
         };
       try {
-        const response = await axiosInstance.post('/pay/ready',
+        const response = await axiosInstance.post('/bisang/pay/ready',
           JSON.stringify(xxx),
         {headers:{
-          "Content-Type":"application/json"
+          "Content-Type":"application/json",
+          'Access-Control-Allow-Credentials':true,
+    'ngrok-skip-browser-warning':true,
+    // Authorization: `Bearer ${getCookie('accessToken')}`,
 
         }}
         // {body:
@@ -24,7 +28,7 @@ const About =()=>{
         // }
       );
         console.log("PaymentResponse:", response.data);
-        window.location.href = response.data.next_redirect_pc_url;
+        window.location.href = response.data.next_redirect_mobile_url;
       } catch (error) {
         console.error("Error:", error.message);
         if (error.response) {
