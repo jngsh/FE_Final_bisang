@@ -14,7 +14,7 @@ export default function Category() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await axios.get('http://localhost:8090/bisang/home/item-category');
+        const response = await axios.get('http://10.10.10.186:8090/bisang/home/item-category');
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);

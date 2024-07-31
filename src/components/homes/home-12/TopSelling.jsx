@@ -233,7 +233,7 @@ export default function TopSelling() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:8090/bisang/home/top-selling-products");
+      const response = await axios.get("http://10.10.10.186:8090/bisang/home/top-selling-products");
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);

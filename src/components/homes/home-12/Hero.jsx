@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { slidesData7 } from "@/data/heroslides";
+// import { slidesData7 } from "@/data/heroslides";
+import { heroData } from "./data/heroData";
 import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -28,7 +29,7 @@ export default function Hero() {
       {...swiperOptions}
       className="swiper-container js-swiper-slider slideshow type3 slideshow-navigation-white-sm swiper-container-fade swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events"
     >
-      {slidesData7.map((elm, i) => (
+      {heroData.map((elm, i) => (
         <SwiperSlide key={i} className="swiper-slide">
           <div className="overflow-hidden position-relative h-100">
             <div
@@ -37,7 +38,7 @@ export default function Hero() {
             >
               <img
                 loading="lazy"
-                src="/assets/images/home/demo12/slideshow-pattern.png"
+                src={elm.imageUrl}
                 width="1903"
                 height="560"
                 alt="Pattern"
@@ -66,12 +67,12 @@ export default function Hero() {
               <h2 className="fs-50 fw-bold mb-2 mb-lg-4 animate animate_fade animate_btt animate_delay-5 lh-1 text-shadow-white theme-color">
                 {elm.subtitle2}
               </h2>
-              <Link
+              {/* <Link
                 to="/shop-1"
                 className="btn-link btn-link_lg default-underline fw-medium text-uppercase animate animate_fade animate_btt animate_delay-7"
               >
                 Discover More
-              </Link>
+              </Link> */}
             </div>
           </div>
         </SwiperSlide>
