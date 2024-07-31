@@ -218,6 +218,13 @@ $card-image-height: 121.212122%;
   fill: #ffc78b;
 }
 
+.review-star-empty {
+  width: 9px;
+  height: 9px;
+  margin-right: 0.25rem;
+  fill: #bdbdbd;
+}
+
 // Product card wishlist button
 .pc__btn-wl {
   display: flex;
