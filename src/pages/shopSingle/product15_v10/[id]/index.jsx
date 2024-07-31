@@ -12,7 +12,9 @@ import { useParams } from "react-router-dom";
 
 export default function ProductDetailsPage15() {
   let params = useParams();
-  const productId = params.id;
+  console.log("params>>>",params);
+  const productId = params.ProductId;
+  console.log("productId>>>", productId);
   const product =
     allProducts.filter((elm) => elm.id == productId)[0] || allProducts[0];
   return (
@@ -20,7 +22,7 @@ export default function ProductDetailsPage15() {
       <Header1 />
       <main className="page-wrapper">
         <div className="mb-md-1 pb-md-3"></div>
-        <SingleProduct10 product={product} />
+        <SingleProduct10 product={product} productId={productId}/>
         <RelatedSlider />
       </main>
       <Footer1 />

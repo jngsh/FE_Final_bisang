@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductSlider1 from "./sliders/ProductSlider1";
 import BreadCumb from "./BreadCumb";
 import Star from "../common/Star";
@@ -10,14 +10,64 @@ import Reviews from "./Reviews";
 import { Link } from "react-router-dom";
 import ShareComponent from "../common/ShareComponent";
 import { useContextElement } from "@/context/Context";
+import axios from "axios";
 
 // 우리가 쓰는 제품 상세 페이지 !!
-// 현아가 분석한 페이지 !!!!!!!
+// 현아가 페이지 !!!!!!!
 
-export default function SingleProduct10({ product }) {
+export default function SingleProduct10({ productId, product }) {
+
+  // BASE_URL은 .env 파일에서 가져다가 쓴다
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  console.log("BASE_URL : ", {BASE_URL});
 
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
+
+  // 현아 부분
+  const [product1, setProduct1] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 컴포넌트가 마운트된 후 실행하기 (useEffect())
+  useEffect(() => {
+    console.log("컴포넌트 마운트됨");
+
+    // 제품 정보 가져오기
+    const fetchProduct = async () => {
+      try {
+        // 여기에 제품 번호를 바꾸긔!!!!
+        console.log("productId를 사용하여 데이터 가져오기 시작>>>", productId);
+        const response = await axios.get(`${BASE_URL}/bisang/products/${productId}`,
+          {
+            headers: {
+              'ngrok-skip-browser-warning' : true,
+            }
+          }
+        );
+        setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
+        console.log("fetchProduct: Response>>>>", response);
+        // console.log(`${BASE_URL}/${productId}`);
+        console.log(`${BASE_URL}/bisang/products/${productId}`);
+      } catch (error) {
+        setError('Failed to fetch product');
+        console.error("error>>>", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if(productId) {
+      fetchProduct();
+    } else {
+      console.log("productId가 undefined임");
+    }
+
+  }, [productId]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
 
   // 여기는 메서드들
   const isIncludeCard = () => {
@@ -51,7 +101,14 @@ export default function SingleProduct10({ product }) {
       <div className="row">
         {/* 제품 사진 슬라이더 부분 */}
         <div className="col-lg-7">
-          <ProductSlider1 />
+          {/* <ProductSlider1 /> */}
+          <img
+            className="h-auto w-100"
+            src={product1.productImage}
+            width="674"
+            height="674"
+            alt="image"
+          />
         </div>
         <div className="col-lg-5">
           {/* 이 부분은 왜 필요한지 모르겠넴ㅋ */}
@@ -89,11 +146,11 @@ export default function SingleProduct10({ product }) {
                 </svg>
               </a>
             </div>
-            {/* <!-- /.shop-acs --> */}
           </div>
-          
+
           {/* 제품명 부분 */}
-          <h1 className="product-single__name">{product.title}</h1>
+          {/* <h1 className="product-single__name">{product.title}</h1> */}
+          <h1 className="product-single__name">{product1.productName}</h1>
           {/* 별점 부분 */}
           <div className="product-single__rating">
             <div className="reviews-group d-flex">
@@ -105,23 +162,25 @@ export default function SingleProduct10({ product }) {
           </div>
           {/* 제품 가격 부분 */}
           <div className="product-single__price">
-            <span className="current-price">${product.price}</span>
+            {/* <span className="current-price">${product.price}</span> */}
+            <span className="current-price">₩{product1.productPrice}</span>
           </div>
           {/* 짧은 제품 상세 설명란 */}
           <div className="product-single__short-desc">
             <p>
-              상세 설명란이지롱 !!!!!!
+              {/* 상세 설명란이지롱 !!!!!!
               Phasellus sed volutpat orci. Fusce eget lore mauris vehicula
               elementum gravida nec dui. Aenean aliquam varius ipsum, non
               ultricies tellus sodales eu. Donec dignissim viverra nunc, ut
-              aliquet magna posuere eget. 
+              aliquet magna posuere eget.  */}
+              {product1.productDescription}
             </p>
           </div>
           {/* form 태그로 주문 정보들 다 넘기는군 */}
-          {/* 여기는 사이즈 선택칸 */}
           <form onSubmit={(e) => e.preventDefault()}>
+            {/* 여기는 사이즈 선택칸 */}
             <div className="product-single__swatches">
-              <div className="product-swatch text-swatches">
+              {/* <div className="product-swatch text-swatches">
                 <label>Sizes</label>
                 <div className="swatch-list">
                   <Size />
@@ -134,14 +193,14 @@ export default function SingleProduct10({ product }) {
                 >
                   Size Guide
                 </a>
-              </div>
+              </div> */}
               {/* 여기는 색상 선택칸 */}
-              <div className="product-swatch color-swatches">
+              {/* <div className="product-swatch color-swatches">
                 <label>Color</label>
                 <div className="swatch-list">
                   <Colors />
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="product-single__addtocart">
               <div className="qty-control position-relative">
@@ -178,7 +237,6 @@ export default function SingleProduct10({ product }) {
                   +
                 </div>
               </div>
-              {/* <!-- .qty-control --> */}
               {/* 여기는 ADD TO CART 버튼 */}
               <button
                 type="submit"
@@ -209,8 +267,8 @@ export default function SingleProduct10({ product }) {
           {/* 밑에 작게 있는 제품 정보칸 */}
           <div className="product-single__meta-info">
             <div className="meta-item">
-              <label>SKU:</label>
-              <span> 여기에 제품코드 넣으면 될 듯 ? N/A</span>
+              <label>제품코드 : </label>
+              <span>{product1.productCode}</span>
             </div>
             <div className="meta-item">
               <label>Categories:</label>
@@ -269,7 +327,6 @@ export default function SingleProduct10({ product }) {
                 </div>
               </div>
             </div>
-            {/* <!-- /.accordion-item --> */}
 
             {/* ADDITIONAL INFORMATION 부분 */}
             <div className="accordion-item">
@@ -308,7 +365,6 @@ export default function SingleProduct10({ product }) {
                 </div>
               </div>
             </div>
-            {/* <!-- /.accordion-item --> */}
 
             {/* REVIEWS 부분 */}
             <div className="accordion-item">
@@ -347,7 +403,6 @@ export default function SingleProduct10({ product }) {
                 </div>
               </div>
             </div>
-            {/* <!-- /.accordion-item --> */}
           </div>
         </div>
       </div>

@@ -13,6 +13,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 
 const QrReader = () => {
+
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+
     // QR States
     const scanner = useRef();
     const videoEl = useRef(null);
@@ -33,11 +36,8 @@ const QrReader = () => {
             console.log("qrData>>>>>>>>>", qrData); // 얘를 DB에 저장해보자!
             console.log("{qrData}>>>>>>>>>", {qrData}); 
 
-            
-            // QR로 1을 받아서 밑의 링크로 이동하도록 해보자 !
-            // http://localhost:5173/product15_v10/1 
-             console.log("자동으로 이동할 링크 : /bisang/products/", qrData);
-             navigate('/bisang/products/{qrData}');
+             navigate(`/bisang/products/${qrData}`);
+             console.log("스캔 후 자동으로 이동할 링크 : ", `/bisang/products/${qrData}`);
 
             // // QR Scan 후 스캔 데이터를 DB에 저장할 경우 사용되는 코드
             // // 데이터를 JSON 형식으로 저장해준다
@@ -47,9 +47,7 @@ const QrReader = () => {
 
             // try {
             //     // API 호출 - 데이터 전송 (Spring Boot랑 연동)
-            //     // ngrok 쓰면 여기 링크 계속 바꿔줘야되네,,,, localhost로 말고 !!
-            //     //const response = await axios.post('https://03f0-58-235-119-39.ngrok-free.app/bisang/main/qrscan', JSON.stringify(xxxx), {
-            //     const response = await axios.post('http://localhost:8090/bisang/main/qrscan', JSON.stringify(xxxx), {
+            //     const response = await axios.post(`${BASE_URL}/bisang/main/qrscan`, JSON.stringify(xxxx), {
             //         headers: {
             //             "Content-Type": `application/json`,
             //         },
