@@ -73,6 +73,7 @@ import ResetPasswordPage from "./pages/otherPages/reset_password";
 import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
+import AdminPage from "./admin/AdminPage";
 
 function App() {
   useEffect(() => {
@@ -115,6 +116,7 @@ function App() {
             <Route path="product14_v9/:id" element={<ProductDetailsPage14 />} /> */}
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}
             <Route path="product15_v10/:id" element={<ProductDetailsPage15 />} />
+            <Route path="bisang/products/:ProductId" element={<ProductDetailsPage15 />} />
             {/* <Route path="product16_v11/:id" element={<ProductDetailsPage16 />} /> */}
 
             <Route path="product1_simple/:id" element={<ProductDetailsPage1 />} />
@@ -156,6 +158,7 @@ function App() {
             <Route path="contact" element={<ContactPage />} />
 
             <Route path="8" element={<NotFound />} />
+            <Route path="bisang/admin/*" element={<AdminPage />} />
           </Route>
         </Routes>
 
