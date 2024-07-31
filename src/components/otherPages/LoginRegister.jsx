@@ -148,6 +148,37 @@ export default function LoginRegister() {
     }).open();
   };
   
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        fetchDataWithToken(); // 토큰이 있다면 API 요청을 통해 데이터를 가져오거나 사용자의 로그인 상태를 확인합니다.
+    } else {
+        console.log("User is not logged in");
+        // 로그인 페이지로 리다이렉트 또는 로그인 상태에 따른 처리를 수행
+    }
+}, []);
+
+
+  const fetchDataWithToken = async () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        try {
+            const response = await axios.get("http://localhost:8090/bisang/auth/check-login", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log("Data fetched successfully:", response.data);
+            navigate('/');
+        } catch (error) {
+            console.error("Error fetching data:", error.response?.data || error.message);
+        }
+    } else {
+        console.log("No token found");
+    }
+};
+
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
@@ -155,9 +186,17 @@ export default function LoginRegister() {
     try {
       const response = await axios.post("http://localhost:8090/bisang/auth/login", loginData);
       console.log("Login successful:", response.data);
-      setLoginData(prevData => ({ ...prevData, error: '' }));//login 성공 후 , 오류 메시지 초기화
-      // 로그인 성공 후의 처리 (예: 리다이렉트, 상태 업데이트 등)
-      navigate('/');
+
+      if (response.data.token) {
+        // JWT토큰 로컬스토리지에 저장
+        localStorage.setItem("token", response.data.token);
+
+        setLoginData(prevData => ({ ...prevData, error: '' }));
+        navigate('/'); // Redirect on success
+      } else {
+        console.error("Token not found in response");
+        setLoginData(prevData => ({ ...prevData, error: '토큰을 받지 못했습니다.' }));
+      }
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       // 로그인 실패 후의 처리 (예: 에러 메시지 표시 등)
