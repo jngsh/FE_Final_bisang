@@ -24,7 +24,7 @@ export default function Cta() {
           </div>
           <h3 className="mb-0 text-white fw-normal">
             <span>고객센터 </span>
-            <span className="theme-color-secondary">+82 000-0000-0000</span>
+            <span className="theme-color-secondary">+82 000-1234-5678</span>
           </h3>
         </div>
 

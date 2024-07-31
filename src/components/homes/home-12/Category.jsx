@@ -70,6 +70,8 @@ export default function Category() {
     }
   };
 
+  // const extendedCategories = [...categories, ...categories];
+
   return (
     <section className="category-carousel bg-grey-f7f5ee">
       <div className="container">
