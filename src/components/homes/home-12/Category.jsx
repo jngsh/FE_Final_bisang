@@ -1,16 +1,35 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
-
-import { categories5 } from "@/data/categories";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import itemType1 from './images/itemType1.jpeg';
+import itemType2 from './images/itemType2.jpeg';
+import itemType3 from './images/itemType3.jpeg';
+
 export default function Category() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await axios.get('http://10.10.10.186:8090/bisang/home/item-category');
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+
+    fetchCategories();
+  }, []);
+
   const swiperOptions = {
     autoplay: {
       delay: 5000,
     },
     modules: [Autoplay],
-    slidesPerView: 8,
+    slidesPerView: 2,
     slidesPerGroup: 1,
     effect: "none",
     loop: true,
@@ -37,6 +56,22 @@ export default function Category() {
       },
     },
   };
+
+  const getImageForItemType = (itemType) => {
+    switch (itemType) {
+      case "간식":
+        return itemType2;
+      case "사료":
+        return itemType1;
+      case "용품":
+        return itemType3;
+      default:
+        return itemType1;
+    }
+  };
+
+  // const extendedCategories = [...categories, ...categories];
+
   return (
     <section className="category-carousel bg-grey-f7f5ee">
       <div className="container">
@@ -57,34 +92,30 @@ export default function Category() {
             {...swiperOptions}
             className="swiper-container js-swiper-slider"
           >
-            {categories5.map((elm, i) => (
+            {categories.map((elm, i) => (
               <SwiperSlide key={i} className="swiper-slide">
                 <img
                   loading="lazy"
                   className="w-100 h-auto mb-3"
-                  src={elm.imageSrc}
+                  src={getImageForItemType(elm.itemType)} // 이미지 선택
                   width="260"
                   height="220"
-                  alt="image"
+                  alt={elm.itemType}
                 />
                 <div className="text-center">
                   <a href="#" className="menu-link fw-medium pb-0">
-                    {elm.name}
+                    {elm.itemType}
                   </a>
-                  {elm.productCount && (
+                  {elm.itemCount > 0 && (
                     <p className="mb-0 text-secondary">
-                      {elm.productCount} Products
+                      {elm.itemCount} 개
                     </p>
                   )}
                 </div>
               </SwiperSlide>
             ))}
-
-            {/* <!-- /.swiper-wrapper --> */}
           </Swiper>
-          {/* <!-- /.swiper-container js-swiper-slider --> */}
         </div>
-        {/* <!-- /.position-relative --> */}
 
         <div className="mt-3 mt-xl-5 pb-3 pt-1 pb-xl-5"></div>
       </div>

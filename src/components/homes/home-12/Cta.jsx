@@ -19,12 +19,12 @@ export default function Cta() {
               />
             </svg>
             <h3 className="mb-0 text-white fw-normal">
-              Whatsapp Ordering Service
+              서비스에 문제가 있나요?
             </h3>
           </div>
           <h3 className="mb-0 text-white fw-normal">
-            <span>Place Your Orders At </span>
-            <span className="theme-color-secondary">+1 246-345-0695</span>
+            <span>고객센터 </span>
+            <span className="theme-color-secondary">+82 000-1234-5678</span>
           </h3>
         </div>
 

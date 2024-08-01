@@ -156,11 +156,11 @@ export default function MobileNav() {
       {/* 모바일 화면 메뉴 - HOME 메뉴 */}
       <li className="navigation__item">
         <a
-          href=""
+          href="/"
           className={`navigation__link js-nav-right d-flex align-items-center ${isActiveParentMenu(homePages) ? "menu-active" : ""
             }`}
         >
-          Home
+          Home {/*네비들어가면 바로 있는 홈*/}
           <svg
             className="ms-auto"
             width="7"
@@ -173,7 +173,7 @@ export default function MobileNav() {
         </a>
         <div className="sub-menu position-absolute top-0 start-100 w-100 d-none">
           <a
-            href="#"
+            href="/"
             className="navigation__link js-nav-left d-flex align-items-center border-bottom mb-2"
           >
             <svg
@@ -185,7 +185,7 @@ export default function MobileNav() {
             >
               <use href="#icon_prev_sm" />
             </svg>
-            Home
+            Home{/*네비home눌렀을때또나오는home*/}
           </a>
           <ul className="list-unstyled">
             {homePages.map((elm, i) => (
@@ -456,16 +456,6 @@ export default function MobileNav() {
         </Link>
       </li>
 
-      {/* 모바일 화면 메뉴 - ABOUT 메뉴 */}
-      <li className="navigation__item">
-        <Link
-          to="/about"
-          className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
-            }`}
-        >
-          About
-        </Link>
-      </li>
       {/* 모바일 화면 메뉴 - CONTACT 메뉴 */}
       <li className="navigation__item">
         <Link
@@ -474,6 +464,18 @@ export default function MobileNav() {
             }`}
         >
           Contact
+        </Link>
+      </li>
+      
+      {/* 모바일 화면 메뉴 - ABOUT 메뉴 */}
+      <li className="navigation__item">
+        <Link
+          to="/about"
+          className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
+            }`}
+        >
+                  카카오페이결제
+
         </Link>
       </li>
 

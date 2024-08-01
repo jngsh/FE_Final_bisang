@@ -182,27 +182,27 @@ export const othersMenuItems = [
 export const dashboardMenuItems = [
   {
     id: 1,
-    href: "/account_dashboard",
+    href: "/account_dashboard/:userId",
     title: "Dashboard",
   },
   {
     id: 2,
-    href: "/account_orders",
+    href: "/account_orders/:userId",
     title: "Orders",
   },
   {
     id: 3,
-    href: "/account_edit_address",
+    href: "/account_edit_address/:userId",
     title: "Addresses",
   },
   {
     id: 4,
-    href: "/account_edit",
+    href: "/account_edit/:userId",
     title: "Account Details",
   },
   {
     id: 5,
-    href: "/account_wishlist",
+    href: "/account_wishlist/:userId",
     title: "Wishlist",
   },
   {

@@ -1,4 +1,4 @@
-import { closeModalProductAdditionalInformation } from "@/utlis/aside";
+import { closeModalProductAdditionalInformation } from "@/utils/aside";
 import { useEffect } from "react";
 import AdditionalInfo from "../singleProduct/AdditionalInfo";
 

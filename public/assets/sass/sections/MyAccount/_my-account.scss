@@ -135,6 +135,45 @@
       text-transform: uppercase;
       font-size: 0.875rem;
     }
+
+    .address-form{
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .address-row{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .address-btn{
+      margin-left: 1rem;
+      // flex-shrink: 0;
+      height: 3.75rem;
+    }
+
+    .email-form{
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+    }
+
+    .email-separator {
+      padding: 0 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .phone-form {
+      display: flex;
+      align-items: center;
+      gap:0.5rem ;
+    }
+
+    .phone-seperator {
+      align-items: center;
+    }
   }
 
   &__wishlist {
@@ -162,4 +201,8 @@
       visibility: visible;
     }
   }
+}
+
+input[readonly] {
+  background-color: white !important;
 }
