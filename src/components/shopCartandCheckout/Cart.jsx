@@ -112,7 +112,6 @@ console.log("xxxxxxxxxxx",context);
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
-      {cartProducts.length}
         {cartProducts.length ? (
           <>
             <table className="cart-table">
