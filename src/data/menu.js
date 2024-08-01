@@ -48,7 +48,7 @@ export const shopList = [
   {
     id: 5,
     href: "/shop-5",
-    title: "Shop List V5",
+    title: "카테고리 화면",
   },
   // {
   //   id: 6,
@@ -91,7 +91,7 @@ export const shopDetails = [
   // { id: 7, href: "/product12_v7/1", title: "Shop Detail V7" },
   // { id: 8, href: "/product13_v8/1", title: "Shop Detail V8" },
   // { id: 9, href: "/product14_v9/1", title: "Shop Detail V9" },
-  { id: 10, href: "/product15_v10/1", title: "Shop Detail V10" },
+  { id: 10, href: "/bisang/products/95", title: "제품 상세 페이지 (일단 95로 해놓음)" },
   // { id: 11, href: "/product16_v11/1", title: "Shop Detail V11" },
 ];
 
