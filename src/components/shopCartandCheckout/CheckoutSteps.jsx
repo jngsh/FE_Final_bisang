@@ -7,7 +7,7 @@ const steps = [
     id: 1,
     href: "/shop_cart",
     number: "01",
-    title: "Shopping Bag",
+    title: "장바구니",
     description: "Manage Your Items List",
   },
   {
