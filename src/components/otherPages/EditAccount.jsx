@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
-import { useParams } from "react-router-dom";
 
 export default function EditAccount() {
 
@@ -8,9 +7,9 @@ export default function EditAccount() {
   // const BASE_URL = "http://10.10.10.143:8090";
 
   const userId = localStorage.getItem("userId");
-  console.log("userId1:",userId);
   const token = localStorage.getItem("token");
-  
+  const [ error, setError ] = useState('');
+
   const[formData, setFormData] = useState({
     username:'',
     pw:'',
@@ -55,6 +54,7 @@ export default function EditAccount() {
         if (response.data) {
           console.log('User data fetched:', response.data); // 데이터 로드 성공 시 로그
           setFormData(response.data);
+          setPassword(prev => ({ ...prev, current: response.data.pw }));
         } else {
           console.log('No data found'); // 데이터가 없을 경우 로그
         }
@@ -68,23 +68,46 @@ export default function EditAccount() {
   }
   }, [userId, token]);
 
+  const checkCurrentPassword = async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/mypage/pwCheck`, {
+        userId: userId,
+        pw: password.current
+      }, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      });
+      return response.data; // true 또는 false 반환
+    } catch (error) {
+      console.error('Error checking password:', error);
+      return false;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password.new !== password.confirm) {
+
+    if (password.new && password.new !== password.confirm) {
       alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
       return;
     }
+    const isPasswordValid = await checkCurrentPassword();
+
+    if (!isPasswordValid) {
+      setError('현재 비밀번호가 올바르지 않습니다.');
+      return;
+    } else {
+      setError('');
+    }
+
+    const updatePayload = { ...formData };
+
+    if (password.new) {
+            updatePayload.pw = password.new;
+    }
 
     try {
-      // 회원 정보 및 비밀번호 업데이트
-      const { pw, ...updateData } = formData;
-      const updatePayload = { ...updateData };
-
-      if (password.new) {
-        updatePayload.pw = password.new;
-      }
-
       const response = await axios.put(`${BASE_URL}/bisang/mypage/${userId}/profile`, updatePayload, {
         headers: {
           Authorization: token ? `Bearer ${token}` : ''
@@ -105,18 +128,75 @@ export default function EditAccount() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData({
-      ...formData,
-      [id]: value
-    });
+
+    if(id !== 'account_current_password' && id !== 'account_new_password' && id !== 'account_confirm_password'){
+      setFormData(prev => ({
+        ...prev,
+        [id]: value
+      }));
+    }  
+
+    // if (id === 'pw'){
+    //   setPassword(prev => ({
+    //     ...prev,
+    //     current: value
+    //   }));
+    // }
+
   };
 
   const handlePasswordFieldChange = (e) => {
     const { id, value } = e.target;
-    setPassword({
-      ...password,
-      [id]: value
-    });
+    setPassword(prev => ({
+      ...prev,
+      [id.split('_')[2]]: value
+    }));
+  };
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    script.onload = () => {
+      console.log("Daum Postcode script loaded");
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handlePostcodeSearch = () => {
+    if (!window.daum) {
+      console.error("Daum Postcode script is not loaded yet");
+      return;
+    }
+
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        let fullAddress = data.roadAddress;
+        let extraAddress = "";
+
+        if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+          extraAddress += data.bname;
+        }
+        if (data.buildingName !== "" && data.apartment === "Y") {
+          extraAddress += extraAddress !== "" ? ", " + data.buildingName : data.buildingName;
+        }
+        if (extraAddress !== "") {
+          extraAddress = " (" + extraAddress + ")";
+        }
+        fullAddress += extraAddress;
+
+        setFormData((prevData) => ({
+          ...prevData,
+          post: data.zonecode,
+          address1: fullAddress,
+          address2: ''
+        }));
+      },
+    }).open();
   };
 
   return (
@@ -142,6 +222,8 @@ export default function EditAccount() {
                 </div>
               </div>
 
+              <div className="address-form">
+              <div className="address-row">
               <div className="col-md-6">
                 <div className="form-floating my-3">
                   <input
@@ -150,12 +232,17 @@ export default function EditAccount() {
                     id="post"
                     value={formData.post}
                     onChange={handleChange}
+                    readOnly
                     // placeholder="Last Name"
                     // required
                   />
                   <label htmlFor="post">우편주소</label>
+                  
                 </div>
               </div>
+              <button type="button" onClick={handlePostcodeSearch} className="address-btn">주소 찾기</button>
+              </div>
+
               <div className="col-md-6">
                 <div className="form-floating my-3">
                   <input
@@ -167,7 +254,7 @@ export default function EditAccount() {
                     // placeholder="Last Name"
                     // required
                   />
-                  <label htmlFor="address1">주소1</label>
+                  <label htmlFor="address1">주소</label>
                 </div>
               </div>
               <div className="col-md-6">
@@ -181,14 +268,16 @@ export default function EditAccount() {
                     // placeholder="Last Name"
                     // required
                   />
-                  <label htmlFor="address2">주소2</label>
+                  <label htmlFor="address2">상세주소</label>
                 </div>
               </div>
+              </div>
 
-              <div className="col-md-12">
+              <div className="email-form">
+              {/* <div className="col-md-12"> */}
                 <div className="form-floating my-3">
                   <input
-                    type="email"
+                    type="text"
                     className="form-control"
                     id="email1"
                     value={formData.email1}
@@ -196,18 +285,60 @@ export default function EditAccount() {
                   />
                   <label htmlFor="email1">이메일 1</label>
                 </div>
-              </div>
+              {/* </div> */}
+
+              <span className="email-separator">@</span>
               
-              <div className="col-md-12">
+              {/* <div className="col-md-12"> */}
                 <div className="form-floating my-3">
                   <input
-                    type="email"
+                    type="text"
                     className="form-control"
                     id="email2"
                     value={formData.email2}
                     onChange={handleChange}
                   />
-                  <label htmlFor="email2">이메일 2</label>
+                  {/* <label htmlFor="email2">이메일 2</label> */}
+                </div>
+              {/* </div> */}
+              </div>
+
+              <div className="phone-form">
+                <div className="form-floating my-3">
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="phone1"
+                    value={formData.phone1}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="phone1">전화번호</label>
+                </div>
+
+                <span className="phone-seperator">-</span>
+
+                <div className="form-floating my-3">
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="phone2"
+                    value={formData.phone2}
+                    onChange={handleChange}
+                    pattern="[0-9]*"
+                  />
+                </div>
+
+                <span className="phone-seperator">-</span>
+
+                <div className="form-floating my-3">
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="phone3"
+                    value={formData.phone3}
+                    onChange={handleChange}
+                    pattern="[0-9]*"
+                  />
                 </div>
               </div>
 
@@ -215,7 +346,7 @@ export default function EditAccount() {
 
               <div className="col-md-12">
                 <div className="my-3">
-                  <h5 className="text-uppercase mb-0">Password Change</h5>
+                  <h5 className="text-uppercase mb-0">비밀번호 변경</h5>
                 </div>
               </div>
               <div className="col-md-12">
@@ -223,15 +354,16 @@ export default function EditAccount() {
                   <input
                     type="password"
                     className="form-control"
-                    id="account_current_password"
+                    id="current"
                     placeholder="Current password"
                     value={password.current}
                     onChange={handlePasswordFieldChange}
-                    required
+                    // required
                   />
-                  <label htmlFor="account_current_password">
-                    Current password
+                  <label htmlFor="current">
+                    현재 비밀번호
                   </label>
+                  {error && <div className="text-danger">{error}</div>}
                 </div>
               </div>
               <div className="col-md-12">
@@ -239,13 +371,13 @@ export default function EditAccount() {
                   <input
                     type="password"
                     className="form-control"
-                    id="account_new_password"
+                    id="new"
                     placeholder="New password"
                     value={password.new}
                     onChange={handlePasswordFieldChange}
-                    required
+                    // required
                   />
-                  <label htmlFor="account_new_password">New password</label>
+                  <label htmlFor="new">새 비밀번호</label>
                 </div>
               </div>
               <div className="col-md-12">
@@ -254,14 +386,14 @@ export default function EditAccount() {
                     type="password"
                     className="form-control"
                     // data-cf-pwd="#account_new_password"
-                    id="account_confirm_password"
+                    id="new"
                     placeholder="Confirm new password"
                     value={password.confirm}
                     onChange={handlePasswordFieldChange}
-                    required
+                    // required
                   />
-                  <label htmlFor="account_confirm_password">
-                    Confirm new password
+                  <label htmlFor="new">
+                    새 비밀번호 확인
                   </label>
                   <div className="invalid-feedback">
                     Passwords did not match!
@@ -270,7 +402,7 @@ export default function EditAccount() {
               </div>
               <div className="col-md-12">
                 <div className="my-3">
-                  <button className="btn btn-primary">Save Changes</button>
+                  <button className="btn btn-primary">수정하기</button>
                 </div>
               </div>
             </div>
