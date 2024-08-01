@@ -13,7 +13,7 @@ import { useContextElement } from "@/context/Context";
 
 const itemPerRow = [2, 3, 4];
 
-import { openModalShopFilter } from "@/utlis/aside";
+import { openModalShopFilter } from "@/utils/aside";
 import { sortingOptions } from "@/data/products/productCategories";
 import FilterAll from "./filter/FilterAll";
 

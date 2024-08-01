@@ -51,7 +51,7 @@ import ProductDetailsPage5 from "./pages/shopSingle/product5_onsale/[id]";
 import ProductDetailsPage6 from "./pages/shopSingle/product6_outofstock/[id]";
 import ShopCartPage from "./pages/shop-cart-checkout/shop_cart";
 import ShopCheckoutPage from "./pages/shop-cart-checkout/shop_checkout";
-import ShopOrderConplate from "./pages/shop-cart-checkout/shop_order_complete";
+import ShopOrderComplete from "./pages/shop-cart-checkout/shop_order_complete";
 import ShopOrderTrackingPage from "./pages/shop-cart-checkout/shop_order_tracking";
 import BlogPage1 from "./pages/blogs/blog_list1";
 import BlogPage2 from "./pages/blogs/blog_list2";
@@ -115,7 +115,7 @@ function App() {
             <Route path="product13_v8/:id" element={<ProductDetailsPage13 />} />
             <Route path="product14_v9/:id" element={<ProductDetailsPage14 />} /> */}
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}
-            <Route path="product15_v10/:id" element={<ProductDetailsPage15 />} />
+            {/* <Route path="product15_v10/:id" element={<ProductDetailsPage15 />} /> */}
             <Route path="bisang/products/:ProductId" element={<ProductDetailsPage15 />} />
             {/* <Route path="product16_v11/:id" element={<ProductDetailsPage16 />} /> */}
 
@@ -127,7 +127,7 @@ function App() {
 
             <Route path="shop_cart/" element={<ShopCartPage />} />
             <Route path="shop_checkout" element={<ShopCheckoutPage />} />
-            <Route path="shop_order_complete" element={<ShopOrderConplate />} />
+            <Route path="shop_order_complete" element={<ShopOrderComplete />} />
             <Route
               path="shop_order_tracking"
               element={<ShopOrderTrackingPage />}
@@ -150,7 +150,7 @@ function App() {
               path="account_edit_address"
               element={<AccountEditAddressPage />}
             />
-            <Route path="account_edit" element={<AccountEditPage />} />
+            <Route path="account_edit/:userId" element={<AccountEditPage />} />
             <Route path="account_wishlist" element={<AccountWishlistPage />} />
             <Route path="reset_password" element={<ResetPasswordPage />} />
 

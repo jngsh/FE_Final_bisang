@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import CartLength from "./components/CartLength";
 import Nav from "./components/Nav";
-import { openCart } from "@/utlis/openCart";
+import { openCart } from "@/utils/openCart";
 
 import User from "./components/User";
 import { currencyOptions, languageOptions2 } from "@/data/footer";

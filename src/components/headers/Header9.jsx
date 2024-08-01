@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import Nav from "./components/Nav";
-import { openCart } from "@/utlis/openCart";
+import { openCart } from "@/utils/openCart";
 import CartLength from "./components/CartLength";
 
 import User from "./components/User";

@@ -4,7 +4,8 @@ export default function Star(stars = 5) {
       {[...Array(stars), 1, 1, 1, 1].map((elm2, i2) => (
         <svg
           key={i2}
-          className="review-star"
+          // className="review-star"
+          className="review-star-empty"
           viewBox="0 0 9 9"
           xmlns="http://www.w3.org/2000/svg"
         >

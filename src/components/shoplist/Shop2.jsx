@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 const itemPerRow = [2, 3, 4];
 
-import { openModalShopFilter } from "@/utlis/aside";
+import { openModalShopFilter } from "@/utils/aside";
 import {
   menuCategories,
   sortingOptions,

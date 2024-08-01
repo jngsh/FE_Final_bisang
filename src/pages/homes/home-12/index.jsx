@@ -1,4 +1,4 @@
-import Footer11 from "@/components/footers/Footer11";
+import Footer1 from "@/components/footers/Footer1";
 
 import Header12 from "@/components/headers/Header12";
 import Blogs from "@/components/homes/home-12/Blogs";
@@ -39,7 +39,7 @@ export default function HomePage12() {
           {/* <Blogs /> */}
           <Cta />
         </main>{" "}
-        <Footer11 />
+        <Footer1 />
       </div>
     </>
   );

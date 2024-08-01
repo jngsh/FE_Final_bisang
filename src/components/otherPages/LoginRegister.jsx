@@ -5,6 +5,10 @@ import { useState, useEffect } from "react";
 
 export default function LoginRegister() {
 
+  const BASE_URL = "http://localhost:8090";
+  //const BASE_URL = "http://10.10.10.143:8090";
+
+
   const navigate = useNavigate();
   const location = useLocation();
   const [idError, setIdError] = useState("");
@@ -18,6 +22,7 @@ export default function LoginRegister() {
   const [activeTab, setActiveTab] = useState("login");
 
   const [loginData, setLoginData] = useState({
+    userid:"",
     id:"",
     pw:"",
     error:""
@@ -91,7 +96,7 @@ export default function LoginRegister() {
       return;
     }
     try {
-      let response = await axios.post("http://localhost:8090/bisang/auth/idCheck", { id: registerData.id } );
+      let response = await axios.post(`${BASE_URL}/bisang/auth/idCheck`, { id: registerData.id } );
       if (response.data) {
         setIdError("이미 존재하는 아이디입니다.");
       } else {
@@ -161,15 +166,17 @@ export default function LoginRegister() {
 
   const fetchDataWithToken = async () => {
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
 
     if (token) {
         try {
-            const response = await axios.get("http://localhost:8090/bisang/auth/check-login", {
+            const response = await axios.get(`${BASE_URL}:8090/bisang/auth/check-login`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             console.log("Data fetched successfully:", response.data);
+            console.log("UserID:",userId);
             navigate('/');
         } catch (error) {
             console.error("Error fetching data:", error.response?.data || error.message);
@@ -184,13 +191,20 @@ export default function LoginRegister() {
     e.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
 
     try {
-      const response = await axios.post("http://localhost:8090/bisang/auth/login", loginData);
+      const response = await axios.post(`${BASE_URL}/bisang/auth/login`, loginData);
       console.log("Login successful:", response.data);
 
       if (response.data.token) {
         // JWT토큰 로컬스토리지에 저장
         localStorage.setItem("token", response.data.token);
-
+        // 서버 응답에서 userId를 가져와서 로컬스토리지에 저장
+        if (response.data.userId) {
+          console.log("userId recived:",response.data.userId);
+          localStorage.setItem("userId", response.data.userId);
+        } else {
+            console.error("userId not found in response");
+        }
+        
         setLoginData(prevData => ({ ...prevData, error: '' }));
         navigate('/'); // Redirect on success
       } else {
@@ -220,7 +234,7 @@ export default function LoginRegister() {
     }
 
     try {
-      const response = await axios.post("http://localhost:8090/bisang/auth/signup", registerData);
+      const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
       console.log("Registration successful:", response.data);
       // 회원가입 성공 후의 처리 (예: 리다이렉트, 상태 업데이트 등)
       setActiveTab("login");
@@ -419,7 +433,7 @@ export default function LoginRegister() {
                     아이디 중복 확인
                   </button>
                 </div>
-                <label htmlFor="id">아이디 **</label>
+                {/* <label htmlFor="id">아이디 **</label> */}
                 {idError && <p className="text-danger">{idError}</p>}
               </div>
 

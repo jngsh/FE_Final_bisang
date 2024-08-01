@@ -1,4 +1,4 @@
-import { servicesData } from "@/data/features";
+import { featureServiceData } from "@/data/features";
 
 export default function Features() {
   return (
@@ -6,7 +6,7 @@ export default function Features() {
       <div className="container">
         <div className="pb-2"></div>
         <div className="row">
-          {servicesData.map((elm, i) => (
+          {featureServiceData.map((elm, i) => (
             <div
               key={i}
               className="col-md-6 col-xl-3 mb-5 mb-md-0 d-flex align-items-center justify-content-center gap-3"

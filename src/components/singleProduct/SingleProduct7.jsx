@@ -15,7 +15,7 @@ import {
   openModalProductAdditionalInformation,
   openModalProductDescription,
   openModalProductReviews,
-} from "@/utlis/aside";
+} from "@/utils/aside";
 import ShareComponent from "../common/ShareComponent";
 import { useContextElement } from "@/context/Context";
 import { useState } from "react";
