@@ -4,7 +4,7 @@ import { socialLinks } from "@/data/socials";
 
 import { useEffect, useState } from "react";
 import CartLength from "./components/CartLength";
-import { openCart } from "@/utlis/openCart";
+import { openCart } from "@/utils/openCart";
 import MobileNav from "./components/MobileNav";
 import { Link } from "react-router-dom";
 

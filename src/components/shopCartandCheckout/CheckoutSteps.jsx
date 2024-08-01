@@ -25,7 +25,7 @@ const steps = [
     description: "Review And Submit Your Order",
   },
 ];
-export default function ChectoutSteps() {
+export default function CheckoutSteps() {
   const [activePathIndex, setactivePathIndex] = useState(0);
   const { pathname } = useLocation();
   useEffect(() => {

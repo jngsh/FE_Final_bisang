@@ -1,4 +1,4 @@
-import { openModalUserlogin } from "@/utlis/aside";
+import { openModalUserlogin } from "@/utils/aside";
 
 export default function User() {
   return (

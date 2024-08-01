@@ -19,7 +19,7 @@ import { useContextElement } from "@/context/Context";
 import ColorSelection from "@/components/common/ColorSelection";
 const itemPerRow = [2, 3, 4];
 
-import { openModalShopFilter } from "@/utlis/aside";
+import { openModalShopFilter } from "@/utils/aside";
 import { sortingOptions } from "@/data/products/productCategories";
 export default function Shop10() {
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
