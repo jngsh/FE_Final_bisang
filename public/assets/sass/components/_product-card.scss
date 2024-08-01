@@ -569,16 +569,3 @@ $card-image-height: 121.212122%;
 .product-card:hover .anim_appear-bottom.product-card__actions {
   bottom: 0;
 }
-
-
-// 추가
-
-.old-price {
-  text-decoration-line: line-through;
-  color: #999;
-}
-
-.new-price {
-  color: #20750d;
-  font-weight: bold;
-}

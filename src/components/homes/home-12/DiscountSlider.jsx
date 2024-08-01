@@ -18,7 +18,7 @@ export default function DiscountSlider() {
         setDiscounts(response.data);
       })
       .catch(error => {
-        console.error("데이터를 가져오는 중 오류 발생:", error);
+        console.error("Error fetching products:", error);
       });
   }, []);
 
@@ -176,7 +176,6 @@ export default function DiscountSlider() {
                       </div>
 
                       <div className="pc__info position-relative">
-                        <p className="pc__category">{product.categoryId}</p>
                         <h6 className="pc__title">
                           <a href={`/product1_simple/${product.productId}`}>{product.productName}</a>
                         </h6>
@@ -189,10 +188,10 @@ export default function DiscountSlider() {
                           </span>
                         </div>
                         <div className="product-card__price d-flex">
-                          <span className="old-price me-2 text-decoration-line-through">
+                          <span className="money price fs-5 text-muted text-decoration-line-through">
                             {formatPrice(product.productPrice)}원
                           </span>
-                          <span className="new-price fs-5">
+                          <span className="money price fs-5 ms-2">
                             {formatPrice(discountedPrice)}원
                           </span>
                         </div>
