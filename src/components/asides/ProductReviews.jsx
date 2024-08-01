@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Reviews from "../singleProduct/Reviews";
-import { closeModalProductReviews } from "@/utlis/aside";
+import { closeModalProductReviews } from "@/utils/aside";
 
 export default function ProductReviews() {
   useEffect(() => {

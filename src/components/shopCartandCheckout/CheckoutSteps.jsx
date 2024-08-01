@@ -7,7 +7,7 @@ const steps = [
     id: 1,
     href: "/shop_cart",
     number: "01",
-    title: "Shopping Bag",
+    title: "장바구니",
     description: "Manage Your Items List",
   },
   {
@@ -25,7 +25,7 @@ const steps = [
     description: "Review And Submit Your Order",
   },
 ];
-export default function ChectoutSteps() {
+export default function CheckoutSteps() {
   const [activePathIndex, setactivePathIndex] = useState(0);
   const { pathname } = useLocation();
   useEffect(() => {
