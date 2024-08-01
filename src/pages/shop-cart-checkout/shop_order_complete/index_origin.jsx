@@ -2,7 +2,7 @@ import MetaComponent from "@/components/common/MetaComponent";
 import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 
-// import CheckoutSteps from "@/components/shopCartandCheckout/CheckoutSteps";
+import CheckoutSteps from "@/components/shopCartandCheckout/CheckoutSteps";
 import OrderCompleted from "@/components/shopCartandCheckout/OrderCompleted";
 const metadata = {
   title: "Shop Order Complete || Uomo eCommerce Reactjs Template",
@@ -16,8 +16,8 @@ export default function ShopOrderComplete() {
       <main className="page-wrapper">
         <div className="mb-4 pb-4"></div>
         <section className="shop-checkout container">
-          {/* <h2 className="page-title">ORDER RECEIVED</h2>
-          <CheckoutSteps /> */}
+          <h2 className="page-title">ORDER RECEIVED</h2>
+          <CheckoutSteps />
           <OrderCompleted />
         </section>
       </main>

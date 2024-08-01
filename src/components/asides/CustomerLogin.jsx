@@ -1,4 +1,4 @@
-import { closeModalUserlogin } from "@/utlis/aside";
+import { closeModalUserlogin } from "@/utils/aside";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 

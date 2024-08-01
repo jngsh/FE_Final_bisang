@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { closeModalShopFilter } from "@/utlis/aside";
+import { closeModalShopFilter } from "@/utils/aside";
 
 import FilterAll from "../shoplist/filter/FilterAll";
 export default function ShopFilter() {
