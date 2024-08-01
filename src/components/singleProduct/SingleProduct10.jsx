@@ -36,8 +36,7 @@ export default function SingleProduct10({ productId, product }) {
     // 제품 정보 가져오기
     const fetchProduct = async () => {
       try {
-        // 여기에 제품 번호를 바꾸긔!!!!
-        console.log("productId를 사용하여 데이터 가져오기 시작>>>", productId);
+        console.log("productId를 사용하여 데이터 가져오기 시작 >>>", productId);
         const response = await axios.get(`${BASE_URL}/bisang/products/${productId}`,
           {
             headers: {
@@ -46,7 +45,7 @@ export default function SingleProduct10({ productId, product }) {
           }
         );
         setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
-        console.log("fetchProduct: Response>>>>", response);
+        console.log("fetchProduct: Response >>>", response);
         // console.log(`${BASE_URL}/${productId}`);
         console.log(`${BASE_URL}/bisang/products/${productId}`);
       } catch (error) {
@@ -271,8 +270,8 @@ export default function SingleProduct10({ productId, product }) {
               <span>{product1.productCode}</span>
             </div>
             <div className="meta-item">
-              <label>Categories:</label>
-              <span>Casual & Urban Wear, Jackets, Men</span>
+              <label>카테고리 :</label>
+              <span>{product1.categoryId} </span>
             </div>
             <div className="meta-item">
               <label>Tags:</label>
@@ -323,7 +322,8 @@ export default function SingleProduct10({ productId, product }) {
                 data-bs-parent="#product_single_details_accordion"
               >
                 <div className="accordion-body">
-                  <Description />
+                {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
+                {product1 && <Description product1={product1} />}
                 </div>
               </div>
             </div>
@@ -361,6 +361,7 @@ export default function SingleProduct10({ productId, product }) {
                 data-bs-parent="#product_single_details_accordion"
               >
                 <div className="accordion-body">
+                  {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
                   <AdditionalInfo />
                 </div>
               </div>

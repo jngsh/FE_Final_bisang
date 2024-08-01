@@ -23,7 +23,7 @@ export default function ProductDetailsPage15() {
       <main className="page-wrapper">
         <div className="mb-md-1 pb-md-3"></div>
         <SingleProduct10 product={product} productId={productId}/>
-        <RelatedSlider />
+        <RelatedSlider productId={productId}/>
       </main>
       <Footer1 />
     </>

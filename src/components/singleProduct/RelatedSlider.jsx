@@ -1,13 +1,66 @@
 import { useContextElement } from "@/context/Context";
 import { products51 } from "@/data/products/fashion";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function RelatedSlider() {
+// productId를 가져온다
+export default function RelatedSlider({ productId }) {
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
   const { setQuickViewItem } = useContextElement();
   const { addProductToCart, isAddedToCartProducts } = useContextElement();
+
+  // BASE_URL은 .env 파일에서 가져다가 쓴다
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  console.log("BASE_URL : ", {BASE_URL});
+
+  // produtct 정보 가져와서 뿌려주기
+  const [product1, setProduct1] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 컴포넌트가 마운트된 후 실행하기 (useEffect())
+  useEffect(() => {
+    console.log("컴포넌트 마운트됨");
+
+    // 제품 정보 가져오기
+    const fetchProduct = async () => {
+      try {
+        console.log("productId를 사용하여 데이터 가져오기 시작 >>>", productId);
+        const response = await axios.get(`${BASE_URL}/bisang/products/${productId}`,
+          {
+            headers: {
+              'ngrok-skip-browser-warning' : true,
+            }
+          }
+        );
+        setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
+        console.log("fetchProduct: Response >>>", response);
+        // console.log(`${BASE_URL}/${productId}`);
+        console.log(`${BASE_URL}/bisang/products/${productId}`);
+      } catch (error) {
+        setError('Failed to fetch product');
+        console.error("error>>>", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if(productId) {
+      fetchProduct();
+    } else {
+      console.log("productId가 undefined임");
+    }
+
+  }, [productId]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+
+  // swiper 상세 설정
   const swiperOptions = {
     autoplay: false,
     slidesPerView: 4,
@@ -42,10 +95,11 @@ export default function RelatedSlider() {
       },
     },
   };
+
   return (
     <section className="products-carousel container">
       <h2 className="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">
-        Related <strong>Products</strong>
+        Related <strong>Products</strong> 이 제품은 어떠세요?
       </h2>
 
       <div id="related_products" className="position-relative">
@@ -60,7 +114,7 @@ export default function RelatedSlider() {
                 <Link to={`/product1_simple/${elm.id}`}>
                   <img
                     loading="lazy"
-                    src={elm.imgSrc}
+                    src={product1.productImage}
                     width="330"
                     height="400"
                     alt="Cropped Faux leather Jacket"
@@ -90,6 +144,7 @@ export default function RelatedSlider() {
                 </button>
               </div>
 
+              {/* 좋아요 하트 부분 */}
               <div className="pc__info position-relative">
                 <p className="pc__category">{elm.category}</p>
                 <h6 className="pc__title">
@@ -120,9 +175,7 @@ export default function RelatedSlider() {
             </SwiperSlide>
           ))}
 
-          {/* <!-- /.swiper-wrapper --> */}
         </Swiper>
-        {/* <!-- /.swiper-container js-swiper-slider --> */}
 
         <div className="cursor-pointer products-carousel__prev ssp11 position-absolute top-50 d-flex align-items-center justify-content-center">
           <svg
@@ -134,7 +187,6 @@ export default function RelatedSlider() {
             <use href="#icon_prev_md" />
           </svg>
         </div>
-        {/* <!-- /.products-carousel__prev --> */}
         <div className="cursor-pointer products-carousel__next ssn11 position-absolute top-50 d-flex align-items-center justify-content-center">
           <svg
             width="25"
@@ -145,12 +197,9 @@ export default function RelatedSlider() {
             <use href="#icon_next_md" />
           </svg>
         </div>
-        {/* <!-- /.products-carousel__next --> */}
 
         <div className="products-pagination mt-4 mb-5 d-flex align-items-center justify-content-center"></div>
-        {/* <!-- /.products-pagination --> */}
       </div>
-      {/* <!-- /.position-relative --> */}
     </section>
   );
 }
