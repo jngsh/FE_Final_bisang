@@ -13,7 +13,6 @@ export default function Context({ children }) {
   const [wishList, setWishList] = useState([]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
-
   useEffect(() => {
     const subtotal = cartProducts.reduce((accumulator, product) => {
       return accumulator + product.quantity * product.price;
@@ -21,7 +20,6 @@ export default function Context({ children }) {
     setTotalPrice(subtotal);
   }, [cartProducts]);
 
-  // 장바구니에 물건 담기
   const addProductToCart = (id) => {
     if (!cartProducts.filter((elm) => elm.id == id)[0]) {
       const item = {
@@ -81,6 +79,7 @@ export default function Context({ children }) {
     cartProducts,
     setCartProducts,
     totalPrice,
+    setTotalPrice,
     addProductToCart,
     isAddedToCartProducts,
     toggleWishlist,

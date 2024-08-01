@@ -17,7 +17,7 @@ export default function Checkout() {
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="checkout-form">
         <div className="billing-info__wrapper">
-          <h4>BILLING DETAILS</h4>
+          <h4>배송 정보 입력</h4>
           <div className="row">
             <div className="col-md-6">
               <div className="form-floating my-3">
@@ -27,10 +27,10 @@ export default function Checkout() {
                   id="checkout_first_name"
                   placeholder="First Name"
                 />
-                <label htmlFor="checkout_first_name">First Name</label>
+                <label htmlFor="checkout_first_name">이름</label>
               </div>
             </div>
-            <div className="col-md-6">
+            {/* <div className="col-md-6">
               <div className="form-floating my-3">
                 <input
                   type="text"
@@ -40,7 +40,7 @@ export default function Checkout() {
                 />
                 <label htmlFor="checkout_last_name">Last Name</label>
               </div>
-            </div>
+            </div> */}
             <div className="col-md-12">
               <div className="form-floating my-3">
                 <input
