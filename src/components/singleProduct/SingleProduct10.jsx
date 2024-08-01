@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import ShareComponent from "../common/ShareComponent";
 import { useContextElement } from "@/context/Context";
 import axios from "axios";
+import RelatedSlider from "./RelatedSlider";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
@@ -407,6 +408,7 @@ export default function SingleProduct10({ productId, product }) {
           </div>
         </div>
       </div>
+      {/* <RelatedSlider productId={productId} product1={product1}/> */}
     </section>
   );
 }
