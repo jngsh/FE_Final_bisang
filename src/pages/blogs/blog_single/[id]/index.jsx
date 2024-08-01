@@ -1,5 +1,5 @@
 import BlogDetails from "@/components/blogs/BlogDetails";
-import Footer1 from "@/components/footers/Footer1";
+// import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 import Header1 from "@/components/headers/Header1";
 import { allBlogs } from "@/data/blogs";
@@ -22,7 +22,7 @@ export default function BlogDetailsPage() {
         <BlogDetails blog={blog} />
       </main>
       <div className="mb-5 pb-xl-5"></div>
-      <Footer1 />
+      {/* <Footer1 /> */}
     </>
   );
 }

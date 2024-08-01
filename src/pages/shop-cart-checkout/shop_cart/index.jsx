@@ -1,5 +1,5 @@
 import MetaComponent from "@/components/common/MetaComponent";
-import Footer1 from "@/components/footers/Footer1";
+// import Footer1 from "@/components/footers/Footer1.jsx" ;
 import Header1 from "@/components/headers/Header1";
 import Cart from "@/components/shopCartandCheckout/Cart";
 import CheckoutSteps from "@/components/shopCartandCheckout/CheckoutSteps";
@@ -22,7 +22,7 @@ export default function ShopCartPage() {
         </section>
       </main>
       <div className="mb-5 pb-xl-5"></div>
-      <Footer1 />
+      {/* <Footer1 /> */}
     </>
   );
 }
