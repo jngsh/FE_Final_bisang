@@ -6,16 +6,15 @@
 // src/axiosInstance.js
 import axios from 'axios';
 
-const isLocalhost = window.location.hostname === 'localhost';
+// const isLocalhost = window.location.hostname === 'localhost';
 
 const axiosInstance = axios.create({
   baseURL: 
-  'https://0dbc-58-235-119-39.ngrok-free.app',
+  'https://b884-58-235-119-39.ngrok-free.app' , //ngrok실행시 매번 수정됨
   //  isLocalhost? 'http://localhost:8090' : 'http://10.10.10.151:8090',
   // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    
   },
 });
 

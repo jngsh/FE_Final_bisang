@@ -5,7 +5,7 @@ import ColorSelection from "../common/ColorSelection";
 import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 
-import { openModalShopFilter } from "@/utlis/aside";
+import { openModalShopFilter } from "@/utils/aside";
 import { sortingOptions } from "@/data/products/productCategories";
 
 export default function Shop9() {
