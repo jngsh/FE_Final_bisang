@@ -1,6 +1,5 @@
 import Blog1 from "@/components/blogs/Blog1";
 
-import Footer1 from "@/components/footers/Footer1";
 
 import Header1 from "@/components/headers/Header1";
 
@@ -19,7 +18,6 @@ export default function BlogPage1() {
         <Blog1 />
       </main>
       <div className="mb-5 pb-xl-5"></div>
-      <Footer1 />
     </>
   );
 }

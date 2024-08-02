@@ -1,4 +1,4 @@
-import Footer1 from "@/components/footers/Footer1";
+import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 import Header12 from "@/components/headers/Header12";
 import Blogs from "@/components/homes/home-12/Blogs";

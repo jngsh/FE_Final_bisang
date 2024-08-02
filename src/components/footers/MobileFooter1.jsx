@@ -77,7 +77,7 @@ export default function MobileFooter1() {
             >
               <use href="#icon_hanger" />
             </svg>
-            <span>Shop</span>
+            <span>Categories</span>
           </Link>
         </div>
         {/* <!-- /.col-3 --> */}
