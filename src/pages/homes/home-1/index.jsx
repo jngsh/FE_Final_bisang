@@ -1,5 +1,4 @@
 import LoginFormPopup from "@/components/common/LoginFormPopup";
-import Footer1 from "@/components/footers/Footer1";
 
 import Header1 from "@/components/headers/Header1";
 import Features from "@/components/common/features/Features";
@@ -41,7 +40,7 @@ export default function HomePage1() {
             <Features />{" "}
           </div>
         </main>
-        <Footer1 />
+        < Footer1 />
         <LoginFormPopup />{" "}
       </div>
     </>

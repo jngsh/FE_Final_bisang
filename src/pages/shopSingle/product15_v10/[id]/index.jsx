@@ -1,4 +1,4 @@
-import Footer1 from "@/components/footers/Footer1";
+import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 import Header1 from "@/components/headers/Header1";
 import RelatedSlider from "@/components/singleProduct/RelatedSlider";
@@ -25,7 +25,7 @@ export default function ProductDetailsPage15() {
         <SingleProduct10 product={product} productId={productId}/>
         <RelatedSlider productId={productId}/>
       </main>
-      <Footer1 />
+      < Footer1 />
     </>
   );
 }
