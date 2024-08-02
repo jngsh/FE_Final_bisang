@@ -4,16 +4,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Cart() {
-
-  
   // Context에서 값 가져오기
   const context = useContextElement();
   if (!context) {
     console.error('Context가 올바르게 제공되지 않았습니다.');
     return <div>오류: Context가 올바르게 제공되지 않았습니다.</div>;
   }
-console.log("xxxxxxxxxxx",context);
-  const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
+  console.log("xxxxxxxxxxx", context);
+
+  const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = useContextElement();
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
   const { cartId } = useParams(); // URL에서 카트 ID를 가져옴
@@ -49,7 +48,7 @@ console.log("xxxxxxxxxxx",context);
           0
         );
         setTotalPrice(calculatedTotalPrice);
-        
+
         // 로컬 스토리지에 저장
         localStorage.setItem('cartProducts', JSON.stringify(items));
       } catch (error) {
@@ -71,6 +70,13 @@ console.log("xxxxxxxxxxx",context);
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
         localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+        // Update total price
+        const newTotalPrice = updatedCart.reduce(
+          (total, item) => total + (item.amount * item.product.productPrice),
+          0
+        );
+        setTotalPrice(newTotalPrice);
       } catch (error) {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
@@ -85,6 +91,13 @@ console.log("xxxxxxxxxxx",context);
       setCartProducts(updatedCart);
       setLocalCart(updatedCart);
       localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+      // Update total price
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice),
+        0
+      );
+      setTotalPrice(newTotalPrice);
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
@@ -112,7 +125,8 @@ console.log("xxxxxxxxxxx",context);
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
-        {cartProducts.length ? (
+      {cartProducts.length}
+        {cartProducts.length > 0 ? (
           <>
             <table className="cart-table">
               <thead>
@@ -204,6 +218,7 @@ console.log("xxxxxxxxxxx",context);
           </>
         ) : (
           <>
+          {cartProducts.length}
             <div className="fs-20">장바구니가 비어 있습니다</div>
             <button className="btn mt-3 btn-light">
               <Link to={"/shop-5"}>상품 보러 가기</Link>
@@ -211,7 +226,7 @@ console.log("xxxxxxxxxxx",context);
           </>
         )}
       </div>
-      {cartProducts.length ? (
+      {cartProducts.length > 0 && (
         <div className="shopping-cart__totals-wrapper">
           <div className="sticky-content">
             <div className="shopping-cart__totals">
@@ -297,7 +312,7 @@ console.log("xxxxxxxxxxx",context);
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
