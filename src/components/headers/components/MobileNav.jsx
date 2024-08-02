@@ -9,6 +9,7 @@ import {
 } from "@/data/menu";
 import { Link, useLocation } from "react-router-dom";
 
+// 모바일 사이즈에서 Navbar!!
 export default function MobileNav() {
   const { pathname } = useLocation();
   const isMenuActive = (menu) => {
@@ -203,6 +204,7 @@ export default function MobileNav() {
         </div>
       </li>
 
+      {/* shop 메뉴 */}
       <li className="navigation__item">
         <a
           href="#"
@@ -242,7 +244,9 @@ export default function MobileNav() {
             </svg>
             Shop
           </a>
+
           <div className="sub-menu__wrapper">
+            {/* shop list 메뉴 */}
             <a
               href="#"
               className={`navigation__link js-nav-right d-flex align-items-center ${isActiveParentMenu(shopList) ? "menu-active" : ""
@@ -289,8 +293,8 @@ export default function MobileNav() {
                 ))}
               </ul>
             </div>
-            {/* <!-- /.sub-menu__wrapper --> */}
 
+            {/* shop detail 메뉴 */}
             <a
               href="#"
               className={`navigation__link js-nav-right d-flex align-items-center ${isActiveParentMenu(shopDetails) ? "menu-active" : ""
@@ -337,10 +341,8 @@ export default function MobileNav() {
                 ))}
               </ul>
             </div>
-            {/* <!-- /.sub-menu__wrapper --> */}
 
-
-
+            {/* other pages 메뉴 */}
             <a
               href="#"
               className={`navigation__link js-nav-right d-flex align-items-center ${isActiveParentMenu(additionalShopPageitems) ? "menu-active" : ""
