@@ -2,7 +2,7 @@ import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 import Header1 from "@/components/headers/Header1";
 import RelatedSlider from "@/components/singleProduct/RelatedSlider";
-import SingleProduct12 from "@/components/singleProduct/SingleProduct12";
+// import SingleProduct12 from "@/components/singleProduct/SingleProduct12";
 import { allProducts } from "@/data/products";
 import MetaComponent from "@/components/common/MetaComponent";
 import { useParams } from "react-router-dom";
@@ -21,7 +21,7 @@ export default function ProductDetailsPage1() {
       <Header1 />
       <main className="page-wrapper">
         <div className="mb-md-1 pb-md-3"></div>
-        <SingleProduct12 product={product} />
+        {/* <SingleProduct12 product={product} /> */}
         <RelatedSlider />
       </main>
       < Footer1 />

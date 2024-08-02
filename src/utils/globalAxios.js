@@ -8,6 +8,7 @@ import axios from 'axios';
 
 // const isLocalhost = window.location.hostname === 'localhost';
 
+
 const axiosInstance = axios.create({
   baseURL: 
   'https://b884-58-235-119-39.ngrok-free.app' , //ngrok실행시 매번 수정됨

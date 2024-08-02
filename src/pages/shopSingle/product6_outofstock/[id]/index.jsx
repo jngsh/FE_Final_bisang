@@ -2,7 +2,7 @@ import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 import Header1 from "@/components/headers/Header1";
 import RelatedSlider from "@/components/singleProduct/RelatedSlider";
-import SingleProduct16 from "@/components/singleProduct/SingleProduct16";
+// import SingleProduct16 from "@/components/singleProduct/SingleProduct16";
 
 import { allProducts } from "@/data/products";
 
@@ -23,7 +23,7 @@ export default function ProductDetailsPage6() {
       <Header1 />
       <main className="page-wrapper">
         <div className="mb-md-1 pb-md-3"></div>
-        <SingleProduct16 product={product} />
+        {/* <SingleProduct16 product={product} /> */}
         <RelatedSlider />
       </main>
       < Footer1 />
