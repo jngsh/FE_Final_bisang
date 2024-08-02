@@ -170,7 +170,7 @@ export default function LoginRegister() {
 
     if (token) {
         try {
-            const response = await axios.get(`${BASE_URL}:8090/bisang/auth/check-login`, {
+            const response = await axios.get(`${BASE_URL}/bisang/auth/check-login`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

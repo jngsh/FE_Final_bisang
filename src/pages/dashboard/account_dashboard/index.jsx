@@ -10,6 +10,7 @@ const metadata = {
   description: "Uomo eCommerce Reactjs Template",
 };
 export default function AccountPage() {
+  const userId = localStorage.getItem("userId");
   return (
     <>
       <MetaComponent meta={metadata} />
