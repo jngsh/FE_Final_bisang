@@ -50,6 +50,7 @@ export default function MobileHeader() {
         scrollDirection == "up" ? "header_sticky-active" : "position-absolute"
       } `}
     >
+      {/* 메뉴 navbar 아이콘 */}
       <div className="container d-flex align-items-center h-100">
         <a className="mobile-nav-activator d-block position-relative" href="#">
           <svg

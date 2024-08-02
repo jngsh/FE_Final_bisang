@@ -78,6 +78,7 @@ export default function Header1() {
               </a>
             </div>
 
+            {/* 위시리스트 하트 */}
             <Link className="header-tools__item" to="/account_wishlist">
               <svg
                 width="20"
@@ -90,6 +91,7 @@ export default function Header1() {
               </svg>
             </Link>
 
+            {/* 카트 아이콘 */}
             <a
               onClick={() => openCart()}
               className="header-tools__item header-tools__cart js-open-aside"
@@ -109,6 +111,7 @@ export default function Header1() {
               </span>
             </a>
 
+            {/* 메뉴 navbar 아이콘 */}
             <a
               className="header-tools__item"
               href="#"
@@ -126,11 +129,8 @@ export default function Header1() {
               </svg>
             </a>
           </div>
-          {/* <!-- /.header__tools --> */}
         </div>
-        {/* <!-- /.header-desk header-desk_type_1 --> */}
       </div>
-      {/* <!-- /.container --> */}
     </header>
   );
 }
