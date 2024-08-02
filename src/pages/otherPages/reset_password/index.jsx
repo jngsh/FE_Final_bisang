@@ -1,4 +1,4 @@
-// import Footer1 from "@/components/footers/Footer1.jsx" ;
+import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 import Header1 from "@/components/headers/Header1";
 import ResetPassword from "@/components/otherPages/ResetPassword";
@@ -19,7 +19,7 @@ export default function ResetPasswordPage() {
       </main>
 
       <div className="mb-5 pb-xl-5"></div>
-      {/* <Footer1 /> */}
+      < Footer1 />
     </>
   );
 }

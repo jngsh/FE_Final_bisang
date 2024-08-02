@@ -40,7 +40,7 @@ export default function HomePage1() {
             <Features />{" "}
           </div>
         </main>
-        {/* <Footer1 /> */}
+        < Footer1 />
         <LoginFormPopup />{" "}
       </div>
     </>

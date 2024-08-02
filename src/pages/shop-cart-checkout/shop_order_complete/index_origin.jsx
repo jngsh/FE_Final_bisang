@@ -22,7 +22,7 @@ export default function ShopOrderComplete() {
         </section>
       </main>
       <div className="mb-5 pb-xl-5"></div>
-      {/* <Footer1 /> */}
+      < Footer1 />
     </>
   );
 }
