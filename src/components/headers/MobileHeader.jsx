@@ -8,6 +8,8 @@ import { openCart } from "@/utils/openCart";
 import MobileNav from "./components/MobileNav";
 import { Link } from "react-router-dom";
 
+// 모바일 사이즈일 때의 header 파일
+
 export default function MobileHeader() {
   const [scrollDirection, setScrollDirection] = useState("down");
 
@@ -48,6 +50,7 @@ export default function MobileHeader() {
         scrollDirection == "up" ? "header_sticky-active" : "position-absolute"
       } `}
     >
+      {/* 메뉴 navbar 아이콘 */}
       <div className="container d-flex align-items-center h-100">
         <a className="mobile-nav-activator d-block position-relative" href="#">
           <svg
@@ -73,7 +76,6 @@ export default function MobileHeader() {
             />
           </Link>
         </div>
-        {/* <!-- /.logo --> */}
 
         <a
           onClick={() => openCart()}
@@ -94,7 +96,6 @@ export default function MobileHeader() {
           </span>
         </a>
       </div>
-      {/* <!-- /.container --> */}
 
       <nav className="header-mobile__navigation navigation d-flex flex-column w-100 position-absolute top-100 bg-body overflow-auto">
         <div className="container">
@@ -134,20 +135,16 @@ export default function MobileHeader() {
               <div className="search-result"></div>
             </div>
           </form>
-          {/* <!-- /.header-search --> */}
         </div>
-        {/* <!-- /.container --> */}
 
+        {/* 모바일 사이즈에서 Navbar 부분 */}
         <div className="container">
           <div className="overflow-hidden">
             <ul className="navigation__list list-unstyled position-relative">
               <MobileNav />
             </ul>
-            {/* <!-- /.navigation__list --> */}
           </div>
-          {/* <!-- /.overflow-hidden --> */}
         </div>
-        {/* <!-- /.container --> */}
 
         <div className="border-top mt-auto pb-2">
           <div className="customer-links container mt-4 mb-2 pb-1">
@@ -227,7 +224,6 @@ export default function MobileHeader() {
           </ul>
         </div>
       </nav>
-      {/* <!-- /.navigation --> */}
     </div>
   );
 }
