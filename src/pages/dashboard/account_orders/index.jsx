@@ -1,10 +1,9 @@
-// import Footer1 from " 
-
 import Header1 from "@/components/headers/Header1";
 import AccountOrders from "@/components/otherPages/AccountOrders";
 import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
 
 import MetaComponent from "@/components/common/MetaComponent";
+import Footer1 from "@/components/footers/Footer1";
 const metadata = {
   title: "Dashboard Account Orders || Uomo eCommerce Reactjs Template",
   description: "Uomo eCommerce Reactjs Template",

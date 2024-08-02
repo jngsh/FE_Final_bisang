@@ -1,5 +1,5 @@
 import MetaComponent from "@/components/common/MetaComponent";
-// import Footer1 from " 
+import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 
 import CheckoutSteps from "@/components/shopCartandCheckout/CheckoutSteps";
