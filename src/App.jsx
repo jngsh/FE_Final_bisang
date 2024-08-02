@@ -33,17 +33,8 @@ import HomePage12 from "./pages/homes/home-12"; // !! 우리가 쓰는 메인 �
 
 import ShopPage5 from "./pages/shoplist/shop-5";
 
-import ProductDetailsPage2 from "./pages/shopSingle/product2_variable/[id]";
-import ProductDetailsPage7 from "./pages/shopSingle/product7_v2/[id]";
-import ProductDetailsPage8 from "./pages/shopSingle/product8_v3/[id]";
-import ProductDetailsPage9 from "./pages/shopSingle/product9_v4/[id]";
-import ProductDetailsPage10 from "./pages/shopSingle/product10_v5/[id]";
-import ProductDetailsPage11 from "./pages/shopSingle/product11_v6/[id]";
-import ProductDetailsPage12 from "./pages/shopSingle/product12_v7/[id]";
-import ProductDetailsPage13 from "./pages/shopSingle/product13_v8/[id]";
-import ProductDetailsPage14 from "./pages/shopSingle/product14_v9/[id]";
+
 import ProductDetailsPage15 from "./pages/shopSingle/product15_v10/[id]";
-import ProductDetailsPage16 from "./pages/shopSingle/product16_v11/[id]";
 import ProductDetailsPage1 from "./pages/shopSingle/product1_simple/[id]";
 import ProductDetailsPage3 from "./pages/shopSingle/product3_external/[id]";
 import ProductDetailsPage4 from "./pages/shopSingle/product4_grouped/[id]";

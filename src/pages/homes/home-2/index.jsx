@@ -1,4 +1,4 @@
-import Footer2 from "@/components/footers/Footer2";
+// import Footer2 from "@/components/footers/Footer2";
 
 import Header2 from "@/components/headers/Header2";
 import Banner from "@/components/homes/home-2/Banner";
@@ -38,7 +38,7 @@ export default function HomePage2() {
           {showScanner && <BarcodeScanner />}
         </div>
       </main>
-      <Footer2 />
+      {/* <Footer2 /> */}
     </>
   );
 }
