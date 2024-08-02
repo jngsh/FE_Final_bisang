@@ -13,8 +13,8 @@ import TopSelling from "@/components/homes/home-12/TopSelling";
 import MetaComponent from "@/components/common/MetaComponent";
 import Header1 from "@/components/headers/Header1";
 const metadata = {
-  title: "Home 12 || Uomo eCommerce Reactjs Template",
-  description: "Uomo eCommerce Reactjs Template",
+  title: "피터펫 :: PETER PET",
+  // description: "Uomo eCommerce Reactjs Template",
 };
 export default function HomePage12() {
   return (
