@@ -141,7 +141,7 @@ function App() {
               path="account_edit_address"
               element={<AccountEditAddressPage />}
             />
-            <Route path="account_edit" element={<AccountEditPage />} />
+            <Route path="account_edit/:userId" element={<AccountEditPage />} />
             <Route path="account_wishlist" element={<AccountWishlistPage />} />
             <Route path="reset_password" element={<ResetPasswordPage />} />
 

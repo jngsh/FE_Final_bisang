@@ -1,5 +1,5 @@
-//  from " ";
-
+import { useParams } from "react-router-dom";
+import Footer1 from "@/components/footers/Footer1";
 import Header1 from "@/components/headers/Header1";
 import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
 import EditAccount from "@/components/otherPages/EditAccount";
@@ -10,6 +10,7 @@ const metadata = {
   description: "Uomo eCommerce Reactjs Template",
 };
 export default function AccountEditPage() {
+  const userId = localStorage.getItem("userId");
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -19,8 +20,8 @@ export default function AccountEditPage() {
         <section className="my-account container">
           <h2 className="page-title">Account Details</h2>
           <div className="row">
-            <DashboardSidebar />
-            <EditAccount />
+            <DashboardSidebar/>
+            <EditAccount userId={userId}/>
           </div>
         </section>
       </main>
