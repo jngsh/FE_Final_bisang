@@ -5,6 +5,7 @@ import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 export default function TopSelling() {
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
@@ -53,7 +54,7 @@ export default function TopSelling() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://10.10.10.186:8090/bisang/home/top-selling-products");
+      const response = await axios.get(`${BASE_URL}/bisang/home/top-selling-products`);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);

@@ -4,6 +4,7 @@ import Star from "@/components/common/Star";
 import { useContextElement } from "@/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 // backgroundImage random dark color
 // 방법 1 - discountId 이용. 비슷한 계열로만 나옴
@@ -43,7 +44,7 @@ export default function DiscountSlider() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8090/bisang/home/discounts');
+        const response = await axios.get(`${BASE_URL}/bisang/home/discounts`);
         const data = response.data;
 
         const discountMap = {};

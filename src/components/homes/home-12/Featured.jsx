@@ -3,6 +3,7 @@ import axios from "axios";
 import Star from "@/components/common/Star";
 import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 const filterCategories = ["All", "Dog", "Cat"];
 const productsPerPage = 10;
@@ -21,7 +22,7 @@ export default function Featured() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:8090/bisang/home/featured");
+        const response = await axios.get(`${BASE_URL}/bisang/home/featured`);
         setProducts(response.data);
         setLoading(false);
       } catch (err) {
