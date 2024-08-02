@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './UploadFile.css';
+import BASE_URL from '@/utils/globalBaseUrl';
 
 function UploadFile() {
   const [file, setFile] = useState(null);
@@ -22,7 +23,7 @@ function UploadFile() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8090/bisang/admin/stocks/upload', formData, {
+      const response = await axios.post(`${BASE_URL}/bisang/admin/stocks/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
