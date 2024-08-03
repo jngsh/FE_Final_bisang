@@ -385,9 +385,8 @@ export default function DiscountSlider() {
   return (
     <section className="discount-carousel container">
       <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-        <h2 className="section-title fw-normal">Discount</h2>
+        { !discounts && <h2 className="section-title fw-normal">Discount</h2> }
       </div>
-
       <div className="row">
         {discounts.map(discount => (
           <div key={discount.discountId}>
@@ -425,7 +424,7 @@ export default function DiscountSlider() {
                             >
                               <div className="position-relative pb-3">
                                 <div className="pc__img-wrapper pc__img-wrapper_wide3">
-                                  <a href={`/product1_simple/${product.productId}`}>
+                                  <a href={`/bisang/products/${product.productId}`}>
                                     <img
                                       loading="lazy"
                                       src={product.productImage}
@@ -501,7 +500,7 @@ export default function DiscountSlider() {
                               </div>
                               <div className="pc__info position-relative">
                                 <h6 className="pc__title">
-                                  <a href={`/product1_simple/${product.productId}`}>{product.productName}</a>
+                                  <a href={`/bisang/products/${product.productId}`}>{product.productName}</a>
                                 </h6>
                                 <div className="product-card__review d-sm-flex align-items-center">
                                   <div className="reviews-group d-flex">
