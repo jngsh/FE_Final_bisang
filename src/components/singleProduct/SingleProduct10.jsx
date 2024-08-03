@@ -12,15 +12,12 @@ import ShareComponent from "../common/ShareComponent";
 import { useContextElement } from "@/context/Context";
 import axios from "axios";
 import RelatedSlider from "./RelatedSlider";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
 
 export default function SingleProduct10({ productId, product }) {
-
-  // BASE_URL은 .env 파일에서 가져다가 쓴다
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
-  console.log("BASE_URL : ", {BASE_URL});
 
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
@@ -48,7 +45,7 @@ export default function SingleProduct10({ productId, product }) {
         setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
         console.log("fetchProduct: Response >>>", response);
         // console.log(`${BASE_URL}/${productId}`);
-        console.log(`${BASE_URL}/bisang/products/${productId}`);
+        // console.log(`${BASE_URL}/bisang/products/${productId}`);
       } catch (error) {
         setError('Failed to fetch product');
         console.error("error>>>", error);
