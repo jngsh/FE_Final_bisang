@@ -5,15 +5,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 // productId를 가져온다
 export default function RelatedSlider({ productId }) {
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
   const { setQuickViewItem } = useContextElement();
   const { addProductToCart, isAddedToCartProducts } = useContextElement();
-
-  // BASE_URL은 .env 파일에서 가져다가 쓴다
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   // produtct 정보 가져와서 뿌려주기
   const [error, setError] = useState(null);
@@ -24,7 +22,9 @@ export default function RelatedSlider({ productId }) {
   const [sliderProduct, setSliderProduct] = useState([]);
 
   // 받아온 productId
-  const currentProductId = {productId};
+  // !!!!!
+  // const currentProductId = { productId }; // 무한 루프 발생 !!!
+  const currentProductId = parseInt(productId, 10); // 파라미터일 수 있는 productId를 10진수 정수로 변환해서 저장한다
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
@@ -35,18 +35,22 @@ export default function RelatedSlider({ productId }) {
         const response = await axios.get(`${BASE_URL}/bisang/products`,
           {
             headers: {
-              'ngrok-skip-browser-warning' : true,
+              'ngrok-skip-browser-warning': true,
             }
           }
         );
         setSliderProduct(response.data); // sliderProduct에 axios로 가져온 data를 넣어줌
-        setCurrentCategoryId(response.data[currentProductId])
+        // setCurrentCategoryId(response.data[currentProductId])
         console.log("fetchProduct: Response.data >>>", response.data[currentProductId]);
 
-         // 현재 제품을 찾기 위해 데이터에서 해당 제품 찾기
-         const currentProduct = response.data.find(product => product.productId === parseInt(productId, 10));
-         setCurrentCategoryId(currentProduct.categoryId);
+        // 현재 제품을 찾기 위해 데이터에서 해당 제품 찾기
+        const currentProduct = response.data.find(
+          (product) => product.productId === parseInt(productId, 10)
+        );
 
+        if (currentProduct) {
+          setCurrentCategoryId(currentProduct.categoryId);
+        }
       } catch (error) {
         setError('Failed to fetch product');
         console.error("error>>>", error);
@@ -54,13 +58,11 @@ export default function RelatedSlider({ productId }) {
         setLoading(false);
       }
     };
-
     fetchProduct();
-
-  }, []);
+  }, [productId]);
 
   useEffect(() => {
-    if (sliderProduct  && sliderProduct.length > 0) {
+    if (sliderProduct && sliderProduct.length > 0 && currentCategoryId) {
       // 카테고리 ID가 같은 제품 필터링
       const filtered = sliderProduct.filter(
         (product) => product.categoryId === currentCategoryId && product.productId !== currentProductId
@@ -71,7 +73,6 @@ export default function RelatedSlider({ productId }) {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
-
 
   // swiper 상세 설정
   const swiperOptions = {
@@ -123,7 +124,7 @@ export default function RelatedSlider({ productId }) {
           data-settings=""
         >
           {/* map으로 하나씩 뽑아서 뿌려주기 */}
-          {filteredProducts.slice(0,12).map((elm, i) => (
+          {filteredProducts.slice(0, 12).map((elm, i) => (
             <SwiperSlide key={i} className="swiper-slide product-card">
               <div className="pc__img-wrapper">
                 {/* 누르면 제품 상세페이지로 이동 */}
@@ -172,9 +173,8 @@ export default function RelatedSlider({ productId }) {
                 </div>
 
                 <button
-                  className={`pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist ${
-                    isAddedtoWishlist(elm.id) ? "active" : ""
-                  }`}
+                  className={`pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist ${isAddedtoWishlist(elm.id) ? "active" : ""
+                    }`}
                   title="Add To Wishlist"
                   onClick={() => toggleWishlist(elm.id)}
                 >
