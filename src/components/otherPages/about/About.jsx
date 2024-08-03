@@ -1,4 +1,5 @@
-  import axiosInstance from '../../../utils/globalAxios.js';
+  import BASE_URL from '@/utils/globalBaseUrl.js';
+import axiosInstance from '../../../utils/globalAxios.js';
   import axios from "axios";
 
   // export default function About() {
@@ -14,7 +15,7 @@
         cartId: 3 //로그인 된 아이디에 해당하는 카트번호가 입력되도록 수정
       };
       try {
-        const response = await axiosInstance.post('/bisang/pay/ready',
+        const response = await axios.post(`${BASE_URL}/bisang/pay/ready`,
           JSON.stringify(xxx),
           {
             headers: {

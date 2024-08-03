@@ -1,39 +1,49 @@
-import { useContextElement } from "@/context/Context";
+import BASE_URL from "@/utils/globalBaseUrl";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function OrderCompleted() {
-  const { cartProducts, totalPrice } = useContextElement();
+  const [orderedProducts, setOrderedProducts] = useState([]);
+
+  const [totalPrice, setTotalPrice] = useState(0);
   const [showDate, setShowDate] = useState(false);
+
   useEffect(() => {
+    const fetchOrderedProducts = async () => {
+      try {
+        const cartId = 3; //실제 로그인된 아이디 카트 번호 사용하기
+        const response = await axios.get(`${BASE_URL}/bisang/pay/ordered-items`, {
+          params: { cartId },
+        });
+        
+        console.log("data제대로 들어왔나?:", JSON.stringify(response.data));
+
+        setOrderedProducts(response.data.orderedProducts || []);
+        setTotalPrice(response.data.totalPrice || 0);
+
+        console.log("Ordered Products:", orderedProducts);
+        console.log("Total Price:", totalPrice);
+      } catch (error) {
+        console.error("Error fetching ordered products:",  error.response ? error.response.data : error.message);
+
+      }
+    };
+    fetchOrderedProducts();
     setShowDate(true);
   }, []);
 
   return (
     <div className="order-complete">
       <div className="order-complete__message">
-        {/* <svg
+        <img
+          src="/assets/images/danceYellow.png"
           width="80"
           height="80"
           viewBox="0 0 80 80"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-        
-          <circle cx="40" cy="40" r="40" fill="#B9A16B" />
-          <path
-            d="M52.9743 35.7612C52.9743 35.3426 52.8069 34.9241 52.5056 34.6228L50.2288 32.346C49.9275 32.0446 49.5089 31.8772 49.0904 31.8772C48.6719 31.8772 48.2533 32.0446 47.952 32.346L36.9699 43.3449L32.048 38.4062C31.7467 38.1049 31.3281 37.9375 30.9096 37.9375C30.4911 37.9375 30.0725 38.1049 29.7712 38.4062L27.4944 40.683C27.1931 40.9844 27.0257 41.4029 27.0257 41.8214C27.0257 42.24 27.1931 42.6585 27.4944 42.9598L33.5547 49.0201L35.8315 51.2969C36.1328 51.5982 36.5513 51.7656 36.9699 51.7656C37.3884 51.7656 37.8069 51.5982 38.1083 51.2969L40.385 49.0201L52.5056 36.8996C52.8069 36.5982 52.9743 36.1797 52.9743 35.7612Z"
-            fill="white"
-          />
-        </svg> */}
-           <img
-    src="/assets/images/danceYellow.png"
-    width="80"
-    height="80"
-    viewBox="0 0 80 80"
-    fill="none"
-  />
+        />
         <h3>주문이 완료되었어요💚</h3>
-        <p>Thank you. Your order has been received.</p>
+        <p>빠르게 배송해드릴게요!</p>
       </div>
       <div className="order-info">
         <div className="order-info__item">
@@ -47,7 +57,7 @@ export default function OrderCompleted() {
         <div className="order-info__item">
           <label>총 결제금액</label>
 
-          <span>${totalPrice && totalPrice + 19}</span>{/*19는배송비임*/}
+          <span>{totalPrice && totalPrice + 19}원 </span>{/*19는배송비임*/}
         </div>
         <div className="order-info__item">
           <label>결제 수단</label>
@@ -65,12 +75,12 @@ export default function OrderCompleted() {
               </tr>
             </thead>
             <tbody>
-              {cartProducts.map((elm, i) => (
+              {orderedProducts.map((product, i) => (
                 <tr key={i}>
                   <td>
-                    {elm.title} x {elm.quantity}
+                    {product.productName} x {product.amount}
                   </td>
-                  <td>${elm.price}</td>
+                  <td>${product.productPrice * product.amount}</td>
                 </tr>
               ))}
             </tbody>
@@ -79,7 +89,7 @@ export default function OrderCompleted() {
             <tbody>
               <tr>
                 <th>상품들 더한 금액</th>
-                <td>${totalPrice}</td>
+                <td>{totalPrice}원 </td>
               </tr>
               <tr>
                 <th>배송비</th>
@@ -87,7 +97,7 @@ export default function OrderCompleted() {
               </tr>
               <tr>
                 <th>배송비까지 다 합친 금액</th>
-                <td>${totalPrice && totalPrice + 19}</td>
+                <td>{totalPrice && totalPrice + 19}원</td>
               </tr>
             </tbody>
           </table>
