@@ -64,7 +64,7 @@ import ResetPasswordPage from "./pages/otherPages/reset_password";
 import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
-import AdminPage from "./admin/AdminPage";
+import AdminPage from "./components/admin/AdminPage";
 
 function App() {
   useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import './DragAndDrop.css';
+import BASE_URL from '@/utils/globalBaseUrl';
 
 function DragAndDrop() {
   const [dragging, setDragging] = useState(false);
@@ -34,7 +35,7 @@ function DragAndDrop() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post('http://localhost:8090/bisang/admin/stocks/upload', formData, {
+      const response = await axios.post(`${BASE_URL}/bisang/admin/stocks/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
