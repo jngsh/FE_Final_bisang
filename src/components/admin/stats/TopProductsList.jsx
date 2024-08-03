@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TopProductsList.css';
+import BASE_URL from '@/utils/globalBaseUrl';
 
 const TopProductsList = ({ selectedDate }) => {
     const [products, setProducts] = useState([]);
@@ -9,7 +10,7 @@ const TopProductsList = ({ selectedDate }) => {
 
     useEffect(() => {
         const fetchProductDetails = async () => {
-            const response = await fetch('http://localhost:8090/bisang/admin/stats/sales/products-info');
+            const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/products-info`);
             const data = await response.json();
             const details = data.reduce((acc, product) => {
                 acc[product.productId] = { name: product.productName, image: product.productImage };
@@ -21,8 +22,8 @@ const TopProductsList = ({ selectedDate }) => {
         const fetchProducts = async () => {
             setLoading(true);
             const url = sortOption === 'productSalesPrice'
-                ? `http://localhost:8090/bisang/admin/stats/sales/sort-price`
-                : `http://localhost:8090/bisang/admin/stats/sales/sort-amount`;
+                ? `${BASE_URL}/bisang/admin/stats/sales/sort-price`
+                : `${BASE_URL}/bisang/admin/stats/sales/sort-amount`;
             const response = await fetch(url);
             const data = await response.json();
             setProducts(data);
