@@ -5,32 +5,42 @@ import BASE_URL from '@/utils/globalBaseUrl';
 
 function DragAndDrop() {
   const [dragging, setDragging] = useState(false);
-  const [message, setMessage] = useState('');
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState('여기에 재고관리 엑셀 파일을 드래그 앤 드롭하세요.');
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setDragging(true);
   };
 
   const handleDragLeave = (e) => {
     e.preventDefault();
-    e.stopPropagation();
     setDragging(false);
   };
 
-  const handleDrop = useCallback(async (e) => {
+  const handleDrop = useCallback((e) => {
     e.preventDefault();
-    e.stopPropagation();
     setDragging(false);
 
-    const file = e.dataTransfer.files[0];
-    if (!file || file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-      // setMessage('Please upload a valid Excel file (.xlsx)');
-      setMessage('엑셀 파일(.xlsx)을 업로드하세요.');
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && droppedFile.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      setFile(droppedFile);
+      setMessage(droppedFile.name);
+    } else {
+      setMessage('유효한 엑셀 파일(.xlsx)을 드래그 앤 드롭하세요.');
+    }
+  }, []);
+
+  const onUpload = async () => {
+    if (!file) {
+      alert("먼저 엑셀 파일을 드래그 앤 드롭하세요");
       return;
     }
-
+    
+    if(!window.confirm("업로드하시겠습니까?")) {
+      return;
+    }
+      
     const formData = new FormData();
     formData.append('file', file);
 
@@ -40,31 +50,29 @@ function DragAndDrop() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setMessage(response.data);
-      alert("파일을 업로드했습니다.");
+      alert(response.data);
     } catch (error) {
-      setMessage('파일 업로드에 실패했습니다.');
+      alert("파일 업로드에 실패했습니다.");
       console.error('Error uploading file:', error);
+    } finally {
+      setFile(null);
+      setMessage('여기에 재고관리 엑셀 파일을 드래그 앤 드롭하세요.');
     }
-  }, []);
+  };
 
   return (
-    <div
-      className={`dropzone ${dragging ? 'dragging' : ''}`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
-      {/* <p>Drag and drop your Excel file here, or click to select a file</p> */}
-      <p>여기에 엑셀 파일을 드래그 앤 드롭하세요.</p>
-      <input
-        type="file"
-        accept=".xlsx"
-        style={{ display: 'none' }}
-        onChange={(e) => handleDrop({ dataTransfer: { files: e.target.files } })}
-      />
-      {/* <p>{message}</p> */}
-    </div>
+    <>
+      <div
+        className={`dropzone ${dragging ? 'dragging' : ''}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <p>{message}</p>
+      </div>
+      <button onClick={onUpload}>업로드</button>
+      <span>※ 재고관리 파일이 없다면 하단 "재고관리 엑셀 파일 다운로드" 에서 다운로드할 수 있습니다.</span>
+    </>
   );
 }
 

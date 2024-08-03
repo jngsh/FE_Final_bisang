@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './UploadFile.css';
 import BASE_URL from '@/utils/globalBaseUrl';
 
 function UploadFile() {
   const [file, setFile] = useState(null);
-  const [message, setMessage] = useState('');
+  const fileInputRef = useRef(null);
 
   const onFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -13,37 +13,45 @@ function UploadFile() {
 
   const onUpload = async () => {
     if (!file) {
-      // setMessage('Please select a file first.');
-      // setMessage('파일을 먼저 선택하세요.');
       alert("파일을 먼저 선택하세요.");
+      return;
+    }
+    
+    if(!window.confirm("업로드하시겠습니까?")) {
       return;
     }
 
     const formData = new FormData();
     formData.append('file', file);
-
+    
     try {
       const response = await axios.post(`${BASE_URL}/bisang/admin/stocks/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setMessage(response.data);
-      alert("파일을 업로드했습니다.");
+      alert(response.data);
     } catch (error) {
-      // setMessage('파일 업로드에 실패했습니다.');
-      alert("파일 업로드에 실패했습니다.");
+      alert("파일 업로드에 실패했습니다. 다시 시도해 주세요.");
       console.error('Error uploading file:', error);
+    } finally {
+      setFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
   return (
     <div className="UploadFile">
-      {/* <h1>Upload Inventory File</h1> */}
-      {/* <h4>재고관리 엑셀 파일 업로드</h4> */}
-      <input type="file" accept=".xlsx" onChange={onFileChange} />
+      <input
+        type="file"
+        accept=".xlsx"
+        onChange={onFileChange}
+        ref={fileInputRef}
+      />
       <button onClick={onUpload}>업로드</button>
-      {/* <p>{message}</p> */}
+      <span>※ 재고관리 파일이 없다면 하단 "재고관리 엑셀 파일 다운로드" 에서 다운로드할 수 있습니다.</span>
     </div>
   );
 }
