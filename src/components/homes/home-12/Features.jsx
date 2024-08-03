@@ -1,4 +1,4 @@
-import { featureServiceData } from "@/data/features";
+import { featureServiceData } from "./data/featuresData.js";
 
 export default function Features() {
   return (
