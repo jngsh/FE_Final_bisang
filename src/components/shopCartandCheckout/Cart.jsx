@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 export default function Cart() {
   // Context에서 값 가져오기
@@ -10,19 +11,21 @@ export default function Cart() {
     console.error('Context가 올바르게 제공되지 않았습니다.');
     return <div>오류: Context가 올바르게 제공되지 않았습니다.</div>;
   }
-  console.log("xxxxxxxxxxx", context);
 
-  const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = useContextElement();
+  const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
   const { cartId } = useParams(); // URL에서 카트 ID를 가져옴
 
+  const [amount, setAmount] = useState(0);
+
+  console.log("testprice", totalPrice);
   // 카트 데이터를 로컬 스토리지에서 가져오기
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cartProducts')) || [];
     setLocalCart(savedCart);
     setCartProducts(savedCart);
-  }, [setCartProducts]);
+  }, [setCartProducts]); 
 
   // 카트 ID가 유효한지 확인
   useEffect(() => {
@@ -35,10 +38,10 @@ export default function Cart() {
 
       try {
         const [cartResponse, itemsResponse] = await Promise.all([
-          axios.get(`http://localhost:8090/bisang/carts/${cartId}`),
-          axios.get(`http://localhost:8090/bisang/carts/${cartId}/items`)
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}`),
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`)
         ]);
-
+        
         const items = itemsResponse.data || [];
         setLocalCart(items);
         setCartProducts(items);
@@ -47,7 +50,9 @@ export default function Cart() {
           (total, item) => total + (item.amount * item.product.productPrice),
           0
         );
-        setTotalPrice(calculatedTotalPrice);
+        // setTotalPrice(calculatedTotalPrice);
+        setTotalPrice(2222);
+        console.log("소계", totalPrice);
 
         // 로컬 스토리지에 저장
         localStorage.setItem('cartProducts', JSON.stringify(items));
@@ -59,14 +64,17 @@ export default function Cart() {
     };
 
     fetchCartItems();
-  }, [cartId, setCartProducts, setTotalPrice]);
+  }, [ ]); 
 
   // 수량 업데이트 함수
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`http://localhost:8090/bisang/carts/items`, { cartItemId, amount: quantity });
+        console.log("setquantity");
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
+        console.log("response", response);
         const updatedCart = response.data || [];
+        console.log("response.data", response.data);
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
         localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
@@ -86,7 +94,7 @@ export default function Cart() {
   // 아이템 삭제 함수
   const removeItem = async (cartItemId) => {
     try {
-      const response = await axios.delete(`http://localhost:8090/bisang/carts/items/${cartItemId}`);
+      const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
       const updatedCart = response.data || [];
       setCartProducts(updatedCart);
       setLocalCart(updatedCart);
@@ -125,7 +133,6 @@ export default function Cart() {
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
-      {cartProducts.length}
         {cartProducts.length > 0 ? (
           <>
             <table className="cart-table">
@@ -218,7 +225,6 @@ export default function Cart() {
           </>
         ) : (
           <>
-          {cartProducts.length}
             <div className="fs-20">장바구니가 비어 있습니다</div>
             <button className="btn mt-3 btn-light">
               <Link to={"/shop-5"}>상품 보러 가기</Link>
