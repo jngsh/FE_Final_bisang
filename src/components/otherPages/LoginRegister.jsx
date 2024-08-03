@@ -1,12 +1,10 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
-
+import BASE_URL from "@/utils/globalBaseUrl";
+import { useContextElement } from "@/context/Context";
 
 export default function LoginRegister() {
-
-  const BASE_URL = "http://localhost:8090";
-  //const BASE_URL = "http://10.10.10.143:8090";
 
 
   const navigate = useNavigate();
@@ -18,6 +16,8 @@ export default function LoginRegister() {
   const [emailDomain, setEmailDomain] = useState("naver.com");
   const [emailCustomDomain, setEmailCustomDomain] = useState("");
   const [isCustomDomain, setIsCustomDomain] = useState(false);
+  
+  const {setLogined} = useContextElement();
 
   const [activeTab, setActiveTab] = useState("login");
 
@@ -169,20 +169,20 @@ export default function LoginRegister() {
     const userId = localStorage.getItem("userId");
 
     if (token) {
-        try {
-            const response = await axios.get(`${BASE_URL}/bisang/auth/check-login`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            console.log("Data fetched successfully:", response.data);
-            console.log("UserID:",userId);
-            navigate('/');
-        } catch (error) {
-            console.error("Error fetching data:", error.response?.data || error.message);
-        }
+      try {
+        const response = await axios.get(`${BASE_URL}/bisang/auth/check-login`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log("Data fetched successfully:", response.data);
+        console.log("UserID:",userId);
+        // navigate('/');
+      } catch (error) {
+        console.error("Error fetching data:", error.response?.data || error.message);
+      }
     } else {
-        console.log("No token found");
+      console.log("No token found");
     }
 };
 
@@ -197,10 +197,13 @@ export default function LoginRegister() {
       if (response.data.token) {
         // JWT토큰 로컬스토리지에 저장
         localStorage.setItem("token", response.data.token);
+
+        
         // 서버 응답에서 userId를 가져와서 로컬스토리지에 저장
         if (response.data.userId) {
           console.log("userId recived:",response.data.userId);
           localStorage.setItem("userId", response.data.userId);
+          setLogined(true);
         } else {
             console.error("userId not found in response");
         }
@@ -335,6 +338,7 @@ export default function LoginRegister() {
                   placeholder="아이디 *"
                   required
                   value={loginData.id}
+    
                   onChange={handleLoginChange}
                 />
                 <label htmlFor="id">아이디 *</label>
