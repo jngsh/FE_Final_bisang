@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
+import BASE_URL from '@/utils/globalBaseUrl';
 
-const PetAgeTypeDoughnutChart = () => {
+const PetAgeTypePieChart = () => {
     const [data, setData] = useState({
         labels: [], 
         datasets: [{
-            data: [],
+            data: [], 
             backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], 
         }]
     });
@@ -15,7 +16,7 @@ const PetAgeTypeDoughnutChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8090/bisang/admin/stats/sales/pet-age-type');
+                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-age-type`);
                 const result = await response.json();
                 
                 if (Array.isArray(result)) {
@@ -44,12 +45,11 @@ const PetAgeTypeDoughnutChart = () => {
     }
 
     return (
-        <div className="chart-container">
+        <div>
             <h3>반려동물 나이 비율</h3>
-            <Doughnut data={data} />
+            <Pie data={data} />
         </div>
     );
 };
 
-export default PetAgeTypeDoughnutChart;
-
+export default PetAgeTypePieChart;
