@@ -17,7 +17,7 @@ export default function LoginRegister() {
   const [emailCustomDomain, setEmailCustomDomain] = useState("");
   const [isCustomDomain, setIsCustomDomain] = useState(false);
   
-  const {setLogined} = useContextElement();
+  const {setLogined, setCartId, cartId} = useContextElement();
 
   const [activeTab, setActiveTab] = useState("login");
 
@@ -240,13 +240,22 @@ export default function LoginRegister() {
       const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
       console.log("Registration successful:", response.data);
       // 회원가입 성공 후의 처리 (예: 리다이렉트, 상태 업데이트 등)
+      if (response.data.cartId){
+        setCartId(response.data.cartId);
+      }
       setActiveTab("login");
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {z
+    } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
       // 회원가입 실패 후의 처리 (예: 에러 메시지 표시 등)
     }
   };
+
+  useEffect(() => {
+    if (cartId) {
+      console.log("CartId:", cartId);
+    }
+  }, [cartId]); 
 
   const handleEmailDomainChange = (e) => {
     const selectedDomain = e.target.value;
