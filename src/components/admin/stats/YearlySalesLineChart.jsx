@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -37,7 +38,7 @@ const YearlySalesLineChart = () => {
     }, []);
 
     const fetchYearlySales = () => {
-        fetch(`http://localhost:8090/bisang/admin/stats/sales/yearly`)
+        fetch(`${BASE_URL}/bisang/admin/stats/sales/yearly`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

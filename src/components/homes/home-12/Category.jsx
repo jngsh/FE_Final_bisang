@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 import itemType1 from './images/itemType1.jpeg';
 import itemType2 from './images/itemType2.jpeg';
@@ -14,7 +15,7 @@ export default function Category() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await axios.get('http://10.10.10.186:8090/bisang/home/item-category');
+        const response = await axios.get(`${BASE_URL}/bisang/home/item-category`);
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
