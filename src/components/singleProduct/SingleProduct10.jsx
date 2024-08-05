@@ -13,6 +13,7 @@ import { useContextElement } from "@/context/Context";
 import axios from "axios";
 import RelatedSlider from "./RelatedSlider";
 import BASE_URL from "@/utils/globalBaseUrl";
+import Notfound from "../otherPages/Notfound";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
@@ -38,7 +39,7 @@ export default function SingleProduct10({ productId, product }) {
         const response = await axios.get(`${BASE_URL}/bisang/products/${productId}`,
           {
             headers: {
-              'ngrok-skip-browser-warning' : true,
+              'ngrok-skip-browser-warning': true,
             }
           }
         );
@@ -54,7 +55,7 @@ export default function SingleProduct10({ productId, product }) {
       }
     };
 
-    if(productId) {
+    if (productId) {
       fetchProduct();
     } else {
       console.log("productId가 undefined임");
@@ -113,7 +114,6 @@ export default function SingleProduct10({ productId, product }) {
             <div className="breadcrumb mb-0 d-none d-md-block flex-grow-1">
               <BreadCumb />
             </div>
-            {/* <!-- /.breadcrumb --> */}
 
             <div className="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
               <a className="text-uppercase fw-medium">
@@ -148,6 +148,7 @@ export default function SingleProduct10({ productId, product }) {
           {/* 제품명 부분 */}
           {/* <h1 className="product-single__name">{product.title}</h1> */}
           <h1 className="product-single__name">{product1.productName}</h1>
+
           {/* 별점 부분 */}
           <div className="product-single__rating">
             <div className="reviews-group d-flex">
@@ -157,22 +158,20 @@ export default function SingleProduct10({ productId, product }) {
               8k+ reviews
             </span>
           </div>
+
           {/* 제품 가격 부분 */}
           <div className="product-single__price">
             {/* <span className="current-price">${product.price}</span> */}
             <span className="current-price">₩{product1.productPrice}</span>
           </div>
+
           {/* 짧은 제품 상세 설명란 */}
           <div className="product-single__short-desc">
             <p>
-              {/* 상세 설명란이지롱 !!!!!!
-              Phasellus sed volutpat orci. Fusce eget lore mauris vehicula
-              elementum gravida nec dui. Aenean aliquam varius ipsum, non
-              ultricies tellus sodales eu. Donec dignissim viverra nunc, ut
-              aliquet magna posuere eget.  */}
               {product1.productDescription}
             </p>
           </div>
+
           {/* form 태그로 주문 정보들 다 넘기는군 */}
           <form onSubmit={(e) => e.preventDefault()}>
             {/* 여기는 사이즈 선택칸 */}
@@ -191,6 +190,7 @@ export default function SingleProduct10({ productId, product }) {
                   Size Guide
                 </a>
               </div> */}
+
               {/* 여기는 색상 선택칸 */}
               {/* <div className="product-swatch color-swatches">
                 <label>Color</label>
@@ -245,6 +245,7 @@ export default function SingleProduct10({ productId, product }) {
             </div>
           </form>
           {/* 여기에서 form 태그 끝!! */}
+
           {/* 여기는 ADD TO WISHLIST 부분 */}
           <div className="product-single__addtolinks">
             <a href="#" className="menu-link menu-link_us-s add-to-wishlist">
@@ -320,8 +321,10 @@ export default function SingleProduct10({ productId, product }) {
                 data-bs-parent="#product_single_details_accordion"
               >
                 <div className="accordion-body">
-                {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
-                {product1 && <Description product1={product1} />}
+                  {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
+                  {/* {product1 && <Description product1={product1} />} */}
+                  {product1.productDescription} <br></br>
+                  {product1.productDetailedDescription}
                 </div>
               </div>
             </div>
@@ -361,6 +364,7 @@ export default function SingleProduct10({ productId, product }) {
                 <div className="accordion-body">
                   {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
                   <AdditionalInfo />
+                  {product1.productAdditionalInfo}
                 </div>
               </div>
             </div>
