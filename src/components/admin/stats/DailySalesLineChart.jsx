@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
 import 'chart.js/auto';
+import BASE_URL from "@/utils/globalBaseUrl";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -22,14 +23,14 @@ const DailySalesLineChart = () => {
     }, [selectedYear, selectedMonth]);
 
     const fetchYears = () => {
-        fetch('http://localhost:8090/bisang/admin/stats/sales/years')
+        fetch(`${BASE_URL}/bisang/admin/stats/sales/years`)
             .then(response => response.json())
             .then(data => setYears(data))
             .catch(error => console.error('Error fetching years:', error));
     };
 
     const fetchMonthlySales = (year, month) => {
-        fetch(`http://localhost:8090/bisang/admin/stats/sales/daily/${year}/${month}`)
+        fetch(`${BASE_URL}/bisang/admin/stats/sales/daily/${year}/${month}`)
             .then(response => response.json())
             .then(data => {
                 const daysInMonth = new Date(year, month, 0).getDate();

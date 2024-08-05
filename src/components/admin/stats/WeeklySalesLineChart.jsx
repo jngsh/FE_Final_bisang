@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(...registerables);
 
@@ -47,7 +48,7 @@ const WeeklySalesLineChart = ({ selectedDate }) => {
     }, [selectedDate]); 
 
     const fetchWeeklySales = () => {
-        fetch(`http://localhost:8090/bisang/admin/stats/sales/recent-week`)
+        fetch(`${BASE_URL}/bisang/admin/stats/sales/recent-week`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
