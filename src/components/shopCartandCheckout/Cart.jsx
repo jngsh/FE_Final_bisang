@@ -3,9 +3,9 @@ import { useContextElement } from "@/context/Context";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
+// import styled from 'styled-components';
 
 export default function Cart() {
-  // Context에서 값 가져오기
   const context = useContextElement();
   if (!context) {
     console.error('Context가 올바르게 제공되지 않았습니다.');
@@ -15,19 +15,12 @@ export default function Cart() {
   const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
-  const { cartId } = useParams(); // URL에서 카트 ID를 가져옴
+  const cartId = useParams().cartId;
+  // const cartId = parseInt(useParams(),10);
+  // const cartId = localStorage.getItem("cartId");
+  // console.log("cartId", cartId);
 
-  const [amount, setAmount] = useState(0);
 
-  console.log("testprice", totalPrice);
-  // 카트 데이터를 로컬 스토리지에서 가져오기
-  useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    setLocalCart(savedCart);
-    setCartProducts(savedCart);
-  }, [setCartProducts]); 
-
-  // 카트 ID가 유효한지 확인
   useEffect(() => {
     const fetchCartItems = async () => {
       if (!cartId) {
@@ -47,14 +40,12 @@ export default function Cart() {
         setCartProducts(items);
 
         const calculatedTotalPrice = items.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice),
-          0
+          (total, item) => total + (item.amount * item.product.productPrice),0
         );
-        // setTotalPrice(calculatedTotalPrice);
-        setTotalPrice(2222);
-        console.log("소계", totalPrice);
+        setTotalPrice(calculatedTotalPrice); //useEffect totalPrice
+        // console.log("useEffect totalPrice", totalPrice);
+        // console.log(JSON.stringify(items));
 
-        // 로컬 스토리지에 저장
         localStorage.setItem('cartProducts', JSON.stringify(items));
       } catch (error) {
         console.error("카트 데이터를 가져오는 중 오류 발생:", error);
@@ -64,34 +55,28 @@ export default function Cart() {
     };
 
     fetchCartItems();
-  }, [ ]); 
+  },[totalPrice]);
 
-  // 수량 업데이트 함수
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
       try {
-        console.log("setquantity");
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
-        console.log("response", response);
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });       
         const updatedCart = response.data || [];
-        console.log("response.data", response.data);
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
         localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
 
-        // Update total price
         const newTotalPrice = updatedCart.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice),
-          0
+          (total, item) => total + (item.amount * item.product.productPrice),0
         );
         setTotalPrice(newTotalPrice);
+        console.log("setQuantity totalPrice", totalPrice);
       } catch (error) {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
     }
   };
 
-  // 아이템 삭제 함수
   const removeItem = async (cartItemId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
@@ -100,25 +85,23 @@ export default function Cart() {
       setLocalCart(updatedCart);
       localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
 
-      // Update total price
       const newTotalPrice = updatedCart.reduce(
-        (total, item) => total + (item.amount * item.product.productPrice),
+        (total, item) => total + (item.amount * item.product.productPrice), 
         0
       );
       setTotalPrice(newTotalPrice);
+      console.log("removeItem totalPrice", totalPrice);
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
   };
 
-  // 체크박스 상태
   const [checkboxes, setCheckboxes] = useState({
     free_shipping: false,
     flat_rate: false,
     local_pickup: false,
   });
 
-  // 체크박스 상태 변경 핸들러
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
     setCheckboxes((prevCheckboxes) => ({
@@ -127,8 +110,9 @@ export default function Cart() {
     }));
   };
 
-  // 로딩 상태 처리
   if (loading) return <div>로딩 중...</div>;
+
+  console.log("total", totalPrice);
 
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
@@ -299,11 +283,10 @@ export default function Cart() {
                   <tr>
                     <th>총계</th>
                     <td>
-                      $
+                      
                       {49 * (checkboxes.flat_rate ? 1 : 0) +
                         8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice +
-                        19}
+                        totalPrice}원
                     </td>
                   </tr>
                 </tbody>
