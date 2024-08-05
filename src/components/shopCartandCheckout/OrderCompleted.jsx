@@ -1,7 +1,7 @@
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+//
 export default function OrderCompleted() {
   const [orderedProducts, setOrderedProducts] = useState([]);
 
@@ -13,8 +13,10 @@ export default function OrderCompleted() {
       try {
         const cartId = 3; //실제 로그인된 아이디 카트 번호 사용하기
         const response = await axios.get(`${BASE_URL}/bisang/pay/ordered-items`, {
-          params: { cartId },
+          params: { cartId }, //쿼리스트링방식
         });
+        //post로 보낼때는 
+        // const response = await axios.get(`${BASE_URL}/bisang/pay/ordered-items`, {
         
         console.log("data제대로 들어왔나?:", JSON.stringify(response.data));
 
