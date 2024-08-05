@@ -1,13 +1,22 @@
 import { useContextElement } from "@/context/Context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
+import { MyPageBtn } from "./MyPageBtn";
+import { LoginBtn } from "./LoginBtn";
 
 export default function MobileFooter1() {
   const [showFooter, setShowFooter] = useState(false);
   const { wishList } = useContextElement();
+
+  const { logined } = useContextElement();
+
   useEffect(() => {
     setShowFooter(true);
-  }, []);
+  },[]);
+
+
 
   return (
     <footer
@@ -16,7 +25,7 @@ export default function MobileFooter1() {
     >
       <div className="row text-center">
         {/* HOME 메뉴 */}
-        <div className="col-4">
+        <div className="col-3">
           <Link
             to="/"
             className="footer-mobile__link d-flex flex-column align-items-center"
@@ -37,7 +46,7 @@ export default function MobileFooter1() {
         {/* <!-- /.col-3 --> */}
 
         {/* QR Scan 메뉴 */}
-        <div className="col-4">
+        <div className="col-3">
           <Link
             to="/home-3"
             className="footer-mobile__link d-flex flex-column align-items-center"
@@ -62,7 +71,7 @@ export default function MobileFooter1() {
         </div>
 
         {/* SHOP 메뉴 */}
-        <div className="col-4">
+        <div className="col-3">
           <Link
             to="/shop-5"
             className="footer-mobile__link d-flex flex-column align-items-center"
@@ -80,6 +89,11 @@ export default function MobileFooter1() {
             <span>Categories</span>
           </Link>
         </div>
+        {/* <!-- /.col-3 --> */}
+        
+        
+        {logined ? <MyPageBtn/> : <LoginBtn/>}
+        
         {/* <!-- /.col-3 --> */}
 
       </div>
