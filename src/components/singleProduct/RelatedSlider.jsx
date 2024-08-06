@@ -28,10 +28,9 @@ export default function RelatedSlider({ productId }) {
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
-    // 제품 정보 가져오기
+    // 전체 제품 정보 가져오기
     const fetchProduct = async () => {
       try {
-        // console.log("productId를 사용하여 데이터 가져오기 시작 >>>", productId);
         const response = await axios.get(`${BASE_URL}/bisang/products`,
           {
             headers: {
@@ -41,7 +40,6 @@ export default function RelatedSlider({ productId }) {
         );
         setSliderProduct(response.data); // sliderProduct에 axios로 가져온 data를 넣어줌
         // setCurrentCategoryId(response.data[currentProductId])
-        console.log("fetchProduct: Response.data >>>", response.data[currentProductId]);
 
         // 현재 제품을 찾기 위해 데이터에서 해당 제품 찾기
         const currentProduct = response.data.find(
@@ -111,6 +109,52 @@ export default function RelatedSlider({ productId }) {
     },
   };
 
+  // 여기는 메서드들
+  const isIncludeCard = () => {
+    const item = cartProducts.filter((elm) => elm.id == product.id)[0];
+    return item;
+  };
+  // // 카트에 담을 수량 설정
+  // const setQuantityCartItem = (id, quantity) => {
+  //   if (isIncludeCard()) {
+  //     if (quantity >= 1) {
+  //       const item = cartProducts.filter((elm) => elm.id == id)[0];
+  //       const items = [...cartProducts];
+  //       const itemIndex = items.indexOf(item);
+  //       item.quantity = quantity;
+  //       items[itemIndex] = item;
+  //       setCartProducts(items);
+  //     }
+  //   } else {
+  //     setQuantity(quantity - 1 ? quantity : 1);
+  //   }
+  // };
+  // "장바구니에 담기" 버튼 누르면 실행됨
+  const addToCart = async () => {
+    if (!isIncludeCard()) {
+      const item = product;
+      item.quantity = quantity;
+      setCartProducts((pre) => [...pre, item]);
+
+      try {
+        const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
+          // cartId: cartId,
+          cartId: 2,
+          productId: productId, // props에서 가져옴
+          amount: quantity, // 상태에서 관리하는 quantity
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true,
+          }
+        });
+        console.log("addToCart: Response >>> ", response);
+      } catch(error) {
+        console.error("Failed to add item to cart : ", error);
+      }
+    }
+  };
+
   return (
     <section className="products-carousel container">
       <h2 className="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">
@@ -137,15 +181,6 @@ export default function RelatedSlider({ productId }) {
                     alt="peter pet"
                     className="pc__img"
                   />
-                  {/* 마우스오버 하면 뜨는 이미지 - 위 이미지랑 똑같이 해주기 */}
-                  {/* <img
-                    loading="lazy"
-                    src={elm.productImage}
-                    width="330"
-                    height="400"
-                    alt="peter pet"
-                    className="pc__img pc__img-second"
-                  /> */}
                 </Link>
                 <button
                   className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
