@@ -297,7 +297,7 @@ export default function Featured() {
                   <div className="product-card product-card_style9 border rounded-3 mb-3 mb-md-4">
                     <div className="position-relative pb-3">
                       <div className="pc__img-wrapper pc__img-wrapper_wide3">
-                        <Link to={`/product1_simple/${product.productId}`}>
+                        <Link to={`/bisang/products/${product.productId}`}>
                           <img
                             loading="lazy"
                             src={product.productImage}
@@ -343,7 +343,7 @@ export default function Featured() {
 
                     <div className="pc__info position-relative">
                       <h6 className="pc__title">
-                        <Link to={`/product1_simple/${product.productId}`}>
+                        <Link to={`/bisang/products/${product.productId}`}>
                           {product.productName}
                         </Link>
                       </h6>

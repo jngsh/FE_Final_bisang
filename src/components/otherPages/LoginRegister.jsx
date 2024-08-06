@@ -155,6 +155,17 @@ export default function LoginRegister() {
   
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const storedCartId = localStorage.getItem("cartId");
+    const loginedStatus = JSON.parse(localStorage.getItem("logined"));
+    
+    if (loginedStatus) {
+      setLogined(loginedStatus);
+    }
+
+    if (storedCartId) {
+      setCartId(storedCartId);
+    }
+
     if (token) {
         fetchDataWithToken(); // 토큰이 있다면 API 요청을 통해 데이터를 가져오거나 사용자의 로그인 상태를 확인합니다.
     } else {
@@ -197,16 +208,30 @@ export default function LoginRegister() {
       if (response.data.token) {
         // JWT토큰 로컬스토리지에 저장
         localStorage.setItem("token", response.data.token);
-
+        // localStorage.setItem("userId", response.data.userId);
+        // localStorage.setItem("logined", JSON.stringify(true));
+        // localStorage.setItem("cartId", response.data.cartId);
         
         // 서버 응답에서 userId를 가져와서 로컬스토리지에 저장
         if (response.data.userId) {
           console.log("userId recived:",response.data.userId);
           localStorage.setItem("userId", response.data.userId);
           setLogined(true);
+          localStorage.setItem("logined", JSON.stringify(true));
+          
         } else {
             console.error("userId not found in response");
         }
+
+        if (response.data.cartId) {
+          console.log("cartId received:", response.data.cartId);
+          setCartId(response.data.cartId);
+          localStorage.setItem("cartId", response.data.cartId);
+        }
+
+        // 로그인 상태 저장
+        // localStorage.setItem("logined", JSON.stringify(true));
+        // setLogined(true);
         
         setLoginData(prevData => ({ ...prevData, error: '' }));
         navigate('/'); // Redirect on success

@@ -355,7 +355,7 @@ export default function TopSelling() {
               >
                 <div className="position-relative pb-3">
                   <div className="pc__img-wrapper pc__img-wrapper_wide3">
-                    <Link to={`/product1_simple/${product.productId}`}>
+                    <Link to={`/bisang/products/${product.productId}`}>
                       <img
                         loading="lazy"
                         src={product.productImage || "No Image"}
@@ -432,7 +432,7 @@ export default function TopSelling() {
 
                 <div className="pc__info position-relative">
                   <h6 className="pc__title">
-                    <Link to={`/product1_simple/${product.productId}`}>{product.productName || "No Name"}</Link>
+                    <Link to={`/bisang/products/${product.productId}`}>{product.productName || "No Name"}</Link>
                   </h6>
                   <div className="product-card__review d-sm-flex align-items-center">
                     <div className="reviews-group d-flex">

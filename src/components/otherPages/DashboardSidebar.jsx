@@ -7,13 +7,16 @@ export default function DashboardSidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
-  const { setLogined } = useContextElement();
+  const { setLogined, setCartId } = useContextElement();
 
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     setLogined(false);
+    setCartId(null);
+    localStorage.setItem("logined", JSON.stringify(false));
+    localStorage.setItem("cartId", null);
     navigate("/login_register");
   }
 
