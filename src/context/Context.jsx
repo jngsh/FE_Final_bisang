@@ -72,6 +72,7 @@ export default function Context({ children }) {
   useEffect(() => {
     localStorage.setItem("cartList", JSON.stringify(cartProducts));
   }, [cartProducts]);
+  
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("wishlist"));
     if (items?.length) {
