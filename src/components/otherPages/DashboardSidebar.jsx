@@ -19,6 +19,7 @@ export default function DashboardSidebar() {
     localStorage.setItem("logined", JSON.stringify(false));
     localStorage.setItem("cartId", null);
     localStorage.setItem("cartProducts", JSON.stringify([]));
+    
     navigate("/login_register");
   }
 
