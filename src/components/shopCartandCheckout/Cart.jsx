@@ -15,7 +15,8 @@ export default function Cart() {
   const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
-  const cartId = useParams().cartId;
+  // const cartId = useParams().cartId;
+  const { cartId } = useContextElement();
 
   useEffect(() => {
     const fetchCartItems = async () => {
