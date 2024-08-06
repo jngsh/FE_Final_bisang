@@ -1,38 +1,26 @@
+import { useContextElement } from "@/context/Context";
+import axiosInstance from "@/utils/globalAxios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
 import { useEffect, useState } from "react";
-//
+
 export default function OrderCompleted() {
+
+  const {orderedDetail, setOrderedDetail} = useContextElement();
+
   const [orderedProducts, setOrderedProducts] = useState([]);
-
   const [totalPrice, setTotalPrice] = useState(0);
-  const [showDate, setShowDate] = useState(false);
+  const [showDate, setShowDate] = useState(true);
 
-  useEffect(() => {
-    const fetchOrderedProducts = async () => {
-      try {
-        const cartId = 3; //실제 로그인된 아이디 카트 번호 사용하기
-        const response = await axios.get(`${BASE_URL}/bisang/pay/ordered-items`, {
-          params: { cartId }, //쿼리스트링방식
-        });
-        //post로 보낼때는 
-        // const response = await axios.get(`${BASE_URL}/bisang/pay/ordered-items`, {
-        
-        console.log("data제대로 들어왔나?:", JSON.stringify(response.data));
 
-        setOrderedProducts(response.data.orderedProducts || []);
-        setTotalPrice(response.data.totalPrice || 0);
+useEffect(()=>{
+  if(orderedDetail){
+    const calcultatedTotalPrice = (orderedDetail || [])
+    .reduce((total, product) => total + (product.productPrice * product.amount), 0);
+    setTotalPrice(calcultatedTotalPrice);
+  }
+}, [orderedDetail]); //세부정보 변경될 때 실행
 
-        console.log("Ordered Products:", orderedProducts);
-        console.log("Total Price:", totalPrice);
-      } catch (error) {
-        console.error("Error fetching ordered products:",  error.response ? error.response.data : error.message);
-
-      }
-    };
-    fetchOrderedProducts();
-    setShowDate(true);
-  }, []);
 
   return (
     <div className="order-complete">
@@ -50,7 +38,7 @@ export default function OrderCompleted() {
       <div className="order-info">
         <div className="order-info__item">
           <label>주문 번호</label>
-          <span>13119</span>
+          <span>{orderedDetail?.orderNumber || '정보없음'}</span> {/*optionalChaining이라고 함*/}
         </div>
         <div className="order-info__item">
           <label>주문 일자</label>
@@ -59,11 +47,11 @@ export default function OrderCompleted() {
         <div className="order-info__item">
           <label>총 결제금액</label>
 
-          <span>{totalPrice && totalPrice + 19}원 </span>{/*19는배송비임*/}
+          <span>{totalPrice + 19}원 </span>{/*19는배송비임*/}
         </div>
         <div className="order-info__item">
           <label>결제 수단</label>
-          <span>Kakao Pay</span> {/*결제수단 입력되게하기*/}
+          <span>{orderedDetail?.paymentMethod ||'kakaopay아니얌??'}</span> {/*결제수단 입력되게하기*/}
         </div>
       </div>
       <div className="checkout__totals-wrapper">
@@ -99,7 +87,7 @@ export default function OrderCompleted() {
               </tr>
               <tr>
                 <th>배송비까지 다 합친 금액</th>
-                <td>{totalPrice && totalPrice + 19}원</td>
+                <td>{totalPrice + 19}원</td>
               </tr>
             </tbody>
           </table>

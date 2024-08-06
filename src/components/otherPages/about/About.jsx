@@ -1,18 +1,16 @@
 import BASE_URL from '@/utils/globalBaseUrl.js';
 import axiosInstance from '../../../utils/globalAxios.js';
 import axios from "axios";
+import { useContextElement } from '@/context/Context.jsx';
 
 // export default function About() {
 const About = () => {
+  const { cartId } = useContextElement();
 
   const handleButtonClick = async () => {
     console.log("버튼눌림");
     let xxx = {
-      // cartItemId: 1,
-      // cartId: 1,
-      // productId: 1,
-      // amount: 1
-      cartId: 3 //로그인 된 아이디에 해당하는 카트번호가 입력되도록 수정
+      'cartId': cartId //로그인 된 아이디에 해당하는 카트번호가 입력되도록 수정
     };
     try {
       const response = await axiosInstance.post(`bisang/pay/ready`,
@@ -46,6 +44,7 @@ const About = () => {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       const redirectUrl = isMobile ? mobileUrl : pcUrl;
+      // const redirectUrl =pcUrl;
       console.log(">>>>>>>>>>:" + redirectUrl);
 
       window.location.href = redirectUrl;

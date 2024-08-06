@@ -1,19 +1,42 @@
 /* eslint-disable react/prop-types */
 import { allProducts } from "@/data/products";
-import React, { useEffect } from "react";
-import { useContext, useState } from "react";
-const dataContext = React.createContext();
-// eslint-disable-next-line react-refresh/only-export-components
+import axiosInstance from "@/utils/globalAxios";
+import React, { createContext, useEffect, useContext, useState } from "react";
+
+const dataContext = createContext();
+
 export const useContextElement = () => {
   return useContext(dataContext);
 };
 
 export default function Context({ children }) {
+  const [orderedDetail, setOrderedDetail] = useState(null);
   const [cartProducts, setCartProducts] = useState([]);
   const [wishList, setWishList] = useState([]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [paymentResult, setPaymentResult] = useState(null);
+  const [cartId, setCartId] = useState(1);
+
+
+  useEffect(() => {
+    if (cartId) {
+      fetchOrderedDetails(cartId);
+    }
+  }, [cartId]);
+
+  const fetchOrderedDetails = async (cartId) => {
+    console.log('>>>>>>>>>>>>>cartid는 찍혀?', cartId);
+    try {
+      const response = await axiosInstance.get(`/bisang/pay/details`, { 
+        params : {cartId}
+      });
+      setOrderedDetail(response.data);
+      // console.error('>>>>>>>>>>>>>context/들어옴?', response.data);
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    }
+  };
+
   useEffect(() => {
     const subtotal = cartProducts.reduce((accumulator, product) => {
       return accumulator + product.quantity * product.price;
@@ -88,8 +111,10 @@ export default function Context({ children }) {
     quickViewItem,
     wishList,
     setQuickViewItem,
-    paymentResult,
-    setPaymentResult
+    orderedDetail,
+    setOrderedDetail,
+    cartId,
+    setCartId
   };
   return (
     <dataContext.Provider value={contextElement}>
