@@ -20,12 +20,13 @@ export default function Context({ children }) {
   const [logined, setLogined ] = useState(storedLogined);
   const [cartId, setCartId] = useState(storedCartId);
 
-  useEffect(() => {
-    const subtotal = cartProducts.reduce((accumulator, product) => {
-      return accumulator + product.quantity * product.price;
-    }, 0);
-    setTotalPrice(subtotal);
-  }, [cartProducts]);
+
+  // useEffect(() => {
+  //   const subtotal = cartProducts.reduce((accumulator, product) => {
+  //     return accumulator + product.quantity * product.price;
+  //   }, 0);
+  //   setTotalPrice(subtotal);
+  // }, [cartProducts]);
 
   const addProductToCart = (id) => {
     if (!cartProducts.filter((elm) => elm.id == id)[0]) {
