@@ -13,12 +13,14 @@ export default function Context({ children }) {
   const [orderedDetail, setOrderedDetail] = useState(null);
   const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   const storedCartId = localStorage.getItem('cartId');
+  const [logined, setLogined ] = useState(storedLogined);
+  const [cartId, setCartId] = useState(storedCartId);
 
   const [cartProducts, setCartProducts] = useState([]);
   const [wishList, setWishList] = useState([]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [cartId, setCartId] = useState(1);
+  // const [cartId, setCartId] = useState(1);
 
 
   useEffect(() => {
@@ -40,14 +42,8 @@ export default function Context({ children }) {
     }
   };
 
-  useEffect(() => {
-    const subtotal = cartProducts.reduce((accumulator, product) => {
-      return accumulator + product.quantity * product.price;
-    }, 0);
-    setTotalPrice(subtotal);
-  }, [cartProducts]);
-  const [logined, setLogined ] = useState(storedLogined);
-  const [cartId, setCartId] = useState(storedCartId);
+  
+  
 
 
   // useEffect(() => {
