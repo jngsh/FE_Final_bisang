@@ -11,11 +11,41 @@ export default function Cart() {
     return <div>오류: Context가 올바르게 제공되지 않았습니다.</div>;
   }
 
-  const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
+  // context에서 필요한 값을 추출합니다.
+  const { cartProducts, setCartProducts, totalPrice, setTotalPrice, logined, token } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
-  const cartId = useParams().cartId;
+  const { cartId } = useContextElement();
 
+  useEffect(() => {
+    // 로그인 상태가 true일 때만 카트 데이터를 가져옵니다.
+    if (logined) {
+      const fetchCartProducts = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/bisang/mypage/cart`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          });
+  
+          if (response.data && response.data.length) {
+            // 서버에서 가져온 카트 데이터를 상태에 저장합니다.
+            setCartProducts(response.data);
+          } else {
+            // 카트 데이터가 없는 경우 처리
+            setCartProducts([]);
+          }
+        } catch (error) {
+          console.error('Error fetching cart products:', error);
+          // 오류 처리 (예: 상태 초기화 등)
+          setCartProducts([]);
+        }
+      };
+  
+      fetchCartProducts();
+    }
+  }, [logined, token]); // `logined` 또는 `token`이 변경될 때마다 실행
+  
   useEffect(() => {
     const fetchCartItems = async () => {
       if (!cartId) {
@@ -50,7 +80,7 @@ export default function Cart() {
     fetchCartItems();
   }, [totalPrice]);
 
-  const addOrUpdateCartItem = async (productId, quantity) => {
+const addOrUpdateCartItem = async (productId, quantity) => {
     try {
       const existingItem = cartProducts.find(item => item.product.id === productId);
       let updatedCart = [];
@@ -329,7 +359,6 @@ export default function Cart() {
                   <tr>
                     <th>총계</th>
                     <td>
-                      
                       {49 * (checkboxes.flat_rate ? 1 : 0) +
                         8 * (checkboxes.local_pickup ? 1 : 0) +
                         totalPrice}원
