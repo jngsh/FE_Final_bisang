@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-d
 import Sidebar from "./Sidebar";
 import StatsChartsPage from "./stats/StatsChartsPage";
 import StocksPage from "./stocks/StocksPage";
+import ProductsPage from "./products/ProductsPage";
 import "./AdminPage.css";
 
 const AdminPage = () => {
@@ -13,6 +14,7 @@ const AdminPage = () => {
                 <Routes>
                     <Route path="stats" element={<StatsChartsPage />} />
                     <Route path="stocks" element={<StocksPage />} />
+                    <Route path="products" element={<ProductsPage />} />
                     <Route path="/" element={<Navigate to="stats" />} />
                 </Routes>
             </div>

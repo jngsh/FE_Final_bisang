@@ -160,6 +160,10 @@
      gap: 0.5rem;
     }
 
+    .email-form .form-floating {
+      width: 100%;
+    }
+
     .email-separator {
       padding: 0 0.5rem;
       font-size: 1.25rem;
@@ -170,6 +174,16 @@
       align-items: center;
       gap:0.5rem ;
     }
+
+    .phone-form .form-floating {
+      float: left;
+      width: 7rem; /* 각 입력 필드의 너비를 설정합니다 */
+      position: relative;
+      margin-right: 0.5rem; /* 필드 간의 간격을 설정합니다 */
+      width: 100%;
+    }
+    
+    
 
     .phone-seperator {
       align-items: center;

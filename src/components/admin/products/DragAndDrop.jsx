@@ -6,7 +6,7 @@ import BASE_URL from '@/utils/globalBaseUrl';
 function DragAndDrop() {
   const [dragging, setDragging] = useState(false);
   const [file, setFile] = useState(null);
-  const [message, setMessage] = useState('여기에 재고관리 엑셀 파일을 드래그 앤 드롭하세요.');
+  const [message, setMessage] = useState('여기에 상품관리 엑셀 파일을 드래그 앤 드롭하세요.');
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ function DragAndDrop() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post(`${BASE_URL}/bisang/admin/stocks/upload`, formData, {
+      const response = await axios.put(`${BASE_URL}/bisang/admin/products/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -56,7 +56,7 @@ function DragAndDrop() {
       console.error('Error uploading file:', error);
     } finally {
       setFile(null);
-      setMessage('여기에 재고관리 엑셀 파일을 드래그 앤 드롭하세요.');
+      setMessage('여기에 상품관리 엑셀 파일을 드래그 앤 드롭하세요.');
     }
   };
 
@@ -71,7 +71,7 @@ function DragAndDrop() {
         <p>{message}</p>
       </div>
       <button onClick={onUpload}>업로드</button>
-      <span>※ 재고관리 파일이 없다면 하단 "재고관리 엑셀 파일 다운로드"에서 다운로드할 수 있습니다.</span>
+      <span>※ 상품관리 파일이 없다면 하단 "상품관리 엑셀 파일 다운로드"에서 다운로드할 수 있습니다.</span>
     </>
   );
 }
