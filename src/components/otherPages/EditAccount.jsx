@@ -7,6 +7,8 @@ export default function EditAccount() {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const [ error, setError ] = useState('');
+  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(true);
+  const [ pwMatchError, setPwMatchError ] = useState('');
 
   const[formData, setFormData] = useState({
     username:'',
@@ -87,29 +89,15 @@ export default function EditAccount() {
     e.preventDefault();
 
     if (password.new && password.new !== password.confirm) {
-      alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+      setPwMatchError('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
       return;
+    }else{
+      setPwMatchError('');
     }
-    // const isPasswordValid = await checkCurrentPassword();
     
-
-    // if (!isPasswordValid) {
-    //   setError('현재 비밀번호가 올바르지 않습니다.');
-    //   return;
-    // } else {
-    //   setError('');
-    // }
-
-    let isPasswordValid = true;
-
-    if (password.new){
-      isPasswordValid = await checkCurrentPassword();
-      if(!isPasswordValid){
+    if (password.new && !isCurrentPasswordValid) {
         setError('현재 비밀번호가 올바르지 않습니다.');
         return;
-      } else {
-        setError('');
-      }
     }
 
     const updatePayload = { ...formData };
@@ -140,7 +128,7 @@ export default function EditAccount() {
   const handleChange = (e) => {
     const { id, value } = e.target;
 
-    if(id !== 'account_current_password' && id !== 'account_new_password' && id !== 'account_confirm_password'){
+    if(id !== 'current' && id !== 'new' && id !== 'confirmS'){
       setFormData(prev => ({
         ...prev,
         [id]: value
@@ -156,12 +144,23 @@ export default function EditAccount() {
 
   };
 
-  const handlePasswordFieldChange = (e) => {
+  const handlePasswordFieldChange = async (e) => {
     const { id, value } = e.target;
     setPassword(prev => ({
       ...prev,
       [id]: value
     }));
+
+    if(id=='current'){
+      const isValid = await checkCurrentPassword();
+      if (!isValid) {
+        setError('현재 비밀번호가 올바르지 않습니다.');
+        setIsCurrentPasswordValid(false);
+      } else {
+        setError('');
+        setIsCurrentPasswordValid(true);
+      }
+    }
   };
 
   useEffect(() => {
@@ -409,6 +408,7 @@ export default function EditAccount() {
                   <label htmlFor="confirm">
                     새 비밀번호 확인
                   </label>
+                  {pwMatchError && <div className="text-danger">{pwMatchError}</div>}
                   <div className="invalid-feedback">
                     Passwords did not match!
                   </div>
