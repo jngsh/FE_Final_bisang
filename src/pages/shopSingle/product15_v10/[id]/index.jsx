@@ -21,7 +21,7 @@ export default function ProductDetailsPage15() {
   console.log("productId>>>", productId);
   // 일단 하드코딩으로 productId 있는지 없는지 해놨는데 수정 필요 !
   const isProductExist = productId > 0 && productId < 419;
-  console.log(">>>>>>>>>>", isProductExist);
+  console.log(">>>", isProductExist);
 
   const product =
     allProducts.filter((elm) => elm.id == productId)[0] || allProducts[0];

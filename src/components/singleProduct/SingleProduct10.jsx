@@ -9,11 +9,9 @@ import AdditionalInfo from "./AdditionalInfo";
 import Reviews from "./Reviews";
 import { Link } from "react-router-dom";
 import ShareComponent from "../common/ShareComponent";
-import { useContextElement } from "@/context/Context";
 import axios from "axios";
-import RelatedSlider from "./RelatedSlider";
 import BASE_URL from "@/utils/globalBaseUrl";
-import Notfound from "../otherPages/Notfound";
+import { useContextElement } from "@/context/Context";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
@@ -27,10 +25,13 @@ export default function SingleProduct10({ productId, product }) {
   const [product1, setProduct1] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  // context에서 cartId 가져오기
+  const {cartId, logined} = useContextElement();
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
     console.log("컴포넌트 마운트됨");
+    console.log("cartId : ", cartId);
 
     // 제품 정보 가져오기
     const fetchProduct = async () => {
@@ -42,11 +43,10 @@ export default function SingleProduct10({ productId, product }) {
               'ngrok-skip-browser-warning': true,
             }
           }
-        );
+      );
         setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
         console.log("fetchProduct: Response >>>", response);
-        // console.log(`${BASE_URL}/${productId}`);
-        // console.log(`${BASE_URL}/bisang/products/${productId}`);
+        // console.log(`${BASE_URL}/bisang/products/${productId}`);  
       } catch (error) {
         setError('Failed to fetch product');
         console.error("error>>>", error);
@@ -72,6 +72,7 @@ export default function SingleProduct10({ productId, product }) {
     const item = cartProducts.filter((elm) => elm.id == product.id)[0];
     return item;
   };
+  // 카트에 담을 수량 설정
   const setQuantityCartItem = (id, quantity) => {
     if (isIncludeCard()) {
       if (quantity >= 1) {
@@ -86,11 +87,29 @@ export default function SingleProduct10({ productId, product }) {
       setQuantity(quantity - 1 ? quantity : 1);
     }
   };
-  const addToCart = () => {
+  // "장바구니에 담기" 버튼 누르면 실행됨
+  const addToCart = async () => {
     if (!isIncludeCard()) {
       const item = product;
       item.quantity = quantity;
       setCartProducts((pre) => [...pre, item]);
+
+      try {
+        const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
+          // cartId: cartId,
+          cartId: 2,
+          productId: productId, // props에서 가져옴
+          amount: quantity, // 상태에서 관리하는 quantity
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': true,
+          }
+        });
+        console.log("addToCart: Response >>> ", response);
+      } catch(error) {
+        console.error("Failed to add item to cart : ", error);
+      }
     }
   };
 
