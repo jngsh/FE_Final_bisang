@@ -26,7 +26,9 @@ export default function SingleProduct10({ productId, product }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   // context에서 cartId 가져오기
-  const {cartId, logined} = useContextElement();
+  const { cartId } = useContextElement();
+  // localStorage에서 가져오기
+  // const cartId = localStorage.getItem("cartId");
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function SingleProduct10({ productId, product }) {
               'ngrok-skip-browser-warning': true,
             }
           }
-      );
+        );
         setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
         console.log("fetchProduct: Response >>>", response);
         // console.log(`${BASE_URL}/bisang/products/${productId}`);  
@@ -89,27 +91,33 @@ export default function SingleProduct10({ productId, product }) {
   };
   // "장바구니에 담기" 버튼 누르면 실행됨
   const addToCart = async () => {
-    if (!isIncludeCard()) {
-      const item = product;
-      item.quantity = quantity;
-      setCartProducts((pre) => [...pre, item]);
+    // cartId가 null이 아니면 함수 실행
+    console.log(">>>>>>>", cartId);
+    
+    if (cartId !== null) {
+      if (!isIncludeCard()) {
+        const item = product;
+        item.quantity = quantity;
+        setCartProducts((pre) => [...pre, item]);
 
-      try {
-        const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
-          // cartId: cartId,
-          cartId: 2,
-          productId: productId, // props에서 가져옴
-          amount: quantity, // 상태에서 관리하는 quantity
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': true,
-          }
-        });
-        console.log("addToCart: Response >>> ", response);
-      } catch(error) {
-        console.error("Failed to add item to cart : ", error);
+        try {
+          const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
+            cartId: cartId,
+            productId: productId, // props에서 가져옴
+            amount: quantity, // 상태에서 관리하는 quantity
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': true,
+            }
+          });
+          console.log("addToCart: Response >>> ", response);
+        } catch (error) {
+          console.error("Failed to add item to cart : ", error);
+        }
       }
+    } else {
+      console.error("cartId is null, cannot add to cart.");
     }
   };
 
