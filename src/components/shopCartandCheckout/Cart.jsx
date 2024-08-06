@@ -3,7 +3,6 @@ import { useContextElement } from "@/context/Context";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
-// import styled from 'styled-components';
 
 export default function Cart() {
   const context = useContextElement();
@@ -15,8 +14,7 @@ export default function Cart() {
   const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
-  // const cartId = useParams().cartId;
-  const { cartId } = useContextElement();
+  const cartId = useParams().cartId;
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -52,10 +50,43 @@ export default function Cart() {
     fetchCartItems();
   }, [totalPrice]);
 
+  const addOrUpdateCartItem = async (productId, quantity) => {
+    try {
+      const existingItem = cartProducts.find(item => item.product.id === productId);
+      let updatedCart = [];
+
+      if (existingItem) {
+        // Update quantity if item already exists in the cart
+        updatedCart = cartProducts.map(item => 
+          item.product.id === productId
+            ? { ...item, amount: item.amount + quantity }
+            : item
+        );
+      } else {
+        // Add new item to the cart
+        const response = await axios.get(`${BASE_URL}/products/${productId}`);
+        const newProduct = response.data;
+        const newItem = { product: newProduct, amount: quantity };
+        updatedCart = [...cartProducts, newItem];
+      }
+
+      setCartProducts(updatedCart);
+      setLocalCart(updatedCart);
+      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice), 0
+      );
+      setTotalPrice(newTotalPrice);
+    } catch (error) {
+      console.error("상품 추가 또는 업데이트 중 오류 발생:", error);
+    }
+  };
+
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });       
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
