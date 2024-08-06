@@ -182,7 +182,7 @@ export const othersMenuItems = [
 export const dashboardMenuItems = [
   {
     id: 1,
-    href: "/account_dashboard/:userId",
+    href: "/account_dashboard",
     title: "Dashboard",
   },
   {
