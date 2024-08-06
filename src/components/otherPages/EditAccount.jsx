@@ -70,7 +70,7 @@ export default function EditAccount() {
 
   const checkCurrentPassword = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/mypage/pwCheck`, {
+      const response = await axios.post(`${BASE_URL}/bisang/mypage/pwCheck`, {
         userId: userId,
         pw: password.current
       }, {
@@ -78,9 +78,22 @@ export default function EditAccount() {
           Authorization: token ? `Bearer ${token}` : ''
         }
       });
-      return response.data; // true 또는 false 반환
+      console.log('Password check response:', response.data);
+      return response.data == true; // true 또는 false 반환
     } catch (error) {
       console.error('Error checking password:', error);
+      if (error.response) {
+        // 서버 응답이 있는 경우
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
+    } else if (error.request) {
+        // 요청은 보냈지만 응답이 없는 경우
+        console.error('Request data:', error.request);
+    } else {
+        // 기타 오류
+        console.error('Error message:', error.message);
+    }
       return false;
     }
   };
@@ -94,10 +107,14 @@ export default function EditAccount() {
     }else{
       setPwMatchError('');
     }
+
+    console.log('Current password valid:', isCurrentPasswordValid);
     
     if (password.new && !isCurrentPasswordValid) {
         setError('현재 비밀번호가 올바르지 않습니다.');
         return;
+    } else {
+      setError('');
     }
 
     const updatePayload = { ...formData };
@@ -105,6 +122,7 @@ export default function EditAccount() {
     if (password.new) {
             updatePayload.pw = password.new;
     }
+    console.log('Update payload:', updatePayload);
 
     try {
       const response = await axios.put(`${BASE_URL}/bisang/mypage/${userId}/profile`, updatePayload, {
@@ -146,6 +164,8 @@ export default function EditAccount() {
 
   const handlePasswordFieldChange = async (e) => {
     const { id, value } = e.target;
+    console.log(`Password field changed: ${id} = ${value}`);
+
     setPassword(prev => ({
       ...prev,
       [id]: value
@@ -153,6 +173,8 @@ export default function EditAccount() {
 
     if(id=='current'){
       const isValid = await checkCurrentPassword();
+      console.log('Is current password valid:', isValid);
+
       if (!isValid) {
         setError('현재 비밀번호가 올바르지 않습니다.');
         setIsCurrentPasswordValid(false);
