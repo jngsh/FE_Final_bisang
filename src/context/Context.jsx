@@ -10,16 +10,29 @@ export const useContextElement = () => {
 };
 
 export default function Context({ children }) {
-  const [orderedDetail, setOrderedDetail] = useState(null);
+<<<<<<<<< Temporary merge branch 1
 
-  const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
+const [orderedDetail, setOrderedDetail] = useState(null);
+  
+const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   const storedCartId = localStorage.getItem('cartId');
 
   const [cartProducts, setCartProducts] = useState([]);
   const [wishList, setWishList] = useState([]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
- 
+<<<<<<<<< Temporary merge branch 1
+  const [logined, setLogined ] = useState(storedLogined);
+  const [cartId, setCartId] = useState(storedCartId);
+
+
+  // useEffect(() => {
+  //   const subtotal = cartProducts.reduce((accumulator, product) => {
+  //     return accumulator + product.quantity * product.price;
+  //   }, 0);
+  //   setTotalPrice(subtotal);
+  // }, [cartProducts]);
+=========
   const [cartId, setCartId] = useState(1);
 
 
@@ -48,17 +61,7 @@ export default function Context({ children }) {
     }, 0);
     setTotalPrice(subtotal);
   }, [cartProducts]);
-
-  const [logined, setLogined ] = useState(storedLogined);
-  const [cartId, setCartId] = useState(storedCartId);
-
-
-  // useEffect(() => {
-  //   const subtotal = cartProducts.reduce((accumulator, product) => {
-  //     return accumulator + product.quantity * product.price;
-  //   }, 0);
-  //   setTotalPrice(subtotal);
-  // }, [cartProducts]);
+>>>>>>>>> Temporary merge branch 2
 
   const addProductToCart = (id) => {
     if (!cartProducts.filter((elm) => elm.id == id)[0]) {
@@ -137,13 +140,17 @@ export default function Context({ children }) {
     quickViewItem,
     wishList,
     setQuickViewItem,
-
-    orderedDetail,
-    setOrderedDetail,
-
+<<<<<<<<< Temporary merge branch 1
     logined,
     setLogined,
-    cartId,
+=========
+    orderedDetail,
+    setOrderedDetail,
+>>>>>>>>> Temporary merge branch 2
+    
+logined,
+    setLogined,
+cartId,
     setCartId
   };
   return (
