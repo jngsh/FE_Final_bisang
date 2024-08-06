@@ -149,7 +149,7 @@ export default function CartDrawer() {
               </Link>
             </>
           ) : (
-            <Link to="/shop-1" className="btn btn-light mt-3 d-block">
+            <Link to="/shop-5" className="btn btn-light mt-3 d-block">
               Explore shop
             </Link>
           )}

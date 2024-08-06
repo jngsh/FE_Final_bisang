@@ -1,0 +1,13 @@
+.UploadFile {
+    text-align: left;
+    padding: 20px;
+  }
+  
+  input[type="file"] {
+    margin: 10px;
+  }
+  
+  button {
+    margin: 10px;
+  }
+  

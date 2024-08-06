@@ -2,30 +2,21 @@ import { useParams, Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
+// import styled from 'styled-components';
 
 export default function Cart() {
-
-  
-  // Context에서 값 가져오기
   const context = useContextElement();
   if (!context) {
     console.error('Context가 올바르게 제공되지 않았습니다.');
     return <div>오류: Context가 올바르게 제공되지 않았습니다.</div>;
   }
-console.log("xxxxxxxxxxx",context);
+
   const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
-  const { cartId } = useParams(); // URL에서 카트 ID를 가져옴
+  const cartId = useParams().cartId;
 
-  // 카트 데이터를 로컬 스토리지에서 가져오기
-  useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    setLocalCart(savedCart);
-    setCartProducts(savedCart);
-  }, [setCartProducts]);
-
-  // 카트 ID가 유효한지 확인
   useEffect(() => {
     const fetchCartItems = async () => {
       if (!cartId) {
@@ -36,21 +27,19 @@ console.log("xxxxxxxxxxx",context);
 
       try {
         const [cartResponse, itemsResponse] = await Promise.all([
-          axios.get(`http://localhost:8090/bisang/carts/${cartId}`),
-          axios.get(`http://localhost:8090/bisang/carts/${cartId}/items`)
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}`),
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`)
         ]);
-
+        
         const items = itemsResponse.data || [];
         setLocalCart(items);
         setCartProducts(items);
 
         const calculatedTotalPrice = items.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice),
-          0
+          (total, item) => total + (item.amount * item.product.productPrice), 0
         );
         setTotalPrice(calculatedTotalPrice);
-        
-        // 로컬 스토리지에 저장
+
         localStorage.setItem('cartProducts', JSON.stringify(items));
       } catch (error) {
         console.error("카트 데이터를 가져오는 중 오류 발생:", error);
@@ -60,44 +49,67 @@ console.log("xxxxxxxxxxx",context);
     };
 
     fetchCartItems();
-  }, [cartId, setCartProducts, setTotalPrice]);
+  }, [totalPrice]);
 
-  // 수량 업데이트 함수
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`http://localhost:8090/bisang/carts/items`, { cartItemId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });       
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
         localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+        const newTotalPrice = updatedCart.reduce(
+          (total, item) => total + (item.amount * item.product.productPrice), 0
+        );
+        setTotalPrice(newTotalPrice);
       } catch (error) {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
     }
   };
 
-  // 아이템 삭제 함수
   const removeItem = async (cartItemId) => {
     try {
-      const response = await axios.delete(`http://localhost:8090/bisang/carts/items/${cartItemId}`);
+      const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
       const updatedCart = response.data || [];
       setCartProducts(updatedCart);
       setLocalCart(updatedCart);
       localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice), 
+        0
+      );
+      setTotalPrice(newTotalPrice);
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
   };
 
-  // 체크박스 상태
+  const updateShippingStatus = async (cartItemId, shipping) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, { cartItemId, shipping });
+      const updatedCart = response.data || [];
+      setCartProducts(updatedCart);
+      setLocalCart(updatedCart);
+      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+    } catch (error) {
+      console.error("배송 상태 업데이트 중 오류 발생:", error);
+    }
+  };
+
+  const handleShippingToggle = (cartItemId, currentStatus) => {
+    updateShippingStatus(cartItemId, !currentStatus);
+  };
+
   const [checkboxes, setCheckboxes] = useState({
     free_shipping: false,
     flat_rate: false,
     local_pickup: false,
   });
 
-  // 체크박스 상태 변경 핸들러
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
     setCheckboxes((prevCheckboxes) => ({
@@ -106,14 +118,12 @@ console.log("xxxxxxxxxxx",context);
     }));
   };
 
-  // 로딩 상태 처리
   if (loading) return <div>로딩 중...</div>;
 
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
-      {cartProducts.length}
-        {cartProducts.length ? (
+        {cartProducts.length > 0 ? (
           <>
             <table className="cart-table">
               <thead>
@@ -123,6 +133,7 @@ console.log("xxxxxxxxxxx",context);
                   <th>가격</th>
                   <th>수량</th>
                   <th>소계</th>
+                  <th>배송 선택</th>
                   <th></th>
                 </tr>
               </thead>
@@ -182,6 +193,13 @@ console.log("xxxxxxxxxxx",context);
                       </span>
                     </td>
                     <td>
+                      <input
+                        type="checkbox"
+                        checked={item.isShipping}
+                        onChange={() => handleShippingToggle(item.cartItemId, item.isShipping)}
+                      />
+                    </td>
+                    <td>
                       <a
                         onClick={() => removeItem(item.cartItemId)}
                         className="remove-cart"
@@ -212,7 +230,7 @@ console.log("xxxxxxxxxxx",context);
           </>
         )}
       </div>
-      {cartProducts.length ? (
+      {cartProducts.length > 0 && (
         <div className="shopping-cart__totals-wrapper">
           <div className="sticky-content">
             <div className="shopping-cart__totals">
@@ -279,11 +297,10 @@ console.log("xxxxxxxxxxx",context);
                   <tr>
                     <th>총계</th>
                     <td>
-                      $
+                      
                       {49 * (checkboxes.flat_rate ? 1 : 0) +
                         8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice +
-                        19}
+                        totalPrice}원
                     </td>
                   </tr>
                 </tbody>
@@ -298,7 +315,7 @@ console.log("xxxxxxxxxxx",context);
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
