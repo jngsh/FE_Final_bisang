@@ -16,6 +16,7 @@ export default function Context({ children }) {
   const [logined, setLogined ] = useState(false);
   const [cartId, setCartId] = useState(null);
 
+
   // useEffect(() => {
   //   const subtotal = cartProducts.reduce((accumulator, product) => {
   //     return accumulator + product.quantity * product.price;
