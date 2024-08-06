@@ -1,10 +1,11 @@
+import BASE_URL from '@/utils/globalBaseUrl';
 import React from 'react';
 
 const DownloadButton = () => {
 
     const downloadFile = async () => {
         try {
-            const response = await fetch('http://localhost:8090/bisang/admin/stocks/download', {
+            const response = await fetch(`${BASE_URL}/bisang/admin/stocks/download`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
+import BASE_URL from '@/utils/globalBaseUrl';
 
 const PetTypeDoughnutChart = () => {
     const [data, setData] = useState({
@@ -15,7 +16,7 @@ const PetTypeDoughnutChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8090/bisang/admin/stats/sales/pet-type');
+                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-type`);
                 const result = await response.json();
                 
                 if (Array.isArray(result)) {

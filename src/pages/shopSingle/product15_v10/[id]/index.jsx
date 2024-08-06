@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 // 우리가 쓰는 제품 디테일 페이지 !!!
 
 export default function ProductDetailsPage15() {
+
+  // 파라미터로 현재 productId 가져오기
   let params = useParams();
   console.log("params>>>",params);
   const productId = params.ProductId;

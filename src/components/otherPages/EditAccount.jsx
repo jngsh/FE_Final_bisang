@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 export default function EditAccount() {
-
-  const BASE_URL = "http://localhost:8090";
-  // const BASE_URL = "http://10.10.10.143:8090";
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -54,7 +52,7 @@ export default function EditAccount() {
         if (response.data) {
           console.log('User data fetched:', response.data); // 데이터 로드 성공 시 로그
           setFormData(response.data);
-          setPassword(prev => ({ ...prev, current: response.data.pw }));
+          // setPassword(prev => ({ ...prev, current: response.data.pw }));
         } else {
           console.log('No data found'); // 데이터가 없을 경우 로그
         }
@@ -92,13 +90,26 @@ export default function EditAccount() {
       alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
       return;
     }
-    const isPasswordValid = await checkCurrentPassword();
+    // const isPasswordValid = await checkCurrentPassword();
+    
 
-    if (!isPasswordValid) {
-      setError('현재 비밀번호가 올바르지 않습니다.');
-      return;
-    } else {
-      setError('');
+    // if (!isPasswordValid) {
+    //   setError('현재 비밀번호가 올바르지 않습니다.');
+    //   return;
+    // } else {
+    //   setError('');
+    // }
+
+    let isPasswordValid = true;
+
+    if (password.new){
+      isPasswordValid = await checkCurrentPassword();
+      if(!isPasswordValid){
+        setError('현재 비밀번호가 올바르지 않습니다.');
+        return;
+      } else {
+        setError('');
+      }
     }
 
     const updatePayload = { ...formData };
@@ -149,7 +160,7 @@ export default function EditAccount() {
     const { id, value } = e.target;
     setPassword(prev => ({
       ...prev,
-      [id.split('_')[2]]: value
+      [id]: value
     }));
   };
 
@@ -305,13 +316,16 @@ export default function EditAccount() {
 
               <div className="phone-form">
                 <div className="form-floating my-3">
-                  <input
+                  <select
                     type="number"
                     className="form-control"
                     id="phone1"
                     value={formData.phone1}
                     onChange={handleChange}
-                  />
+                  >
+                  <option value="010">010</option>
+                  <option value="011">011</option>
+                  </select>
                   <label htmlFor="phone1">전화번호</label>
                 </div>
 
@@ -386,13 +400,13 @@ export default function EditAccount() {
                     type="password"
                     className="form-control"
                     // data-cf-pwd="#account_new_password"
-                    id="new"
+                    id="confirm"
                     placeholder="Confirm new password"
                     value={password.confirm}
                     onChange={handlePasswordFieldChange}
                     // required
                   />
-                  <label htmlFor="new">
+                  <label htmlFor="confirm">
                     새 비밀번호 확인
                   </label>
                   <div className="invalid-feedback">

@@ -16,10 +16,6 @@ export default function Cart() {
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
   const cartId = useParams().cartId;
-  // const cartId = parseInt(useParams(),10);
-  // const cartId = localStorage.getItem("cartId");
-  // console.log("cartId", cartId);
-
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -40,11 +36,9 @@ export default function Cart() {
         setCartProducts(items);
 
         const calculatedTotalPrice = items.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice),0
+          (total, item) => total + (item.amount * item.product.productPrice), 0
         );
-        setTotalPrice(calculatedTotalPrice); //useEffect totalPrice
-        // console.log("useEffect totalPrice", totalPrice);
-        // console.log(JSON.stringify(items));
+        setTotalPrice(calculatedTotalPrice);
 
         localStorage.setItem('cartProducts', JSON.stringify(items));
       } catch (error) {
@@ -55,7 +49,7 @@ export default function Cart() {
     };
 
     fetchCartItems();
-  },[totalPrice]);
+  }, [totalPrice]);
 
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
@@ -67,10 +61,9 @@ export default function Cart() {
         localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
 
         const newTotalPrice = updatedCart.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice),0
+          (total, item) => total + (item.amount * item.product.productPrice), 0
         );
         setTotalPrice(newTotalPrice);
-        console.log("setQuantity totalPrice", totalPrice);
       } catch (error) {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
@@ -90,10 +83,25 @@ export default function Cart() {
         0
       );
       setTotalPrice(newTotalPrice);
-      console.log("removeItem totalPrice", totalPrice);
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
+  };
+
+  const updateShippingStatus = async (cartItemId, shipping) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, { cartItemId, shipping });
+      const updatedCart = response.data || [];
+      setCartProducts(updatedCart);
+      setLocalCart(updatedCart);
+      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+    } catch (error) {
+      console.error("배송 상태 업데이트 중 오류 발생:", error);
+    }
+  };
+
+  const handleShippingToggle = (cartItemId, currentStatus) => {
+    updateShippingStatus(cartItemId, !currentStatus);
   };
 
   const [checkboxes, setCheckboxes] = useState({
@@ -112,8 +120,6 @@ export default function Cart() {
 
   if (loading) return <div>로딩 중...</div>;
 
-  console.log("total", totalPrice);
-
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
@@ -127,6 +133,7 @@ export default function Cart() {
                   <th>가격</th>
                   <th>수량</th>
                   <th>소계</th>
+                  <th>배송 선택</th>
                   <th></th>
                 </tr>
               </thead>
@@ -184,6 +191,13 @@ export default function Cart() {
                       <span className="shopping-cart__subtotal">
                         {item.product.productPrice * item.amount}원
                       </span>
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={item.isShipping}
+                        onChange={() => handleShippingToggle(item.cartItemId, item.isShipping)}
+                      />
                     </td>
                     <td>
                       <a
