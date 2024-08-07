@@ -208,9 +208,6 @@ export default function LoginRegister() {
       if (response.data.token) {
         // JWT토큰 로컬스토리지에 저장
         localStorage.setItem("token", response.data.token);
-        // localStorage.setItem("userId", response.data.userId);
-        // localStorage.setItem("logined", JSON.stringify(true));
-        // localStorage.setItem("cartId", response.data.cartId);
         
         // 서버 응답에서 userId를 가져와서 로컬스토리지에 저장
         if (response.data.userId) {
@@ -229,12 +226,16 @@ export default function LoginRegister() {
           localStorage.setItem("cartId", response.data.cartId);
         }
 
-        // 로그인 상태 저장
-        // localStorage.setItem("logined", JSON.stringify(true));
-        // setLogined(true);
+        if (response.data.isCustomer){
+          setLoginData(prevData => ({ ...prevData, error: '' }));
+          navigate('/');
+        } else {
+          setLoginData(prevData => ({ ...prevData, error: '' }));
+          navigate('/bisang/admin/*');
+        }
         
-        setLoginData(prevData => ({ ...prevData, error: '' }));
-        navigate('/'); // Redirect on success
+        
+        // navigate('/'); // Redirect on success
       } else {
         console.error("Token not found in response");
         setLoginData(prevData => ({ ...prevData, error: '토큰을 받지 못했습니다.' }));
