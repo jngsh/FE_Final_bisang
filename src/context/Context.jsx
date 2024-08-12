@@ -24,6 +24,7 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   const [logined, setLogined ] = useState(storedLogined);
   const [cartId, setCartId] = useState(storedCartId);
 
+  const [cartAmount, setCartAmount] = useState(0);
 
   // useEffect(() => {
   //   const subtotal = cartProducts.reduce((accumulator, product) => {
@@ -165,7 +166,9 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
     orderDetails,
     setOrderDetails,
     cartId,
-    setCartId
+    setCartId,
+    cartAmount,
+    setCartAmount
   };
   return (
     <dataContext.Provider value={contextElement}>

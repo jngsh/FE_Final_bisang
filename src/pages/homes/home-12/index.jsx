@@ -12,11 +12,15 @@ import TopSelling from "@/components/homes/home-12/TopSelling";
 
 import MetaComponent from "@/components/common/MetaComponent";
 import Header1 from "@/components/headers/Header1";
+
+import Cart from "@/components/shopCartandCheckout/Cart";
+
 const metadata = {
   title: "피터펫 :: PETER PET",
   // description: "Uomo eCommerce Reactjs Template",
 };
 export default function HomePage12() {
+
   return (
     <>
       <MetaComponent meta={metadata} />
