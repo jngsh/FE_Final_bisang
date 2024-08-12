@@ -22,6 +22,7 @@ export default function Context({ children }) {
   const [totalPrice, setTotalPrice] = useState(0);
   // const [cartId, setCartId] = useState(1);
 
+  const [cartAmount, setCartAmount] = useState(0);
 
   useEffect(() => {
     if (cartId) {
@@ -136,7 +137,9 @@ export default function Context({ children }) {
     logined,
     setLogined,
     cartId,
-    setCartId
+    setCartId,
+    cartAmount,
+    setCartAmount
   };
   return (
     <dataContext.Provider value={contextElement}>

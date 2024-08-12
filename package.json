@@ -26,6 +26,7 @@
     "react-router-dom": "^6.23.1",
     "react-tooltip": "^5.26.4",
     "react-zxing": "^2.0.0",
+    "styled-components": "^6.1.12",
     "swiper": "^11.1.4",
     "tippy.js": "^6.3.7"
   },

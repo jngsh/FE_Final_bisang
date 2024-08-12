@@ -130,14 +130,6 @@ export default function CartDrawer() {
         );
         setTotalPrice(calculatedTotalPrice);
 
-        // 체크박스 상태 초기화
-      const initialCheckboxes = items.reduce((acc, item) => {
-        acc[item.cartItemId] = item.isShipping || false;
-        return acc;
-      }, {});
-      setCheckboxes(initialCheckboxes);
-      console.log("initialCheckboxes", initialCheckboxes);
-
       localStorage.setItem('cartProducts', JSON.stringify(items));     
       } catch (error) {
         console.error("카트 데이터를 가져오는 중 오류 발생:", error);
