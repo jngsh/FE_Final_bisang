@@ -343,7 +343,7 @@ export default function Featured() {
 
                     <div className="pc__info position-relative">
                       <h6 className="pc__title">
-                        <Link to={`/product1_simple/${product.productId}`}>
+                        <Link to={`/bisang/products/${product.productId}`}>
                           {product.productName}
                         </Link>
                       </h6>

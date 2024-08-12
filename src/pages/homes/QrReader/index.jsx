@@ -8,16 +8,17 @@ import HotDeals from "@/components/homes/home-3/HotDeals";
 import Instagram from "@/components/homes/home-3/Instagram";
 import QrReader from "./QrReader";
 import { useState } from "react";
+import Header1 from "@/components/headers/Header1";
 
 
-export default function HomePage3() {
+export default function QrHome() {
 
   const [openQr, setOpenQr] = useState(false);
 
   return (
     <>
       <div>
-        <Header3 />
+        <Header1 />
         <main style={{ paddingTop: "100px", height: "1000px"}}>
          
           <div>

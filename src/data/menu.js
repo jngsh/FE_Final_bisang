@@ -96,17 +96,17 @@ export const shopDetails = [
 ];
 
 export const additionalShopPageitems = [
-  { id: 1, href: "/shop-12", title: "Collection Grid" },
-  { id: 2, href: "/product1_simple/1", title: "Simple Product" },
-  { id: 3, href: "/product2_variable/2", title: "Variable Product" },
-  { id: 4, href: "/product3_external/2", title: "External Product" },
-  { id: 5, href: "/product4_grouped/2", title: "Grouped Product" },
-  { id: 6, href: "/product5_onsale/2", title: "On Sale" },
-  { id: 7, href: "/product6_outofstock/2", title: "Out of Stock" },
-  { id: 8, href: "/shop_cart", title: "Shopping Cart" },
-  { id: 9, href: "/shop_checkout", title: "Checkout" },
-  { id: 10, href: "/shop_order_complete", title: "Order Complete" },
-  { id: 11, href: "/shop_order_tracking", title: "Order Tracking" },
+  // { id: 1, href: "/shop-12", title: "Collection Grid" },
+  // { id: 2, href: "/product1_simple/1", title: "Simple Product" },
+  // { id: 3, href: "/product2_variable/2", title: "Variable Product" },
+  // { id: 4, href: "/product3_external/2", title: "External Product" },
+  // { id: 5, href: "/product4_grouped/2", title: "Grouped Product" },
+  // { id: 6, href: "/product5_onsale/2", title: "On Sale" },
+  // { id: 7, href: "/product6_outofstock/2", title: "Out of Stock" },
+  // { id: 8, href: `/shop_cart/${cartId}`, title: "Shopping Cart" },
+  // { id: 9, href: "/shop_checkout", title: "Checkout" },
+  // { id: 10, href: "/shop_order_complete", title: "Order Complete" },
+  // { id: 11, href: "/shop_order_tracking", title: "Order Tracking" },
 ];
 
 export const blogmenuItems = [
@@ -147,42 +147,42 @@ export const othersMenuItems = [
     href: "/login_register",
     title: "Login / Register",
   },
-  {
-    id: 3,
-    href: "/store_location",
-    title: "Store Locator",
-  },
-  {
-    id: 4,
-    href: "/lookbook",
-    title: "Lookbook",
-  },
-  {
-    id: 5,
-    href: "/faq",
-    title: "Faq",
-  },
-  {
-    id: 6,
-    href: "/terms",
-    title: "Terms",
-  },
+  // {
+  //   id: 3,
+  //   href: "/store_location",
+  //   title: "Store Locator",
+  // },
+  // {
+  //   id: 4,
+  //   href: "/lookbook",
+  //   title: "Lookbook",
+  // },
+  // {
+  //   id: 5,
+  //   href: "/faq",
+  //   title: "Faq",
+  // },
+  // {
+  //   id: 6,
+  //   href: "/terms",
+  //   title: "Terms",
+  // },
   {
     id: 7,
     href: "/page-not-found",
     title: "404 Error",
   },
-  {
-    id: 8,
-    href: "/coming_soon",
-    title: "Coming Soon",
-  },
+  // {
+  //   id: 8,
+  //   href: "/coming_soon",
+  //   title: "Coming Soon",
+  // },
 ];
 
 export const dashboardMenuItems = [
   {
     id: 1,
-    href: "/account_dashboard/:userId",
+    href: "/account_dashboard",
     title: "Dashboard",
   },
   {

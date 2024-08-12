@@ -1,12 +1,10 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
-
+import BASE_URL from "@/utils/globalBaseUrl";
+import { useContextElement } from "@/context/Context";
 
 export default function LoginRegister() {
-
-  const BASE_URL = "http://localhost:8090";
-  //const BASE_URL = "http://10.10.10.143:8090";
 
 
   const navigate = useNavigate();
@@ -18,6 +16,8 @@ export default function LoginRegister() {
   const [emailDomain, setEmailDomain] = useState("naver.com");
   const [emailCustomDomain, setEmailCustomDomain] = useState("");
   const [isCustomDomain, setIsCustomDomain] = useState(false);
+  
+  const {setLogined, setCartId, cartId, cartProducts, setCartProducts} = useContextElement();
 
   const [activeTab, setActiveTab] = useState("login");
 
@@ -155,6 +155,17 @@ export default function LoginRegister() {
   
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const storedCartId = localStorage.getItem("cartId");
+    const loginedStatus = JSON.parse(localStorage.getItem("logined"));
+    
+    if (loginedStatus) {
+      setLogined(loginedStatus);
+    }
+
+    if (storedCartId) {
+      setCartId(storedCartId);
+    }
+
     if (token) {
         fetchDataWithToken(); // 토큰이 있다면 API 요청을 통해 데이터를 가져오거나 사용자의 로그인 상태를 확인합니다.
     } else {
@@ -169,20 +180,20 @@ export default function LoginRegister() {
     const userId = localStorage.getItem("userId");
 
     if (token) {
-        try {
-            const response = await axios.get(`${BASE_URL}:8090/bisang/auth/check-login`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            console.log("Data fetched successfully:", response.data);
-            console.log("UserID:",userId);
-            navigate('/');
-        } catch (error) {
-            console.error("Error fetching data:", error.response?.data || error.message);
-        }
+      try {
+        const response = await axios.get(`${BASE_URL}/bisang/auth/check-login`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log("Data fetched successfully:", response.data);
+        console.log("UserID:",userId);
+        // navigate('/');
+      } catch (error) {
+        console.error("Error fetching data:", error.response?.data || error.message);
+      }
     } else {
-        console.log("No token found");
+      console.log("No token found");
     }
 };
 
@@ -197,16 +208,49 @@ export default function LoginRegister() {
       if (response.data.token) {
         // JWT토큰 로컬스토리지에 저장
         localStorage.setItem("token", response.data.token);
+        
         // 서버 응답에서 userId를 가져와서 로컬스토리지에 저장
         if (response.data.userId) {
           console.log("userId recived:",response.data.userId);
           localStorage.setItem("userId", response.data.userId);
+          setLogined(true);
+          localStorage.setItem("logined", JSON.stringify(true));
+          
         } else {
             console.error("userId not found in response");
         }
+
+        if (response.data.cartId) {
+          console.log("cartId received:", response.data.cartId);
+          setCartId(response.data.cartId);
+          const cartId = response.data.cartId;
+          localStorage.setItem("cartId", cartId);
+
+          try {
+            const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`
+              // headers: {
+              //   Authorization: `Bearer ${token}`
+              // }
+            );
+            // 카트 아이템을 로컬스토리지에 저장
+            console.log("CartItem Response:",cartItemsResponse.data);
+            setCartProducts(cartItemsResponse.data);
+            // localStorage.setItem("cartItems", JSON.stringify(cartItemsResponse.data));
+          } catch (error) {
+            console.error("Error fetching cart items:", error.response?.data || error.message);
+          }
+        }
+
+        if (response.data.isCustomer){
+          setLoginData(prevData => ({ ...prevData, error: '' }));
+          navigate('/');
+        } else {
+          setLoginData(prevData => ({ ...prevData, error: '' }));
+          navigate('/bisang/admin/*');
+        }
         
-        setLoginData(prevData => ({ ...prevData, error: '' }));
-        navigate('/'); // Redirect on success
+        
+        // navigate('/'); // Redirect on success
       } else {
         console.error("Token not found in response");
         setLoginData(prevData => ({ ...prevData, error: '토큰을 받지 못했습니다.' }));
@@ -237,13 +281,22 @@ export default function LoginRegister() {
       const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
       console.log("Registration successful:", response.data);
       // 회원가입 성공 후의 처리 (예: 리다이렉트, 상태 업데이트 등)
+      if (response.data.cartId){
+        setCartId(response.data.cartId);
+      }
       setActiveTab("login");
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (error) {z
+    } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
       // 회원가입 실패 후의 처리 (예: 에러 메시지 표시 등)
     }
   };
+
+  useEffect(() => {
+    if (cartId) {
+      console.log("CartId:", cartId);
+    }
+  }, [cartId]); 
 
   const handleEmailDomainChange = (e) => {
     const selectedDomain = e.target.value;
@@ -335,6 +388,7 @@ export default function LoginRegister() {
                   placeholder="아이디 *"
                   required
                   value={loginData.id}
+    
                   onChange={handleLoginChange}
                 />
                 <label htmlFor="id">아이디 *</label>

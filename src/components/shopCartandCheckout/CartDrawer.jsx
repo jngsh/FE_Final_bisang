@@ -4,7 +4,7 @@ import { useContextElement } from "@/context/Context";
 import React, { useEffect } from "react";
 
 export default function CartDrawer() {
-  const { cartProducts, setCartProducts, totalPrice } = useContextElement();
+  const { cartProducts, setCartProducts, totalPrice, cartId } = useContextElement();
   const { pathname } = useLocation();
   const closeCart = () => {
     document
@@ -138,7 +138,7 @@ export default function CartDrawer() {
           {/* <!-- /.d-flex justify-content-between --> */}
           {cartProducts.length ? (
             <>
-              <Link to="/shop_cart" className="btn btn-light mt-3 d-block">
+              <Link to={`/shop_cart/${cartId}`} className="btn btn-light mt-3 d-block">
                 View Cart
               </Link>
               <Link
@@ -149,7 +149,7 @@ export default function CartDrawer() {
               </Link>
             </>
           ) : (
-            <Link to="/shop-1" className="btn btn-light mt-3 d-block">
+            <Link to="/shop-5" className="btn btn-light mt-3 d-block">
               Explore shop
             </Link>
           )}
