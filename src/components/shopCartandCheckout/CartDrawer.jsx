@@ -248,7 +248,7 @@ export default function CartDrawer() {
           {/* <!-- /.d-flex justify-content-between --> */}
           {cartProducts.length ? (
             <>
-              <Link to="/shop_cart" className="btn btn-light mt-3 d-block">
+              <Link to={`/shop_cart/${cartId}`} className="btn btn-light mt-3 d-block">
                 View Cart
               </Link>
               <Link

@@ -169,7 +169,7 @@ export default function Nav() {
       {/* 큰 화면에서 QR로 가는 메뉴를 만들었다 */}
       <li className="navigation__item">
         <Link
-          to="/home-3"
+          to="/QrReader"
           className={`navigation__link ${pathname == "/contact" ? "menu-active" : ""
             }`}
         >

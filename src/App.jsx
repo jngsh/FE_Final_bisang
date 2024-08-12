@@ -28,7 +28,7 @@ import { Route, Routes } from "react-router-dom";
 
 import HomePage1 from "./pages/homes/home-1"; // 얘도 메인 홈페이지인데 혹시 몰라 살려놓음
 import HomePage2 from "./pages/homes/home-2"; // 다른 QR Scanner인데 혹시 몰라 살려놓음
-import HomePage3 from "./pages/homes/home-3"; // QR 일단 여기에 넣어놓음 
+import HomePage3 from "./pages/homes/QrReader"; // QR 일단 여기에 넣어놓음 
 import HomePage12 from "./pages/homes/home-12"; // !! 우리가 쓰는 메인 홈페이지 !!
 
 import ShopPage5 from "./pages/shoplist/shop-5";
@@ -65,6 +65,7 @@ import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
+import QrHome from "./pages/homes/QrReader";
 
 function App() {
   useEffect(() => {
@@ -86,7 +87,7 @@ function App() {
             <Route index element={<HomePage12 />} />
             <Route path="home-1" element={<HomePage1 />} />
             <Route path="home-2" element={<HomePage2 />} />
-            <Route path="home-3" element={<HomePage3 />} />
+            <Route path="QrReader" element={<QrHome />} />
             {/* 우리 쓰는 메인 페이지 !!! */}
             <Route path="home-12" element={<HomePage12 />} />
 
@@ -116,9 +117,9 @@ function App() {
             <Route path="product5_onsale/:id" element={<ProductDetailsPage5 />} />
             <Route path="product6_outofstock/:id" element={<ProductDetailsPage6 />} />
 
-            <Route path="shop_cart" element={<ShopCartPage />} />
+            <Route path="shop_cart/:cartId" element={<ShopCartPage />} />
             <Route path="shop_checkout" element={<ShopCheckoutPage />} />
-            <Route path="shop_order_complete" element={<ShopOrderComplete />} />
+            <Route path="OrderCompleted" element={<ShopOrderComplete />} />
             <Route
               path="shop_order_tracking"
               element={<ShopOrderTrackingPage />}
