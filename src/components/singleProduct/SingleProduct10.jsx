@@ -267,7 +267,7 @@ export default function SingleProduct10({ productId, product }) {
                 className="btn btn-primary btn-addtocart js-open-aside"
                 onClick={() => addToCart()}
               >
-                {isIncludeCard() ? "Already Added" : "장바구니에 담기 Add to Cart"}
+                {isIncludeCard() ? "장바구니에 담겼습니다!" : "장바구니에 담기 Add to Cart"}
               </button>
             </div>
           </form>
