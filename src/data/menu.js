@@ -96,19 +96,6 @@ export const shopDetails = [
 ];
 
 export const additionalShopPageitems = [
-<<<<<<< HEAD
-  { id: 1, href: "/shop-12", title: "Collection Grid" },
-  { id: 2, href: "/product1_simple/1", title: "Simple Product" },
-  { id: 3, href: "/product2_variable/2", title: "Variable Product" },
-  { id: 4, href: "/product3_external/2", title: "External Product" },
-  { id: 5, href: "/product4_grouped/2", title: "Grouped Product" },
-  { id: 6, href: "/product5_onsale/2", title: "On Sale" },
-  { id: 7, href: "/product6_outofstock/2", title: "Out of Stock" },
-  { id: 8, href: "/shop_cart", title: "Shopping Cart" },
-  { id: 9, href: "/shop_checkout", title: "Checkout" },
-  { id: 10, href: "/orderCompleted", title: "Order Complete" },
-  { id: 11, href: "/shop_order_tracking", title: "Order Tracking" },
-=======
   // { id: 1, href: "/shop-12", title: "Collection Grid" },
   // { id: 2, href: "/product1_simple/1", title: "Simple Product" },
   // { id: 3, href: "/product2_variable/2", title: "Variable Product" },
@@ -120,7 +107,6 @@ export const additionalShopPageitems = [
   // { id: 9, href: "/shop_checkout", title: "Checkout" },
   // { id: 10, href: "/shop_order_complete", title: "Order Complete" },
   // { id: 11, href: "/shop_order_tracking", title: "Order Tracking" },
->>>>>>> origin/dev
 ];
 
 export const blogmenuItems = [
