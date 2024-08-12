@@ -118,7 +118,7 @@ function App() {
 
             <Route path="shop_cart/:cartId" element={<ShopCartPage />} />
             <Route path="shop_checkout" element={<ShopCheckoutPage />} />
-            <Route path="shop_order_complete" element={<ShopOrderComplete />} />
+            <Route path="OrderCompleted" element={<ShopOrderComplete />} />
             <Route
               path="shop_order_tracking"
               element={<ShopOrderTrackingPage />}

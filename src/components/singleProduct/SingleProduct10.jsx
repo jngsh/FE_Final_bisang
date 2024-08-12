@@ -9,10 +9,9 @@ import AdditionalInfo from "./AdditionalInfo";
 import Reviews from "./Reviews";
 import { Link } from "react-router-dom";
 import ShareComponent from "../common/ShareComponent";
-import { useContextElement } from "@/context/Context";
 import axios from "axios";
-import RelatedSlider from "./RelatedSlider";
 import BASE_URL from "@/utils/globalBaseUrl";
+import { useContextElement } from "@/context/Context";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
@@ -26,10 +25,15 @@ export default function SingleProduct10({ productId, product }) {
   const [product1, setProduct1] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  // context에서 cartId 가져오기
+  const { cartId } = useContextElement();
+  // localStorage에서 가져오기
+  // const cartId = localStorage.getItem("cartId");
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
     console.log("컴포넌트 마운트됨");
+    console.log("cartId : ", cartId);
 
     // 제품 정보 가져오기
     const fetchProduct = async () => {
@@ -38,14 +42,13 @@ export default function SingleProduct10({ productId, product }) {
         const response = await axios.get(`${BASE_URL}/bisang/products/${productId}`,
           {
             headers: {
-              'ngrok-skip-browser-warning' : true,
+              'ngrok-skip-browser-warning': true,
             }
           }
         );
         setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
         console.log("fetchProduct: Response >>>", response);
-        // console.log(`${BASE_URL}/${productId}`);
-        // console.log(`${BASE_URL}/bisang/products/${productId}`);
+        // console.log(`${BASE_URL}/bisang/products/${productId}`);  
       } catch (error) {
         setError('Failed to fetch product');
         console.error("error>>>", error);
@@ -54,7 +57,7 @@ export default function SingleProduct10({ productId, product }) {
       }
     };
 
-    if(productId) {
+    if (productId) {
       fetchProduct();
     } else {
       console.log("productId가 undefined임");
@@ -71,6 +74,7 @@ export default function SingleProduct10({ productId, product }) {
     const item = cartProducts.filter((elm) => elm.id == product.id)[0];
     return item;
   };
+  // 카트에 담을 수량 설정
   const setQuantityCartItem = (id, quantity) => {
     if (isIncludeCard()) {
       if (quantity >= 1) {
@@ -85,11 +89,35 @@ export default function SingleProduct10({ productId, product }) {
       setQuantity(quantity - 1 ? quantity : 1);
     }
   };
-  const addToCart = () => {
-    if (!isIncludeCard()) {
-      const item = product;
-      item.quantity = quantity;
-      setCartProducts((pre) => [...pre, item]);
+  // "장바구니에 담기" 버튼 누르면 실행됨
+  const addToCart = async () => {
+    // cartId가 null이 아니면 함수 실행
+    console.log(">>>>>>>", cartId);
+    
+    if (cartId !== null) {
+      if (!isIncludeCard()) {
+        const item = product;
+        item.quantity = quantity;
+        setCartProducts((pre) => [...pre, item]);
+
+        try {
+          const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
+            cartId: cartId,
+            productId: productId, // props에서 가져옴
+            amount: quantity, // 상태에서 관리하는 quantity
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': true,
+            }
+          });
+          console.log("addToCart: Response >>> ", response);
+        } catch (error) {
+          console.error("Failed to add item to cart : ", error);
+        }
+      }
+    } else {
+      console.error("cartId is null, cannot add to cart.");
     }
   };
 
@@ -113,7 +141,6 @@ export default function SingleProduct10({ productId, product }) {
             <div className="breadcrumb mb-0 d-none d-md-block flex-grow-1">
               <BreadCumb />
             </div>
-            {/* <!-- /.breadcrumb --> */}
 
             <div className="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
               <a className="text-uppercase fw-medium">
@@ -148,6 +175,7 @@ export default function SingleProduct10({ productId, product }) {
           {/* 제품명 부분 */}
           {/* <h1 className="product-single__name">{product.title}</h1> */}
           <h1 className="product-single__name">{product1.productName}</h1>
+
           {/* 별점 부분 */}
           <div className="product-single__rating">
             <div className="reviews-group d-flex">
@@ -157,22 +185,20 @@ export default function SingleProduct10({ productId, product }) {
               8k+ reviews
             </span>
           </div>
+
           {/* 제품 가격 부분 */}
           <div className="product-single__price">
             {/* <span className="current-price">${product.price}</span> */}
             <span className="current-price">₩{product1.productPrice}</span>
           </div>
+
           {/* 짧은 제품 상세 설명란 */}
           <div className="product-single__short-desc">
             <p>
-              {/* 상세 설명란이지롱 !!!!!!
-              Phasellus sed volutpat orci. Fusce eget lore mauris vehicula
-              elementum gravida nec dui. Aenean aliquam varius ipsum, non
-              ultricies tellus sodales eu. Donec dignissim viverra nunc, ut
-              aliquet magna posuere eget.  */}
               {product1.productDescription}
             </p>
           </div>
+
           {/* form 태그로 주문 정보들 다 넘기는군 */}
           <form onSubmit={(e) => e.preventDefault()}>
             {/* 여기는 사이즈 선택칸 */}
@@ -191,6 +217,7 @@ export default function SingleProduct10({ productId, product }) {
                   Size Guide
                 </a>
               </div> */}
+
               {/* 여기는 색상 선택칸 */}
               {/* <div className="product-swatch color-swatches">
                 <label>Color</label>
@@ -245,6 +272,7 @@ export default function SingleProduct10({ productId, product }) {
             </div>
           </form>
           {/* 여기에서 form 태그 끝!! */}
+
           {/* 여기는 ADD TO WISHLIST 부분 */}
           <div className="product-single__addtolinks">
             <a href="#" className="menu-link menu-link_us-s add-to-wishlist">
@@ -320,8 +348,10 @@ export default function SingleProduct10({ productId, product }) {
                 data-bs-parent="#product_single_details_accordion"
               >
                 <div className="accordion-body">
-                {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
-                {product1 && <Description product1={product1} />}
+                  {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
+                  {/* {product1 && <Description product1={product1} />} */}
+                  {product1.productDescription} <br></br>
+                  {product1.productDetailedDescription}
                 </div>
               </div>
             </div>
@@ -361,6 +391,7 @@ export default function SingleProduct10({ productId, product }) {
                 <div className="accordion-body">
                   {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
                   <AdditionalInfo />
+                  {product1.productAdditionalInfo}
                 </div>
               </div>
             </div>

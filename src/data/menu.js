@@ -105,7 +105,7 @@ export const additionalShopPageitems = [
   { id: 7, href: "/product6_outofstock/2", title: "Out of Stock" },
   { id: 8, href: "/shop_cart", title: "Shopping Cart" },
   { id: 9, href: "/shop_checkout", title: "Checkout" },
-  { id: 10, href: "/shop_order_complete", title: "Order Complete" },
+  { id: 10, href: "/orderCompleted", title: "Order Complete" },
   { id: 11, href: "/shop_order_tracking", title: "Order Tracking" },
 ];
 
