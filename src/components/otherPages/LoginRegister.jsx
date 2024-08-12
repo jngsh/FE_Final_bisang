@@ -17,7 +17,7 @@ export default function LoginRegister() {
   const [emailCustomDomain, setEmailCustomDomain] = useState("");
   const [isCustomDomain, setIsCustomDomain] = useState(false);
   
-  const {setLogined, setCartId, cartId} = useContextElement();
+  const {setLogined, setCartId, cartId, cartProducts, setCartProducts} = useContextElement();
 
   const [activeTab, setActiveTab] = useState("login");
 
@@ -223,7 +223,22 @@ export default function LoginRegister() {
         if (response.data.cartId) {
           console.log("cartId received:", response.data.cartId);
           setCartId(response.data.cartId);
-          localStorage.setItem("cartId", response.data.cartId);
+          const cartId = response.data.cartId;
+          localStorage.setItem("cartId", cartId);
+
+          try {
+            const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`
+              // headers: {
+              //   Authorization: `Bearer ${token}`
+              // }
+            );
+            // 카트 아이템을 로컬스토리지에 저장
+            console.log("CartItem Response:",cartItemsResponse.data);
+            setCartProducts(cartItemsResponse.data);
+            // localStorage.setItem("cartItems", JSON.stringify(cartItemsResponse.data));
+          } catch (error) {
+            console.error("Error fetching cart items:", error.response?.data || error.message);
+          }
         }
 
         if (response.data.isCustomer){
