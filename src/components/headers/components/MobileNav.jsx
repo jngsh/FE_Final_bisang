@@ -10,7 +10,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 
-// 모바일 사이즈에서 Navbar!!
+// 모바일 사이즈에서 Navbar!
 export default function MobileNav() {
 
   const { cartId } = useContextElement();
