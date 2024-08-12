@@ -10,37 +10,64 @@ export const useContextElement = () => {
 };
 
 export default function Context({ children }) {
-  const [orderedDetail, setOrderedDetail] = useState(null);
-  const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
-  const storedCartId = localStorage.getItem('cartId');
-  const [logined, setLogined] = useState(storedLogined);
-  const [cartId, setCartId] = useState(storedCartId);
 
+const storedOrderDetails = JSON.parse(localStorage.getItem('orderDetails')) || null;
+  
+const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
+  const storedCartId = localStorage.getItem('cartId');
+
+  const [orderDetails, setOrderDetails] = useState(storedOrderDetails);
   const [cartProducts, setCartProducts] = useState([]);
   const [wishList, setWishList] = useState([]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
-  // const [cartId, setCartId] = useState(1);
+  const [logined, setLogined ] = useState(storedLogined);
+  const [cartId, setCartId] = useState(storedCartId);
 
 
-  useEffect(() => {
-    if (cartId) {
-      fetchOrderedDetails(cartId);
-    }
-  }, [cartId]);
+  // useEffect(() => {
+  //   const subtotal = cartProducts.reduce((accumulator, product) => {
+  //     return accumulator + product.quantity * product.price;
+  //   }, 0);
+  //   setTotalPrice(subtotal);
+  // }, [cartProducts]);
 
-  const fetchOrderedDetails = async (cartId) => {
-    console.log('>>>>>>>>>>>>>cartid는 찍혀?', cartId);
-    try {
-      const response = await axiosInstance.get(`/bisang/pay/details`, {
-        params: { cartId }
-      });
-      setOrderedDetail(response.data);
-      // console.error('>>>>>>>>>>>>>context/들어옴?', response.data);
-    } catch (error) {
-      console.error('Error fetching order details:', error);
-    }
-  };
+
+  // useEffect(() => {
+  //   // if (cartId) {
+  //     // fetchOrderedDetails(cartId);
+  //   // }
+
+  //   const fetchOrderedDetails = async (cartId) => {
+  //     console.log('>>>>>>>>>>>>>cartid는 찍혀?', cartId);
+  //     try {
+  //       const response = await axiosInstance.post(`/bisang/pay/details`, {cartId});
+  //       console.log("response1");
+  //       setOrderedDetail(response.data);
+  //       console.log("ordered:",orderedDetail);
+  //       console.log("response2");
+  //       localStorage.setItem("orderedDetail", JSON.stringify(response.data));
+  //       console.log("response3");
+  //       console.error('>>>>>>>>>>>>>context/들어옴?', response.data);
+  //     } catch (error) {
+  //       console.log('Error fetching order details:', error);
+  //     }
+  //   }
+  //   if (cartId) {
+  //     fetchOrderedDetails(cartId);
+  //   }
+  // },[]);
+
+  // const fetchOrderedDetails = async (cartId) => {
+  //   console.log('>>>>>>>>>>>>>cartid는 찍혀?', cartId);
+  //   try {
+  //     const response = await axiosInstance.post(`/bisang/pay/details`, {cartId});
+  //     setOrderedDetail(response.data);
+  //     console.error('>>>>>>>>>>>>>context/들어옴?', response.data);
+  //   } catch (error) {
+  //     console.error('Error fetching order details:', error);
+  //   }
+  // };
 
   // useEffect(() => {
   //   const subtotal = cartProducts.reduce((accumulator, product) => {
@@ -114,6 +141,12 @@ export default function Context({ children }) {
     localStorage.setItem("cartId", cartId);
   }, [cartId]);
 
+  useEffect(() => {
+    localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+
+    console.log("orderdetails가 그래서 들어왔니? :"+orderDetails); //여기서는 아직 못받아옴
+    
+  }, [orderDetails]);
 
   const contextElement = {
     cartProducts,
@@ -127,10 +160,10 @@ export default function Context({ children }) {
     quickViewItem,
     wishList,
     setQuickViewItem,
-    orderedDetail,
-    setOrderedDetail,
     logined,
     setLogined,
+    orderDetails,
+    setOrderDetails,
     cartId,
     setCartId
   };

@@ -12,12 +12,10 @@ const TEST_SECRET_KEY = 'DEV0E4CDE849AB17E98D8F9C5DCBEBE9BF922025'
 // const isLocalhost = window.location.hostname === 'localhost';
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL.trim(),
-  // 'https://b884-58-235-119-39.ngrok-free.app' , //ngrok실행시 매번 수정됨
-  //  isLocalhost? 'http://localhost:8090' : 'http://10.10.10.151:8090',
-  // withCredentials: true,
+  baseURL: BASE_URL.trim(), //local이어도 ngrok가야함
+  // baseURL: 'https://33ea-121-174-48-247.ngrok-free.app',
   headers: {
-    'Authorization': `DEV_SECRET_KEY ${TEST_SECRET_KEY}`,
+    'Authorization': `DEV_SECRET_KEY ${TEST_SECRET_KEY}`, //bearer아님!
     'Content-Type': 'application/json',
   },
 });

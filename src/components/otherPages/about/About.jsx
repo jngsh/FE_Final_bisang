@@ -9,29 +9,23 @@ const About = () => {
 
   const handleButtonClick = async () => {
     console.log("버튼눌림");
-    let xxx = {
-      'cartId': cartId //로그인 된 아이디에 해당하는 카트번호가 입력되도록 수정
-    };
+    let xxx = {'cartId': cartId};
+    console.log(xxx);
     try {
-      const response = await axiosInstance.post(`bisang/pay/ready`,
-        JSON.stringify(xxx),
+      const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
         {
           headers: { //body에 뭐넣을지 미리 알려주는 역할
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,
-            // Authorization: `Bearer ${getCookie('accessToken')}`,
 
           }
         }
-        // {body:
-
-        // }
+  
       );
 
 
 
-      console.log("이거임?이게안나온거임?");
       console.log("PaymentResponse:", response.data);
       console.log("그렇다면 이거는? PaymentResponse:", JSON.stringify(response.data, null, 2));
 
