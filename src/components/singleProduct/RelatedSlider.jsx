@@ -129,32 +129,7 @@ export default function RelatedSlider({ productId }) {
   //     setQuantity(quantity - 1 ? quantity : 1);
   //   }
   // };
-  // "장바구니에 담기" 버튼 누르면 실행됨
-  const addToCart = async () => {
-    if (!isIncludeCard()) {
-      const item = product;
-      item.quantity = quantity;
-      setCartProducts((pre) => [...pre, item]);
-
-      try {
-        const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
-          // cartId: cartId,
-          cartId: 2,
-          productId: productId, // props에서 가져옴
-          amount: quantity, // 상태에서 관리하는 quantity
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': true,
-          }
-        });
-        console.log("addToCart: Response >>> ", response);
-      } catch(error) {
-        console.error("Failed to add item to cart : ", error);
-      }
-    }
-  };
-
+  
   return (
     <section className="products-carousel container">
       <h2 className="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">
@@ -182,26 +157,26 @@ export default function RelatedSlider({ productId }) {
                     className="pc__img"
                   />
                 </Link>
-                <button
+                {/* <button
                   className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
                   onClick={() => addProductToCart(elm.id)}
                   title={
                     isAddedToCartProducts(elm.id)
                       ? "Already Added"
-                      : "Add to Cart"
+                      : "장바구니에 담기 Add to Cart"
                   }
                 >
                   {isAddedToCartProducts(elm.id)
-                    ? "Already Added"
-                    : "Add To Cart"}
-                </button>
+                    ? "또 담기"
+                    : "장바구니에 담기 Add To Cart"}
+                </button> */}
               </div>
 
-              {/* 좋아요 하트 부분 */}
+              {/* 제품 정보 */}
               <div className="pc__info position-relative">
                 <p className="pc__category">{elm.categoryId}</p>
                 <h6 className="pc__title">
-                  <Link to={`/product1_simple/${elm.id}`}>{elm.productName}</Link>
+                  <Link to={`/bisang/products/${elm.productId}`}>{elm.productName}</Link>
                 </h6>
                 <div className="product-card__price d-flex">
                   <span className="money price">₩{elm.productPrice}</span>
