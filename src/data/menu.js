@@ -110,32 +110,32 @@ export const additionalShopPageitems = [
   // { id: 11, href: "/shop_order_tracking", title: "Order Tracking" },
 ];
 
-export const blogmenuItems = [
-  {
-    id: 1,
-    href: "/blog_list1",
+// export const blogmenuItems = [
+//   {
+//     id: 1,
+//     href: "/blog_list1",
 
-    title: "Blog V1",
-  },
-  {
-    id: 2,
-    href: "/blog_list2",
+//     title: "Blog V1",
+//   },
+//   {
+//     id: 2,
+//     href: "/blog_list2",
 
-    title: "Blog V2",
-  },
-  {
-    id: 3,
-    href: "/blog_list3",
+//     title: "Blog V2",
+//   },
+//   {
+//     id: 3,
+//     href: "/blog_list3",
 
-    title: "Blog V3",
-  },
-  {
-    id: 4,
-    href: "/blog_single/1",
+//     title: "Blog V3",
+//   },
+//   {
+//     id: 4,
+//     href: "/blog_single/1",
 
-    title: "Blog Detail",
-  },
-];
+//     title: "Blog Detail",
+//   },
+// ];
 
 export const othersMenuItems = [
   {

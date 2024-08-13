@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import {
   additionalShopPageitems,
-  blogmenuItems,
+  // blogmenuItems,
   homePages,
   othersMenuItems,
   shopDetails,
@@ -230,7 +230,7 @@ export default function MobileNav() {
       {/* 모바일 화면 메뉴 - Cart 메뉴 */}
       <li className="navigation__item">
         <Link
-          to={`/shop_cart/${cartId}`}
+          to={`/shop_cart`}
           className={`navigation__link ${pathname == "/shop_cart/null" ? "menu-active" : ""
             }`}
         >
