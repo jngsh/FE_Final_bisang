@@ -23,8 +23,8 @@ export default function ProductDetailsPage() {
   const isProductExist = productId > 0 && productId < 419;
   console.log(">>>", isProductExist);
 
-  const product =
-    allProducts.filter((elm) => elm.id == productId)[0] || allProducts[0];
+  // const product =
+  //   allProducts.filter((elm) => elm.id == productId)[0] || allProducts[0];
 
   return (
     <>
@@ -32,7 +32,8 @@ export default function ProductDetailsPage() {
       {isProductExist ?
         <main className="page-wrapper">
           <div className="mb-md-1 pb-md-3"></div>
-          <SingleProduct10 product={product} productId={productId} />
+          {/* <SingleProduct10 product={product} productId={productId} /> */}
+          <SingleProduct10 productId={productId} />
           <RelatedSlider productId={productId} />
         </main>
         : <NotFound />

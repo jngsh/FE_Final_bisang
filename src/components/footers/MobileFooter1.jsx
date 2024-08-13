@@ -43,12 +43,11 @@ export default function MobileFooter1() {
             <span>Home</span>
           </Link>
         </div>
-        {/* <!-- /.col-3 --> */}
 
         {/* QR Scan 메뉴 */}
         <div className="col-3">
           <Link
-            to="/home-3"
+            to="/QrReader"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
             <div className="position-relative">
