@@ -16,7 +16,7 @@ import { useContextElement } from "@/context/Context";
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
 
-export default function SingleProduct10({ productId, product }) {
+export default function SingleProduct10({ productId }) {
 
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
@@ -71,7 +71,7 @@ export default function SingleProduct10({ productId, product }) {
 
   // 여기는 메서드들
   const isIncludeCard = () => {
-    const item = cartProducts.filter((elm) => elm.id == product.id)[0];
+    const item = cartProducts.filter((elm) => elm.id == productId)[0];
     return item;
   };
   // 카트에 담을 수량 설정
@@ -83,7 +83,8 @@ export default function SingleProduct10({ productId, product }) {
         const itemIndex = items.indexOf(item);
         item.quantity = quantity;
         items[itemIndex] = item;
-        setCartProducts(items);
+        // setCartProducts(items);
+        setCartProducts((pre) => [...pre, items]);
       }
     } else {
       setQuantity(quantity - 1 ? quantity : 1);
@@ -96,8 +97,9 @@ export default function SingleProduct10({ productId, product }) {
     
     if (cartId !== null) {
       if (!isIncludeCard()) {
-        const item = product;
+        const item = product1;
         item.quantity = quantity;
+        // 이부분 실행하면 cartDrawer가 실행되네,,,,,,,,
         setCartProducts((pre) => [...pre, item]);
 
         try {
@@ -111,7 +113,7 @@ export default function SingleProduct10({ productId, product }) {
               'ngrok-skip-browser-warning': true,
             }
           });
-          console.log("addToCart: Response >>> ", response);
+          console.log("addToCart: Response >>>>>>> ", response);
         } catch (error) {
           console.error("Failed to add item to cart : ", error);
         }
@@ -234,14 +236,14 @@ export default function SingleProduct10({ productId, product }) {
                   value={isIncludeCard() ? isIncludeCard().quantity : quantity}
                   min="1"
                   onChange={(e) =>
-                    setQuantityCartItem(product.id, e.target.value)
+                    setQuantityCartItem(productId, e.target.value)
                   }
                   className="qty-control__number text-center"
                 />
                 <div
                   onClick={() =>
                     setQuantityCartItem(
-                      product.id,
+                      productId,
                       isIncludeCard()?.quantity - 1 || quantity - 1
                     )
                   }
@@ -252,7 +254,7 @@ export default function SingleProduct10({ productId, product }) {
                 <div
                   onClick={() =>
                     setQuantityCartItem(
-                      product.id,
+                      productId,
                       isIncludeCard()?.quantity + 1 || quantity + 1
                     )
                   }
@@ -287,7 +289,7 @@ export default function SingleProduct10({ productId, product }) {
               </svg>
               <span>좋아요 Add to Wishlist</span>
             </a>
-            <ShareComponent title={product.title} />
+            {/* <ShareComponent title={product.title} /> */}
           </div>
           {/* 밑에 작게 있는 제품 정보칸 */}
           <div className="product-single__meta-info">

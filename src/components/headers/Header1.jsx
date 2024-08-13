@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Nav from "./components/Nav";
 import { openCart } from "@/utils/openCart";
@@ -6,9 +6,12 @@ import CartLength from "./components/CartLength";
 
 import User from "./components/User";
 import SearchPopup from "./components/SearchPopup";
+import { useContextElement } from "@/context/Context";
 
 export default function Header1() {
+  const navigate = useNavigate();
   const [scrollDirection, setScrollDirection] = useState("down");
+  const { cartId } = useContextElement();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,9 +72,6 @@ export default function Header1() {
 
           <div className="header-tools d-flex align-items-center">
             <SearchPopup />
-
-            {/* <!-- /.header-tools__item hover-container --> */}
-
             <div className="header-tools__item hover-container">
               <a className="header-tools__item js-open-aside" href="#">
                 <User />
@@ -93,7 +93,8 @@ export default function Header1() {
 
             {/* 카트 아이콘 */}
             <a
-              onClick={() => openCart()}
+              // onClick={() => openCart()}
+              onClick={() => navigate(`/shop_cart/${cartId}`)}
               className="header-tools__item header-tools__cart js-open-aside"
             >
               <svg
@@ -105,7 +106,7 @@ export default function Header1() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <use href="#icon_cart" />
-              </svg>
+              </svg>  
               <span className="cart-amount d-block position-absolute js-cart-items-count">
                 <CartLength />
               </span>
