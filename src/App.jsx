@@ -3,6 +3,7 @@
 import Svgs from "@/components/common/Svgs";
 import "react-tooltip/dist/react-tooltip.css";
 import "./styles/style.scss";
+
 import "rc-slider/assets/index.css";
 import "tippy.js/dist/tippy.css";
 import LoginFormPopup from "@/components/common/LoginFormPopup";
