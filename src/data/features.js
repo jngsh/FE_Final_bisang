@@ -2,48 +2,48 @@ export const servicePromotions = [
   {
     id: 1,
     icon: "#icon_shipping",
-    title: "Fast And Free Delivery",
-    content: "Free delivery for all orders over $140",
+    title: "빠른 당일배송",
+    content: "평일 오후 3시까지 주문 시 당일 배송",
   },
   {
     id: 2,
     icon: "#icon_headphone",
-    title: "24/7 Customer Support",
-    content: "Friendly 24/7 customer support",
+    title: "친절한 고객서비스",
+    content: `오전 8시부터 오후 8시까지 신속하고 친절한 응대`,
   },
   {
     id: 3,
     icon: "#icon_shield",
-    title: "Money Back Guarantee",
-    content: "We return money within 30 days",
+    title: "편하고 안전한 결제",
+    content: "카카오페이를 이용한 안전한 결제 시스템",
   },
 ];
-export const servicesData = [
-  {
-    id: 1,
-    icon: "#icon_shipping",
-    title: "Fast And Free Delivery",
-    content: "Free delivery for all orders over $140",
-  },
-  {
-    id: 2,
-    icon: "#icon_headphone",
-    title: "24/7 Customer Support",
-    content: "Friendly 24/7 customer support",
-  },
-  {
-    id: 3,
-    icon: "#icon_shield",
-    title: "Money Back Guarantee",
-    content: "We return money within 30 days",
-  },
-  {
-    id: 4,
-    icon: "#icon_gift",
-    title: "Member Gifts",
-    content: "Discount coupons weekends",
-  },
-];
+// export const servicesData = [
+//   {
+//     id: 1,
+//     icon: "#icon_shipping",
+//     title: "Fast And Free Delivery",
+//     content: "Free delivery for all orders over $140",
+//   },
+//   {
+//     id: 2,
+//     icon: "#icon_headphone",
+//     title: "24/7 Customer Support",
+//     content: "Friendly 24/7 customer support",
+//   },
+//   {
+//     id: 3,
+//     icon: "#icon_shield",
+//     title: "Money Back Guarantee",
+//     content: "We return money within 30 days",
+//   },
+//   {
+//     id: 4,
+//     icon: "#icon_gift",
+//     title: "Member Gifts",
+//     content: "Discount coupons weekends",
+//   },
+// ];
 
 export const servicePromotions2 = [
   {
