@@ -45,10 +45,10 @@ import ShopCartPage from "./pages/shop-cart-checkout/shop_cart";
 import ShopCheckoutPage from "./pages/shop-cart-checkout/shop_checkout";
 import ShopOrderComplete from "./pages/shop-cart-checkout/shop_order_complete";
 import ShopOrderTrackingPage from "./pages/shop-cart-checkout/shop_order_tracking";
-import BlogPage1 from "./pages/blogs/blog_list1";
-import BlogPage2 from "./pages/blogs/blog_list2";
-import BlogPage3 from "./pages/blogs/blog_list3";
-import BlogDetailsPage from "./pages/blogs/blog_single/[id]";
+// import BlogPage1 from "./pages/blogs/blog_list1";
+// import BlogPage2 from "./pages/blogs/blog_list2";
+// import BlogPage3 from "./pages/blogs/blog_list3";
+// import BlogDetailsPage from "./pages/blogs/blog_single/[id]";
 import AccountPage from "./pages/dashboard/account_dashboard";
 import LoginPage from "./pages/otherPages/login_register";
 import StoreLocationPage from "./pages/otherPages/store_location";
@@ -125,10 +125,10 @@ function App() {
               path="shop_order_tracking"
               element={<ShopOrderTrackingPage />}
             />
-            <Route path="blog_list1" element={<BlogPage1 />} />
+            {/* <Route path="blog_list1" element={<BlogPage1 />} />
             <Route path="blog_list2" element={<BlogPage2 />} />
             <Route path="blog_list3" element={<BlogPage3 />} />
-            <Route path="blog_single/:id" element={<BlogDetailsPage />} />
+            <Route path="blog_single/:id" element={<BlogDetailsPage />} /> */}
 
             <Route path="account_dashboard" element={<AccountPage />} />
             <Route path="login_register" element={<LoginPage />} />

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import {
   additionalShopPageitems,
-  blogmenuItems,
+  // blogmenuItems,
   homePages,
   othersMenuItems,
   shopDetails,
@@ -267,7 +267,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
             }`}
         >
-          KakaoPay
+          about PeterPet
         </Link>
       </li>
 

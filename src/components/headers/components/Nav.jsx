@@ -1,6 +1,6 @@
 import {
   additionalShopPageitems,
-  blogmenuItems,
+  // blogmenuItems,
   homePages,
   othersMenuItems,
   shopDetails,
