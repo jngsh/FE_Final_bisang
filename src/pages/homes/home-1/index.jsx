@@ -2,7 +2,7 @@ import LoginFormPopup from "@/components/common/LoginFormPopup";
 
 import Header1 from "@/components/headers/Header1";
 import Features from "@/components/common/features/Features";
-import Hero from "@/components/homes/home-1/Hero";
+// import Hero from "@/components/homes/home-1/Hero";
 import InstaGram from "@/components/homes/home-1/InstaGram";
 import Products1 from "@/components/homes/home-1/Products1";
 import Products2 from "@/components/homes/home-1/Products2";
@@ -22,7 +22,7 @@ export default function HomePage1() {
       <div>
         <Header1 />
         <main className="page-wrapper">
-          <Hero />
+          {/* <Hero /> */}
           <div className="mb-3 pb-3 mb-md-4 pb-md-4 mb-xl-5 pb-xl-5"></div>
           <div className="pb-1"></div>
           <Products1 />
