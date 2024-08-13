@@ -19,7 +19,7 @@ const steps = [
   },
   {
     id: 3,
-    href: "/shop_order_complete",
+    href: "/orderCompleted",
     number: "03",
     title: "Confirmation",
     description: "Review And Submit Your Order",

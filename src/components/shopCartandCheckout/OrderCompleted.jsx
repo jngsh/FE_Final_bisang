@@ -1,44 +1,93 @@
 import { useContextElement } from "@/context/Context";
+import axiosInstance from "@/utils/globalAxios";
+import BASE_URL from "@/utils/globalBaseUrl";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderCompleted() {
-  const { cartProducts, totalPrice } = useContextElement();
-  const [showDate, setShowDate] = useState(false);
+
+  const {orderDetails, setOrderDetails, cartId} = useContextElement();
+
+  // const [orderedProducts, setOrderedProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [showDate, setShowDate] = useState(true);
+  const [loading, setLoading] = useState(true); // 로딩 상태 관리
+  const [orderNumber, setOrderNumber] = useState(0);
+
+
+
+
   useEffect(() => {
-    setShowDate(true);
-  }, []);
+    //페이지가 로드되면 localStorage에서 cartId를 가져오기
+    // const cartId = localStorage.getItem('cartId');
+    console.log("카트아이디 cartId: ", cartId);
+    // if (cartId) {
+      const fetchOrderDetails = async () => {
+        try {
+          const response = await axiosInstance.get(`/bisang/pay/details/${cartId}`);
+          // console.log("response:",response);
+          // console.log("response.data:",response.data);
+          
+          setOrderDetails(response.data.orderDetails);
+          localStorage.setItem("orderDetails", JSON.stringify(response.data.orderDetails));
+          // setOrderId(response.data.orderId);
+          
+          console.log("orderDetails들어왔는지?:",response.data.orderDetails);
+          setOrderNumber(response.data.orderDetails[0].orderId);
+          console.log("orderNumber is?",orderNumber);
+
+          // 총 가격 계산
+          const calcultatedTotalPrice = (response.data.orderDetails || [])
+            .reduce((total, items) => total + (items.totalPrice), 0);
+          setTotalPrice(calcultatedTotalPrice);
+
+          // localStorage.setItem("orderDetails", JSON.stringify(response.data.orderDetails));
+        } catch (error) {
+          console.log('Error fetching order details:', error);
+        } finally {
+          setLoading(false); // 로딩 종료
+        }
+      };
+
+
+      if (cartId){
+      fetchOrderDetails();
+    } else {
+      console.error('No cartId found in localStorage');
+      setLoading(false); // 로딩 종료
+    }
+  }, [cartId, setOrderDetails]);
+
+  if (loading) return <div>Loading...</div>;
+
+// orderedDetail이 null이거나 비어있을 경우 처리
+if (!orderDetails || orderDetails.length === 0) {
+  return <div>상세 주문 정보 없음</div>;
+}
+
+
 
   return (
     <div className="order-complete">
       <div className="order-complete__message">
-        {/* <svg
+        <img
+          src="/assets/images/danceYellow.png"
           width="80"
           height="80"
           viewBox="0 0 80 80"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-        
-          <circle cx="40" cy="40" r="40" fill="#B9A16B" />
-          <path
-            d="M52.9743 35.7612C52.9743 35.3426 52.8069 34.9241 52.5056 34.6228L50.2288 32.346C49.9275 32.0446 49.5089 31.8772 49.0904 31.8772C48.6719 31.8772 48.2533 32.0446 47.952 32.346L36.9699 43.3449L32.048 38.4062C31.7467 38.1049 31.3281 37.9375 30.9096 37.9375C30.4911 37.9375 30.0725 38.1049 29.7712 38.4062L27.4944 40.683C27.1931 40.9844 27.0257 41.4029 27.0257 41.8214C27.0257 42.24 27.1931 42.6585 27.4944 42.9598L33.5547 49.0201L35.8315 51.2969C36.1328 51.5982 36.5513 51.7656 36.9699 51.7656C37.3884 51.7656 37.8069 51.5982 38.1083 51.2969L40.385 49.0201L52.5056 36.8996C52.8069 36.5982 52.9743 36.1797 52.9743 35.7612Z"
-            fill="white"
-          />
-        </svg> */}
-           <img
-    src="/assets/images/danceYellow.png"
-    width="80"
-    height="80"
-    viewBox="0 0 80 80"
-    fill="none"
-  />
+        />
         <h3>주문이 완료되었어요💚</h3>
-        <p>Thank you. Your order has been received.</p>
+        <p>빠르게 배송해드릴게요!</p>
       </div>
       <div className="order-info">
         <div className="order-info__item">
+
           <label>주문 번호</label>
-          <span>13119</span>
+          <span>{orderNumber}</span>
+          
+          {/* <span>{response.data.orderDetails.orderId}</span> */}
         </div>
         <div className="order-info__item">
           <label>주문 일자</label>
@@ -46,12 +95,11 @@ export default function OrderCompleted() {
         </div>
         <div className="order-info__item">
           <label>총 결제금액</label>
-
-          <span>${totalPrice && totalPrice + 19}</span>{/*19는배송비임*/}
+          <span>{totalPrice}원 </span>
         </div>
         <div className="order-info__item">
           <label>결제 수단</label>
-          <span>Kakao Pay</span> {/*결제수단 입력되게하기*/}
+          <span>kakaopay</span> 
         </div>
       </div>
       <div className="checkout__totals-wrapper">
@@ -60,34 +108,40 @@ export default function OrderCompleted() {
           <table className="checkout-cart-items">
             <thead>
               <tr>
+                <th></th>
                 <th>상품명</th>
                 <th>금액</th>
               </tr>
             </thead>
             <tbody>
-              {cartProducts.map((elm, i) => (
+              {orderDetails.map((items, i) => (
                 <tr key={i}>
                   <td>
-                    {elm.title} x {elm.quantity}
+                    <img
+                    src={items.productImage}
+                    style={{ width: '50px', height: 'auto', border: '1px solid gray'}}/>
                   </td>
-                  <td>${elm.price}</td>
+                  <td>
+                    {items.productName} x {items.amount}
+                  </td>
+                  <td>{items.productPrice * items.amount}원</td>
                 </tr>
-              ))}
+               ))}
             </tbody>
           </table>
           <table className="checkout-totals">
             <tbody>
               <tr>
-                <th>상품들 더한 금액</th>
-                <td>${totalPrice}</td>
+                <th>상품 전체 금액</th>
+                <td>{totalPrice}원 </td>
               </tr>
               <tr>
                 <th>배송비</th>
-                <td>Free shipping</td>
+                <td>0원</td>
               </tr>
               <tr>
-                <th>배송비까지 다 합친 금액</th>
-                <td>${totalPrice && totalPrice + 19}</td>
+                <th>총 결제 금액</th>
+                <td>{totalPrice}원</td>
               </tr>
             </tbody>
           </table>

@@ -62,9 +62,9 @@ export default function MobileFooter1() {
               >
                 <use href="#icon_heart" />
               </svg>
-              <span className="wishlist-amount d-block position-absolute js-wishlist-count">
+              {/* <span className="wishlist-amount d-block position-absolute js-wishlist-count">
                 {wishList.length}
-              </span>
+              </span> */}
             </div>
             <span>QR SCAN</span>
           </Link>

@@ -1,27 +1,46 @@
 import BASE_URL from '@/utils/globalBaseUrl.js';
-import axiosInstance from '../../../utils/globalAxios.js';
+// import axiosInstance from '../../../utils/globalAxios.js';
+import Context from '@/context/Context';
 import axios from "axios";
-import { useContextElement } from '@/context/Context.jsx';
+import React, { useContext } from 'react';
+import { useContextElement } from '@/context/Context';
+
 
 // export default function About() {
 const About = () => {
-  const { cartId } = useContextElement();
-
+  const {
+    paymentResult, setPaymentResult
+  } = useContextElement();
   const handleButtonClick = async () => {
     console.log("버튼눌림");
-    let xxx = {'cartId': cartId};
-    console.log(xxx);
+    let xxx = {
+      // cartItemId: 1,
+      // cartId: 1,
+      // productId: 1,
+      // amount: 1
+      cartId: 3 //로그인 된 아이디에 해당하는 카트번호가 입력되도록 수정
+    };
     try {
-      const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
+      
+      const response = await axios.post(`${BASE_URL}/bisang/pay/ready`,
+        JSON.stringify(xxx),//페이로드/전송하고자하는데이터
         {
-          headers: { //body에 뭐넣을지 미리 알려주는 역할
+          headers: {
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,
+            // Authorization: `Bearer ${getCookie('accessToken')}`,
 
           }
         }
   
+      ).then(response => { //성공적으로끝났다면
+        
+        setPaymentResult(response.data)
+      }).then(() => {
+        console.log("이거임?이게안나온거임?");
+        console.log(paymentResult)
+      }
       );
 
 
@@ -38,8 +57,6 @@ const About = () => {
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
       const redirectUrl = isMobile ? mobileUrl : pcUrl;
-      // const redirectUrl =pcUrl;
-      console.log(">>>>>>>>>>:" + redirectUrl);
 
       window.location.href = redirectUrl;
     } catch (error) {

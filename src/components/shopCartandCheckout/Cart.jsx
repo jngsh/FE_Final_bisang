@@ -2,30 +2,62 @@ import { useParams, Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
+import ToggleButton from "@/utils/toggleButton";
 
 export default function Cart() {
-
-  
-  // Context에서 값 가져오기
   const context = useContextElement();
   if (!context) {
     console.error('Context가 올바르게 제공되지 않았습니다.');
     return <div>오류: Context가 올바르게 제공되지 않았습니다.</div>;
   }
-console.log("xxxxxxxxxxx",context);
-  const { cartProducts, setCartProducts, totalPrice, setTotalPrice } = context;
+
+  // context에서 필요한 값을 추출합니다.
+  const { cartProducts, setCartProducts, totalPrice, setTotalPrice, logined, token } = context;
   const [loading, setLoading] = useState(true);
   const [localCart, setLocalCart] = useState([]);
-  const { cartId } = useParams(); // URL에서 카트 ID를 가져옴
+  const { cartId } = useContextElement();
+  const [checkboxes, setCheckboxes] = useState({
+    free_shipping: false,
+    flat_rate: false,
+    local_pickup: false,
+    shipping: false
+  });
 
-  // 카트 데이터를 로컬 스토리지에서 가져오기
+  // useEffect(() => {
+  //   const savedCheckboxes = JSON.parse(localStorage.getItem('shippingCheckboxes')) || {};
+  //   setCheckboxes(savedCheckboxes);
+  // }, []);
+
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cartProducts')) || [];
-    setLocalCart(savedCart);
-    setCartProducts(savedCart);
-  }, [setCartProducts]);
-
-  // 카트 ID가 유효한지 확인
+    // 로그인 상태가 true일 때만 카트 데이터를 가져옵니다.
+    if (logined) {
+      const fetchCartProducts = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          });
+          console.log("response.data", response.data);
+          if (response.data && response.data.length) {
+            // 서버에서 가져온 카트 데이터를 상태에 저장합니다.
+            setCartProducts(response.data);
+          } else {
+            // 카트 데이터가 없는 경우 처리
+            setCartProducts([]);
+          }
+        } catch (error) {
+          console.error('Error fetching cart products:', error);
+          // 오류 처리 (예: 상태 초기화 등)
+          setCartProducts([]);
+        }
+      };
+  
+      fetchCartProducts();
+    }
+  }, [logined, token]); // `logined`, `token`이 변경될 때마다 실행
+  
   useEffect(() => {
     const fetchCartItems = async () => {
       if (!cartId) {
@@ -36,22 +68,28 @@ console.log("xxxxxxxxxxx",context);
 
       try {
         const [cartResponse, itemsResponse] = await Promise.all([
-          axios.get(`http://localhost:8090/bisang/carts/${cartId}`),
-          axios.get(`http://localhost:8090/bisang/carts/${cartId}/items`)
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}`),
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`)
         ]);
-
+        
         const items = itemsResponse.data || [];
         setLocalCart(items);
         setCartProducts(items);
 
         const calculatedTotalPrice = items.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice),
-          0
+          (total, item) => total + (item.amount * item.product.productPrice), 0
         );
         setTotalPrice(calculatedTotalPrice);
-        
-        // 로컬 스토리지에 저장
-        localStorage.setItem('cartProducts', JSON.stringify(items));
+
+        // 서버에서 가져온 데이터로 초기화
+      const initialCheckboxes = items.reduce((acc, item) => {
+        acc[item.cartItemId] = item.shipping || false; // `item.isShipping`을 `item.shipping`으로 변경
+        return acc;
+      }, {});
+      setCheckboxes(initialCheckboxes);
+      console.log("initialCheckboxes", initialCheckboxes);
+
+      localStorage.setItem('cartProducts', JSON.stringify(items));     
       } catch (error) {
         console.error("카트 데이터를 가져오는 중 오류 발생:", error);
       } finally {
@@ -60,44 +98,169 @@ console.log("xxxxxxxxxxx",context);
     };
 
     fetchCartItems();
-  }, [cartId, setCartProducts, setTotalPrice]);
+  }, [totalPrice]);
 
-  // 수량 업데이트 함수
+  const addOrUpdateCartItem = async (productId, quantity) => {
+    try {
+      const existingItem = cartProducts.find(item => item.product.id === productId);
+      let updatedCart = [];
+
+      if (existingItem) {
+        // Update quantity if item already exists in the cart
+        updatedCart = cartProducts.map(item => 
+          item.product.id === productId
+            ? { ...item, amount: item.amount + quantity }
+            : item
+        );
+      } else {
+        // Add new item to the cart
+        const response = await axios.get(`${BASE_URL}/products/${productId}`);
+        const newProduct = response.data;
+        const newItem = { product: newProduct, amount: quantity };
+        updatedCart = [...cartProducts, newItem];
+      }
+
+      setCartProducts(updatedCart);
+      setLocalCart(updatedCart);
+      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice), 0
+      );
+      setTotalPrice(newTotalPrice);
+    } catch (error) {
+      console.error("상품 추가 또는 업데이트 중 오류 발생:", error);
+    }
+  };
+
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`http://localhost:8090/bisang/carts/items`, { cartItemId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
         localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+        const newTotalPrice = updatedCart.reduce(
+          (total, item) => total + (item.amount * item.product.productPrice), 0
+        );
+        setTotalPrice(newTotalPrice);
       } catch (error) {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
     }
   };
 
-  // 아이템 삭제 함수
   const removeItem = async (cartItemId) => {
     try {
-      const response = await axios.delete(`http://localhost:8090/bisang/carts/items/${cartItemId}`);
+      const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
       const updatedCart = response.data || [];
       setCartProducts(updatedCart);
       setLocalCart(updatedCart);
       localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice), 
+        0
+      );
+      setTotalPrice(newTotalPrice);
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
   };
 
-  // 체크박스 상태
-  const [checkboxes, setCheckboxes] = useState({
-    free_shipping: false,
-    flat_rate: false,
-    local_pickup: false,
-  });
+  const updateShippingStatus = async (cartItemId, shipping) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, { cartItemId, shipping });
+  
+      // 서버 응답이 비어 있더라도, 로컬에서 상태를 관리
+      const updatedCart = response.data || cartProducts.map(item => 
+        item.cartItemId === cartItemId ? { ...item, isShipping: shipping } : item
+      );
+  
+      setCartProducts(updatedCart);
+      setLocalCart(updatedCart);
+      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+  
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice),
+        0
+      );
+      setTotalPrice(newTotalPrice);
+  
+      // 배송 상태를 로컬 스토리지에 저장합니다.
+      const newCheckboxes = { ...checkboxes, [cartItemId]: shipping };
+      setCheckboxes(newCheckboxes);
+      localStorage.setItem('shippingCheckboxes', JSON.stringify(newCheckboxes));
+      console.log("newCheckboxes", newCheckboxes);
+  
+    } catch (error) {
+      console.error("배송 상태 업데이트 중 오류 발생:", error.response ? error.response.data : error.message);
+    }
+  };
 
-  // 체크박스 상태 변경 핸들러
+  // const handleShippingToggle = async (cartItemId, newStatus) => {
+  //   try {
+  //     // 서버에 상태 업데이트 요청
+  //     await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, {
+  //       cartItemId,
+  //       shipping: newStatus,
+  //     });
+
+  //     // // 체크박스 상태 업데이트
+  //     setCheckboxes(prevCheckboxes => ({
+  //       ...prevCheckboxes,
+  //       [cartItemId]: newStatus,
+  //     }));
+
+  //     // 카트 제품 상태 업데이트
+  //     const updatedCart = cartProducts.map(item =>
+  //       // item.cartItemId === cartItemId ? { ...item, isShipping: newStatus } : item
+  //       item.cartItemId === cartItemId ? { ...item, shipping: newStatus } : item
+  //     );
+  //     setCartProducts(updatedCart);
+  //     console.log("updatedCart", updatedCart);
+  //   } catch (error) {
+  //     console.error("배송 상태 업데이트 중 오류 발생:", error);
+  //   }
+  // };
+
+  const handleShippingToggle = async (cartItemId, newStatus) => {
+    try {
+      // 서버에 상태 업데이트 요청
+      const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, {
+        cartItemId,
+        shipping: newStatus,
+      });
+  
+      // 서버에서 응답한 데이터로 로컬 상태 업데이트
+      const updatedCart = response.data || cartProducts.map(item =>
+        item.cartItemId === cartItemId ? { ...item, shipping: newStatus } : item
+      );
+  
+      setCartProducts(updatedCart);
+  
+      // 체크박스 상태 업데이트
+      setCheckboxes(prevCheckboxes => ({
+        ...prevCheckboxes,
+        [cartItemId]: newStatus,
+      }));
+  
+      // 총 가격 재계산
+      const newTotalPrice = updatedCart.reduce(
+        (total, item) => total + (item.amount * item.product.productPrice), 
+        0
+      );
+      setTotalPrice(newTotalPrice);
+  
+    } catch (error) {
+      console.error("배송 상태 업데이트 중 오류 발생:", error);
+    }
+  };
+  
+
+
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
     setCheckboxes((prevCheckboxes) => ({
@@ -106,14 +269,12 @@ console.log("xxxxxxxxxxx",context);
     }));
   };
 
-  // 로딩 상태 처리
   if (loading) return <div>로딩 중...</div>;
 
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
-      {cartProducts.length}
-        {cartProducts.length ? (
+        {cartProducts.length > 0 ? (
           <>
             <table className="cart-table">
               <thead>
@@ -123,10 +284,12 @@ console.log("xxxxxxxxxxx",context);
                   <th>가격</th>
                   <th>수량</th>
                   <th>소계</th>
+                  <th>배송 선택</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
+
                 {cartProducts.map((item, i) => (
                   <tr key={i}>
                     <td>
@@ -180,7 +343,40 @@ console.log("xxxxxxxxxxx",context);
                       <span className="shopping-cart__subtotal">
                         {item.product.productPrice * item.amount}원
                       </span>
+                      
+
                     </td>
+                    <td>
+                      <div className="form-check form-switch">
+                        shipping:{item.shipping?"on":"off"}<br/>
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id={`shipping-${item.cartItemId}`}
+                          checked={checkboxes[item.cartItemId] || false}
+                          // checked={item.shipping}
+                          onChange={() => handleShippingToggle(item.cartItemId, !checkboxes[item.cartItemId])}
+                        />
+                      </div>        
+                    </td>
+   
+{/* <td>
+<div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
+  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked/>
+  <label class="btn btn-outline-primary" for="btnradio1">배송받기</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"/>
+  <label class="btn btn-outline-primary" for="btnradio2">가져가기</label>
+</div>
+</td> */}
+                    {/* <td>
+                    <ToggleButton
+                      latestSort={item.isShipping}
+                      onToggle={() => handleShippingToggle(item.cartItemId, !item.isShipping)}
+                    />
+                  </td> */}
+
+
                     <td>
                       <a
                         onClick={() => removeItem(item.cartItemId)}
@@ -212,7 +408,7 @@ console.log("xxxxxxxxxxx",context);
           </>
         )}
       </div>
-      {cartProducts.length ? (
+      {cartProducts.length > 0 && (
         <div className="shopping-cart__totals-wrapper">
           <div className="sticky-content">
             <div className="shopping-cart__totals">
@@ -279,11 +475,9 @@ console.log("xxxxxxxxxxx",context);
                   <tr>
                     <th>총계</th>
                     <td>
-                      $
                       {49 * (checkboxes.flat_rate ? 1 : 0) +
                         8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice +
-                        19}
+                        totalPrice}원
                     </td>
                   </tr>
                 </tbody>
@@ -298,7 +492,7 @@ console.log("xxxxxxxxxxx",context);
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

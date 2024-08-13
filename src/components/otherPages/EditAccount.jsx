@@ -7,6 +7,8 @@ export default function EditAccount() {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const [ error, setError ] = useState('');
+  const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(true);
+  const [ pwMatchError, setPwMatchError ] = useState('');
 
   const[formData, setFormData] = useState({
     username:'',
@@ -68,7 +70,7 @@ export default function EditAccount() {
 
   const checkCurrentPassword = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/mypage/pwCheck`, {
+      const response = await axios.post(`${BASE_URL}/bisang/mypage/pwCheck`, {
         userId: userId,
         pw: password.current
       }, {
@@ -76,9 +78,22 @@ export default function EditAccount() {
           Authorization: token ? `Bearer ${token}` : ''
         }
       });
-      return response.data; // true 또는 false 반환
+      console.log('Password check response:', response.data);
+      return response.data == true; // true 또는 false 반환
     } catch (error) {
       console.error('Error checking password:', error);
+      if (error.response) {
+        // 서버 응답이 있는 경우
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
+    } else if (error.request) {
+        // 요청은 보냈지만 응답이 없는 경우
+        console.error('Request data:', error.request);
+    } else {
+        // 기타 오류
+        console.error('Error message:', error.message);
+    }
       return false;
     }
   };
@@ -87,29 +102,19 @@ export default function EditAccount() {
     e.preventDefault();
 
     if (password.new && password.new !== password.confirm) {
-      alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+      setPwMatchError('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
       return;
+    }else{
+      setPwMatchError('');
     }
-    // const isPasswordValid = await checkCurrentPassword();
+
+    console.log('Current password valid:', isCurrentPasswordValid);
     
-
-    // if (!isPasswordValid) {
-    //   setError('현재 비밀번호가 올바르지 않습니다.');
-    //   return;
-    // } else {
-    //   setError('');
-    // }
-
-    let isPasswordValid = true;
-
-    if (password.new){
-      isPasswordValid = await checkCurrentPassword();
-      if(!isPasswordValid){
+    if (password.new && !isCurrentPasswordValid) {
         setError('현재 비밀번호가 올바르지 않습니다.');
         return;
-      } else {
-        setError('');
-      }
+    } else {
+      setError('');
     }
 
     const updatePayload = { ...formData };
@@ -117,6 +122,7 @@ export default function EditAccount() {
     if (password.new) {
             updatePayload.pw = password.new;
     }
+    console.log('Update payload:', updatePayload);
 
     try {
       const response = await axios.put(`${BASE_URL}/bisang/mypage/${userId}/profile`, updatePayload, {
@@ -140,7 +146,7 @@ export default function EditAccount() {
   const handleChange = (e) => {
     const { id, value } = e.target;
 
-    if(id !== 'account_current_password' && id !== 'account_new_password' && id !== 'account_confirm_password'){
+    if(id !== 'current' && id !== 'new' && id !== 'confirmS'){
       setFormData(prev => ({
         ...prev,
         [id]: value
@@ -156,12 +162,27 @@ export default function EditAccount() {
 
   };
 
-  const handlePasswordFieldChange = (e) => {
+  const handlePasswordFieldChange = async (e) => {
     const { id, value } = e.target;
+    console.log(`Password field changed: ${id} = ${value}`);
+
     setPassword(prev => ({
       ...prev,
       [id]: value
     }));
+
+    if(id=='current'){
+      const isValid = await checkCurrentPassword();
+      console.log('Is current password valid:', isValid);
+
+      if (!isValid) {
+        setError('현재 비밀번호가 올바르지 않습니다.');
+        setIsCurrentPasswordValid(false);
+      } else {
+        setError('');
+        setIsCurrentPasswordValid(true);
+      }
+    }
   };
 
   useEffect(() => {
@@ -409,6 +430,7 @@ export default function EditAccount() {
                   <label htmlFor="confirm">
                     새 비밀번호 확인
                   </label>
+                  {pwMatchError && <div className="text-danger">{pwMatchError}</div>}
                   <div className="invalid-feedback">
                     Passwords did not match!
                   </div>
