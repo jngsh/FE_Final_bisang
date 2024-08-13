@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+
 import {
   currencyOptions,
   footerLinks1,
@@ -9,7 +10,13 @@ import {
   socialLinks,
 } from "@/data/footer";
 
-export default function Footer1() {
+const Footer1 = () => {
+  const handleClick = (event) => {
+    event.preventDefault(); // 폼 제출 방지 (필요시)
+    alert('이메일 주소가 등록되었습니다');
+  };
+
+
   return (
     <footer className="footer footer_type_1">
       <div className="footer-middle container">
@@ -28,17 +35,18 @@ export default function Footer1() {
             </div>
             {/* <!-- /.logo --> */}
             <p className="footer-address">
-              1418 River Drive, Suite 35 Cottonhall, CA 9622 United States
+            부산광역시 해운대구 APEC로 17 센텀리더스마크 4층 스파로스아카데미
             </p>
 
             <p className="m-0">
-              <strong className="fw-medium">sale@uomo.com</strong>
+              <strong className="fw-medium">peter.pet.bisang@gmail.com
+              </strong>
             </p>
             <p>
-              <strong className="fw-medium">+1 246-345-0695</strong>
+              <strong className="fw-medium">+82 010-2030-4050</strong>
             </p>
 
-            <ul className="social-links list-unstyled d-flex flex-wrap mb-0">
+            {/* <ul className="social-links list-unstyled d-flex flex-wrap mb-0">
               {socialLinks.map((link, index) => (
                 <li key={index}>
                   <a href={link.href} className="footer__social-link d-block">
@@ -58,7 +66,7 @@ export default function Footer1() {
                   </a>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
           {/* <!-- /.footer-column --> */}
 
@@ -102,10 +110,11 @@ export default function Footer1() {
           </div>
           {/* <!-- /.footer-column --> */}
           <div className="footer-column footer-newsletter col-12 mb-4 mb-lg-0">
-            <h5 className="sub-menu__title text-uppercase">Subscribe</h5>
+            <h5 className="sub-menu__title text-uppercase">구독</h5>
             <p>
-              Be the first to get the latest news about trends, promotions, and
-              much more!
+              피터펫의 새로운 소식을 가장 빠르게 받아보세요!
+              {/* Be the first to get the latest news about trends, promotions, and
+              much more! */}
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -115,23 +124,23 @@ export default function Footer1() {
                 className="form-control border-white"
                 type="email"
                 name="email"
-                placeholder="Your email address"
+                placeholder="이메일 주소를 입력해주세요"
               />
               <input
                 className="btn-link fw-medium bg-white position-absolute top-0 end-0 h-100"
                 type="submit"
-                defaultValue="JOIN"
+                value="send"
+                onClick={handleClick}
               />
             </form>
 
-            <div className="mt-4 pt-3">
-              <strong className="fw-medium">Secure payments</strong>
+            <div className="mt-4">
               <p className="mt-2">
                 <img
                   loading="lazy"
-                  width={324}
-                  height={38}
-                  src="/assets/images/payment-options.png"
+                  width={375}
+                  height={57}
+                  src="/assets/images/카카오페이온리.png"
                   alt="Acceptable payment gateways"
                   className="mw-100"
                 />
@@ -147,7 +156,7 @@ export default function Footer1() {
       <div className="footer-bottom container">
         <div className="d-block d-md-flex align-items-center">
           <span className="footer-copyright me-auto">
-            ©{new Date().getFullYear()} Uomo
+            ©{new Date().getFullYear()} Peter PET
           </span>
           <div className="footer-settings d-block d-md-flex align-items-center">
             <div className="d-flex align-items-center">
@@ -155,7 +164,7 @@ export default function Footer1() {
                 htmlFor="footerSettingsLanguage"
                 className="me-2 text-secondary"
               >
-                Language
+                언어
               </label>
               <select
                 id="footerSettingsLanguage"
@@ -208,3 +217,5 @@ export default function Footer1() {
     </footer>
   );
 }
+
+export default Footer1;
