@@ -118,7 +118,7 @@ function App() {
             <Route path="product5_onsale/:id" element={<ProductDetailsPage5 />} />
             <Route path="product6_outofstock/:id" element={<ProductDetailsPage6 />} />
 
-            <Route path="shop_cart/:cartId" element={<ShopCartPage />} />
+            <Route path="shop_cart" element={<ShopCartPage />} />
             <Route path="shop_checkout" element={<ShopCheckoutPage />} />
             <Route path="OrderCompleted" element={<ShopOrderComplete />} />
             <Route

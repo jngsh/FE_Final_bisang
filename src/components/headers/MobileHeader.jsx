@@ -82,7 +82,7 @@ export default function MobileHeader() {
 
         <a
           // onClick={() => openCart()}
-          onClick={() => navigate(`/shop_cart/${cartId}`)}
+          onClick={() => navigate(`/shop_cart`)}
           className="header-tools__item header-tools__cart js-open-aside"
         >
           <svg
