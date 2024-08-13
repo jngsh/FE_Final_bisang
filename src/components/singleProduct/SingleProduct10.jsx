@@ -71,7 +71,10 @@ export default function SingleProduct10({ productId }) {
 
   // 여기는 메서드들
   const isIncludeCard = () => {
+    console.log("cartProducts>>>>>>>>",cartProducts);
+    console.log("productId>>>>>>>>",productId);
     const item = cartProducts.filter((elm) => elm.id == productId)[0];
+    console.log("item>>>>>>>>", item);
     return item;
   };
   // 카트에 담을 수량 설정
@@ -114,6 +117,7 @@ export default function SingleProduct10({ productId }) {
             }
           });
           console.log("addToCart: Response >>>>>>> ", response);
+          // alert("제품이 장바구니에 담겼습니다!");
         } catch (error) {
           console.error("Failed to add item to cart : ", error);
         }
@@ -184,7 +188,7 @@ export default function SingleProduct10({ productId }) {
               <Star stars={5} />
             </div>
             <span className="reviews-note text-lowercase text-secondary ms-1">
-              8k+ reviews
+              {/* 8k+ reviews */}
             </span>
           </div>
 
@@ -303,7 +307,7 @@ export default function SingleProduct10({ productId }) {
             </div>
             <div className="meta-item">
               <label>Tags:</label>
-              <span>biker, black, bomber, leather</span>
+              {/* <span>biker, black, bomber, leather</span> */}
             </div>
           </div>
           {/* 아코디언란 */}
