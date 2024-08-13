@@ -410,14 +410,14 @@ const Checkout = () => {
                 .
               </div>
             </div>
-            <button className="btn btn-primary btn-checkout" onClick={handleButtonClick}>
+            <button className="btn btn-checkout" onClick={handleButtonClick}>
             <img
               style={{ height: "fit-content" }}
               className="h-auto"
               loading="lazy"
-              src="/assets/images/상시형_로고 단독형 흰색 및 어두운배경_3D.png"
-              width="150"
-              height="200"
+              src="/assets/images/카카오페이로결제하기버튼.png"
+              width="375"
+              height="80"
               alt="image"
             />            </button>
           </div>
