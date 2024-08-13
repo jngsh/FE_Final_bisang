@@ -383,7 +383,7 @@ export default function Featured() {
                 </div>
               ))}
             </div>
-            <button>show more</button>
+            <a href="/shop-5">show more</a>
           </div>
         </div>
       </div>
