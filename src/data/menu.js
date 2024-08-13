@@ -96,6 +96,7 @@ export const shopDetails = [
 ];
 
 export const additionalShopPageitems = [
+
   // { id: 1, href: "/shop-12", title: "Collection Grid" },
   // { id: 2, href: "/product1_simple/1", title: "Simple Product" },
   // { id: 3, href: "/product2_variable/2", title: "Variable Product" },

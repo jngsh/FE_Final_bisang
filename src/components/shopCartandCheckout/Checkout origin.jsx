@@ -1,73 +1,18 @@
-import axiosInstance from '../../utils/globalAxios.js';
-import { useContextElement } from '@/context/Context.jsx';
-import { Link } from "react-router-dom";
+const countries = [
+  "Australia",
+  "Canada",
+  "United Kingdom",
+  "United States",
+  "Turkey",
+];
+import { useContextElement } from "@/context/Context";
 import { useState } from "react";
-
-
-
-const Checkout = () => {
+import { Link } from "react-router-dom";
+export default function Checkout() {
   const { cartProducts, totalPrice } = useContextElement();
   const [selectedRegion, setSelectedRegion] = useState("");
   const [idDDActive, setIdDDActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { cartId } = useContextElement();
-  const countries = [
-    "한국",
-    "Australia",
-    "Canada",
-    "United Kingdom",
-    "United States",
-    "Turkey"
-  ];
-
-  const handleButtonClick = async () => {
-    console.log("버튼눌림");
-    let xxx = {'cartId': cartId};
-    console.log(xxx);
-    try {
-      const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
-        {
-          headers: { //body에 뭐넣을지 미리 알려주는 역할
-            "Content-Type": "application/json",
-            'Access-Control-Allow-Credentials': true,
-            'ngrok-skip-browser-warning': true,
-
-          }
-        }
-  
-      );
-
-      console.log("PaymentResponse:", response.data);
-      console.log("그렇다면 이거는? PaymentResponse:", JSON.stringify(response.data, null, 2));
-
-      //모바일/데스크탑 웹 여부에 따라 연결되는 url 선택
-      const pcUrl = response.data.next_redirect_pc_url;
-      const mobileUrl = response.data.next_redirect_mobile_url;
-
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-      const redirectUrl = isMobile ? mobileUrl : pcUrl;
-      // const redirectUrl =pcUrl;
-      console.log(">>>>>>>>>>:" + redirectUrl);
-
-      window.location.href = redirectUrl;
-    } catch (error) {
-      console.error("Error:", error.message);
-      if (error.response) {
-        console.error('Error data:', error.response.data);
-        console.error('Error status:', error.response.status);
-      } else if (error.request) {
-        console.error('Error request:', error.request);
-      }
-    }
-  };
-
-
-  
-  
-  
-  
-  
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="checkout-form">
@@ -410,22 +355,12 @@ const Checkout = () => {
                 .
               </div>
             </div>
-            <button className="btn btn-primary btn-checkout" onClick={handleButtonClick}>
-            <img
-              style={{ height: "fit-content" }}
-              className="h-auto"
-              loading="lazy"
-              src="/assets/images/상시형_로고 단독형 흰색 및 어두운배경_3D.png"
-              width="150"
-              height="200"
-              alt="image"
-            />            </button>
+            <button className="btn btn-primary btn-checkout">
+              PLACE ORDER
+            </button>
           </div>
         </div>
       </div>
     </form>
   );
 }
-
-
-export default Checkout;
