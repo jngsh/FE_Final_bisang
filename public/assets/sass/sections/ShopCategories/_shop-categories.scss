@@ -48,3 +48,9 @@
     }
   }
 }
+
+// category
+.shop-categories__item.active .shop-categories__item-text.active {
+  font-weight: bold; /* Makes the font bold */
+  color: #000; /* Optional: Adjust color if needed */
+}
