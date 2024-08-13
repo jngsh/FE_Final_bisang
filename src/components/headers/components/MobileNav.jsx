@@ -260,17 +260,6 @@ export default function MobileNav() {
         </Link>
       </li>
 
-      {/* 모바일 화면 메뉴 - 카카오페이 메뉴 */}
-      <li className="navigation__item">
-        <Link
-          to="/about"
-          className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
-            }`}
-        >
-          KakaoPay
-        </Link>
-      </li>
-
       {/* 모바일 화면 메뉴 - 회원가입 / 로그인 메뉴 */}
       <li className="navigation__item">
         <Link
@@ -282,7 +271,7 @@ export default function MobileNav() {
         </Link>
       </li>
 
-      {/* 모바일 화면 메뉴 - 마이페이지 메뉴 */}
+      {/* 모바일 화면 메뉴 - 마이페이지 메뉴
       <li className="navigation__item">
         <Link
           to="/account_dashboard"
@@ -290,6 +279,17 @@ export default function MobileNav() {
             }`}
         >
           My account
+        </Link>
+      </li> */}
+      
+      {/* 모바일 화면 메뉴 - about 메뉴 */}
+      <li className="navigation__item">
+        <Link
+          to="/about"
+          className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
+            }`}
+        >
+          About
         </Link>
       </li>
 
