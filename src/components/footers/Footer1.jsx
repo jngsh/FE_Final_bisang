@@ -125,13 +125,12 @@ export default function Footer1() {
             </form>
 
             <div className="mt-4 pt-3">
-              <strong className="fw-medium">Secure payments</strong>
               <p className="mt-2">
                 <img
                   loading="lazy"
-                  width={324}
-                  height={38}
-                  src="/assets/images/payment-options.png"
+                  width={375}
+                  height={57}
+                  src="/assets/images/카카오페이가능배너.png"
                   alt="Acceptable payment gateways"
                   className="mw-100"
                 />
@@ -147,7 +146,7 @@ export default function Footer1() {
       <div className="footer-bottom container">
         <div className="d-block d-md-flex align-items-center">
           <span className="footer-copyright me-auto">
-            ©{new Date().getFullYear()} Uomo
+            ©{new Date().getFullYear()} Peter PET
           </span>
           <div className="footer-settings d-block d-md-flex align-items-center">
             <div className="d-flex align-items-center">
