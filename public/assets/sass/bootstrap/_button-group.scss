@@ -137,3 +137,9 @@
     @include border-top-radius(0);
   }
 }
+
+// category
+.btn-link.active {
+  font-weight: bold; /* Makes the font bold */
+  color: #000; /* You can adjust the color if needed */
+}
