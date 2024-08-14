@@ -62,6 +62,7 @@ import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
 import QrHome from "./pages/homes/QrReader";
+import QrReader from "./pages/homes/QrReader/QrReader";
 
 function App() {
   useEffect(() => {
@@ -83,7 +84,7 @@ function App() {
             <Route index element={<HomePage12 />} />
             <Route path="home-1" element={<HomePage1 />} />
             <Route path="home-2" element={<HomePage2 />} />
-            <Route path="QrReader" element={<QrHome />} />
+            <Route path="QrReader" element={<QrReader />} />
             {/* 우리 쓰는 메인 페이지 !!! */}
             <Route path="home-12" element={<HomePage12 />} />
 
@@ -102,7 +103,7 @@ function App() {
             <Route path="product5_onsale/:id" element={<ProductDetailsPage5 />} />
             <Route path="product6_outofstock/:id" element={<ProductDetailsPage6 />} />
 
-            <Route path="shop_cart/:cartId" element={<ShopCartPage />} />
+            <Route path="shop_cart" element={<ShopCartPage />} />
             <Route path="shop_checkout" element={<ShopCheckoutPage />} />
             <Route path="OrderCompleted" element={<ShopOrderComplete />} />
             <Route

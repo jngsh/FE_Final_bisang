@@ -49,9 +49,8 @@ export default function MobileHeader() {
 
   return (
     <div
-      className={`header-mobile header_sticky ${
-        scrollDirection == "up" ? "header_sticky-active" : "position-absolute"
-      } `}
+      className={`header-mobile header_sticky ${scrollDirection == "up" ? "header_sticky-active" : "position-absolute"
+        } `}
     >
       {/* 메뉴 navbar 아이콘 */}
       <div className="container d-flex align-items-center h-100">
@@ -82,7 +81,7 @@ export default function MobileHeader() {
 
         <a
           // onClick={() => openCart()}
-          onClick={() => navigate(`/shop_cart/${cartId}`)}
+          onClick={() => navigate(`/shop_cart`)}
           className="header-tools__item header-tools__cart js-open-aside"
         >
           <svg
@@ -162,9 +161,12 @@ export default function MobileHeader() {
             >
               <use href="#icon_user" />
             </svg>
-            <span className="d-inline-block ms-2 text-uppercase align-middle fw-medium">
-              My Account
-            </span>
+            <Link
+              to="/account_dashboard">
+              <span className="d-inline-block ms-2 text-uppercase align-middle fw-medium">
+                My Account
+              </span>
+            </Link>
           </div>
         </div>
       </nav>

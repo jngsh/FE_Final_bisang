@@ -10,6 +10,7 @@ import QrFrame from "../../../assets_scanner/qr-frame.svg";
 // axios
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import Header1 from "@/components/headers/Header1";
 
 
 const QrReader = () => {
@@ -26,39 +27,39 @@ const QrReader = () => {
     const [scannedResult, setScannedResult] = useState("");
     const navigate = useNavigate();
 
-        // Success
-        const onScanSuccess = async (result) => {
-            console.log("result>>>>>>>>>",result); // Object 형식이라네요,,
-            // console.log(typeof(result));
-            
-            const qrData = result.data; // data만 qrData에 넣어준다
-            setScannedResult(qrData); // ScannedResult에 스캔한 result.data를 넣어준다
-            console.log("qrData>>>>>>>>>", qrData); // 얘를 DB에 저장해보자!
-            console.log("{qrData}>>>>>>>>>", {qrData}); 
+    // Success
+    const onScanSuccess = async (result) => {
+        console.log("result>>>>>>>>>", result); // Object 형식이라네요,,
+        // console.log(typeof(result));
 
-             navigate(`/bisang/products/${qrData}`);
-             console.log("스캔 후 자동으로 이동할 링크 : ", `/bisang/products/${qrData}`);
+        const qrData = result.data; // data만 qrData에 넣어준다
+        setScannedResult(qrData); // ScannedResult에 스캔한 result.data를 넣어준다
+        console.log("qrData>>>>>>>>>", qrData); // 얘를 DB에 저장해보자!
+        console.log("{qrData}>>>>>>>>>", { qrData });
 
-            // // QR Scan 후 스캔 데이터를 DB에 저장할 경우 사용되는 코드
-            // // 데이터를 JSON 형식으로 저장해준다
-            // let xxxx = {
-            //     data: qrData
-            // }
+        navigate(`/bisang/products/${qrData}`);
+        console.log("스캔 후 자동으로 이동할 링크 : ", `/bisang/products/${qrData}`);
 
-            // try {
-            //     // API 호출 - 데이터 전송 (Spring Boot랑 연동)
-            //     const response = await axios.post(`${BASE_URL}/bisang/main/qrscan`, JSON.stringify(xxxx), {
-            //         headers: {
-            //             "Content-Type": `application/json`,
-            //         },
-            //     });
-            //     console.log('Data sent successfully:', response.data);
-            
-            // } catch (error) {
-            //     console.error('Error sending data:', error);
-            // }
+        // // QR Scan 후 스캔 데이터를 DB에 저장할 경우 사용되는 코드
+        // // 데이터를 JSON 형식으로 저장해준다
+        // let xxxx = {
+        //     data: qrData
+        // }
 
-        };
+        // try {
+        //     // API 호출 - 데이터 전송 (Spring Boot랑 연동)
+        //     const response = await axios.post(`${BASE_URL}/bisang/main/qrscan`, JSON.stringify(xxxx), {
+        //         headers: {
+        //             "Content-Type": `application/json`,
+        //         },
+        //     });
+        //     console.log('Data sent successfully:', response.data);
+
+        // } catch (error) {
+        //     console.error('Error sending data:', error);
+        // }
+
+    };
 
     // Fail
     const onScanFail = (err) => {
@@ -106,34 +107,39 @@ const QrReader = () => {
     }, [qrOn]);
 
     return (
-        <div className="qr-reader">
-            {/* QR */}
-            <video ref={videoEl}></video>
-            <div ref={qrBoxEl} className="qr-box">
-                <img
-                    src={QrFrame}
-                    alt="Qr Frame"
-                    width={256}
-                    height={256}
-                    className="qr-frame"
-                />
-            </div>
+        <>
+            <Header1 />
+            <main style={{ paddingTop: "100px", height: "1000px" }}>
+                <div className="qr-reader">
+                    {/* QR */}
+                    <video ref={videoEl}></video>
+                    <div ref={qrBoxEl} className="qr-box">
+                        <img
+                            src={QrFrame}
+                            alt="Qr Frame"
+                            width={256}
+                            height={256}
+                            className="qr-frame"
+                        />
+                    </div>
 
-            {/* 스캔을 성공하면 scannedResult를 보여준다 */}
-            {scannedResult && (
-                <p
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        zIndex: 99999,
-                        color: "white",
-                    }}
-                >
-                    Scanned Result: {scannedResult}
-                </p>
-            )}
-        </div>
+                    {/* 스캔을 성공하면 scannedResult를 보여준다 */}
+                    {scannedResult && (
+                        <p
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                zIndex: 99999,
+                                color: "white",
+                            }}
+                        >
+                            Scanned Result: {scannedResult}
+                        </p>
+                    )}
+                </div>
+            </main>
+        </>
     );
 };
 
