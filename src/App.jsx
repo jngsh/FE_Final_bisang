@@ -13,10 +13,8 @@ import Context from "@/context/Context";
 import QuickView from "@/components/modals/QuickView";
 import CartDrawer from "@/components/shopCartandCheckout/CartDrawer";
 import SiteMap from "@/components/modals/SiteMap";
-// import NewsLetter from "@/components/modals/NewsLetter";
-// import CookieContainer from "@/components/common/CookieContainer";
+
 import MobileHeader from "@/components/headers/MobileHeader";
-import SizeGuide from "@/components/modals/SizeGuide";
 import Delivery from "@/components/modals/Delivery";
 import CustomerLogin from "@/components/asides/CustomerLogin";
 import ShopFilter from "@/components/asides/ShopFilter";
@@ -45,14 +43,11 @@ import ShopCartPage from "./pages/shop-cart-checkout/shop_cart";
 import ShopCheckoutPage from "./pages/shop-cart-checkout/shop_checkout";
 import ShopOrderComplete from "./pages/shop-cart-checkout/shop_order_complete";
 import ShopOrderTrackingPage from "./pages/shop-cart-checkout/shop_order_tracking";
-// import BlogPage1 from "./pages/blogs/blog_list1";
-// import BlogPage2 from "./pages/blogs/blog_list2";
-// import BlogPage3 from "./pages/blogs/blog_list3";
-// import BlogDetailsPage from "./pages/blogs/blog_single/[id]";
+
 import AccountPage from "./pages/dashboard/account_dashboard";
 import LoginPage from "./pages/otherPages/login_register";
 import StoreLocationPage from "./pages/otherPages/store_location";
-import LookbookPage from "./pages/otherPages/lookbook";
+// import LookbookPage from "./pages/otherPages/lookbook";
 import FaqPage from "./pages/otherPages/faq";
 import TermsPage from "./pages/otherPages/terms";
 import NotFound from "./pages/not-found";
@@ -95,18 +90,7 @@ function App() {
             {/* 제품 리스트 화면 루트 */}
             <Route path="shop-5" element={<ShopPage5 />} />
 
-            {/* <Route
-              path="product2_variable/:id"
-              element={<ProductDetailsPage2 />}
-            />
-            <Route path="product7_v2/:id" element={<ProductDetailsPage7 />} />
-            <Route path="product8_v3/:id" element={<ProductDetailsPage8 />} />
-            <Route path="product9_v4/:id" element={<ProductDetailsPage9 />} />
-            <Route path="product10_v5/:id" element={<ProductDetailsPage10 />} />
-            <Route path="product11_v6/:id" element={<ProductDetailsPage11 />} />
-            <Route path="product12_v7/:id" element={<ProductDetailsPage12 />} />
-            <Route path="product13_v8/:id" element={<ProductDetailsPage13 />} />
-            <Route path="product14_v9/:id" element={<ProductDetailsPage14 />} /> */}
+
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}
             {/* <Route path="product15_v10/:id" element={<ProductDetailsPage15 />} /> */}
             <Route path="bisang/products/:ProductId" element={<ProductDetailsPage15 />} />
@@ -133,7 +117,7 @@ function App() {
             <Route path="account_dashboard" element={<AccountPage />} />
             <Route path="login_register" element={<LoginPage />} />
             <Route path="store_location" element={<StoreLocationPage />} />
-            <Route path="lookbook" element={<LookbookPage />} />
+            {/* <Route path="lookbook" element={<LookbookPage />} /> */}
             <Route path="faq" element={<FaqPage />} />
             <Route path="terms" element={<TermsPage />} />
             <Route path="page-not-found" element={<NotFound />} />
@@ -156,12 +140,8 @@ function App() {
         </Routes>
 
         <MobileFooter1 />
-        {/* //modals and asides */}
         <LoginFormPopup />
         <QuickView />
-        {/* <NewsLetter />
-        <CookieContainer /> */}
-        <SizeGuide />
         <Delivery />
         <CartDrawer />
         <SiteMap />
