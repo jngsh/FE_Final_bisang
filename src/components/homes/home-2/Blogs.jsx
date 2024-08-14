@@ -1,4 +1,4 @@
-import { blogs1 } from "@/data/blogs";
+// import { blogs1 } from "@/data/blogs";
 import { Link } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -48,7 +48,7 @@ export default function Blogs() {
           {...swiperOptions}
           className="swiper-container js-swiper-slider"
         >
-          {blogs1.map((elm, i) => (
+          {/* {blogs1.map((elm, i) => (
             <SwiperSlide key={i} className="swiper-slide blog-grid__item mb-4">
               <div className="blog-grid__item-image">
                 <img
@@ -72,7 +72,7 @@ export default function Blogs() {
                 </div>
               </div>
             </SwiperSlide>
-          ))}
+          ))} */}
 
           {/* <!-- /.swiper-wrapper --> */}
         </Swiper>

@@ -9,7 +9,7 @@ import { Swiper } from "swiper/react";
 
 import { useState } from "react";
 
-import Banner4 from "./filter/Banner4";
+// import Banner4 from "./filter/Banner4";
 import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 const itemPerRow = [2, 3, 4];
@@ -39,7 +39,7 @@ export default function Shop4() {
       </div>
 
       <div className="shop-list flex-grow-1">
-        <Banner4 />
+        {/* <Banner4 /> */}
         {/* <!-- /.slideshow --> */}
 
         <div className="mb-3 pb-2 pb-xl-3"></div>
