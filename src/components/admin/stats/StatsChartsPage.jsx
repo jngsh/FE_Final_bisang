@@ -7,6 +7,7 @@ import DailySalesLineChart from './DailySalesLineChart';
 import TopProductsList from './TopProductsList';
 import PetTypeDoughnutChart from './PetTypeDoughnutChart';
 import PetAgeTypeDoughnutChart from './PetAgeTypeDoughnutChart';
+import DailySalesCalendar from './DailySalesCalendar';
 
 const StatsChartsPage = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -68,6 +69,10 @@ const StatsChartsPage = () => {
                         <PetTypeDoughnutChart />
                         <PetAgeTypeDoughnutChart />
                     </div>
+                </div>
+                <div>
+                    Calender
+                    <DailySalesCalendar />
                 </div>
             </div>
         </div>
