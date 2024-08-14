@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate  } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -23,6 +23,8 @@ export default function Cart() {
     local_pickup: false,
     shipping: false
   });
+
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   const savedCheckboxes = JSON.parse(localStorage.getItem('shippingCheckboxes')) || {};
@@ -348,7 +350,6 @@ export default function Cart() {
                     </td>
                     <td>
                       <div className="form-check form-switch">
-                        shipping:{item.shipping?"on":"off"}<br/>
                         <input
                           className="form-check-input"
                           type="checkbox"
@@ -415,11 +416,11 @@ export default function Cart() {
               <h3>장바구니 총계</h3>
               <table className="cart-totals">
                 <tbody>
-                  <tr>
+                  {/* <tr>
                     <th>소계</th>
                     <td>{totalPrice}원</td>
-                  </tr>
-                  <tr>
+                  </tr> */}
+                  {/* <tr>
                     <th>배송비</th>
                     <td>
                       <div className="form-check">
@@ -471,7 +472,7 @@ export default function Cart() {
                         </a>
                       </div>
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th>총계</th>
                     <td>
@@ -485,8 +486,10 @@ export default function Cart() {
             </div>
             <div className="mobile_fixed-btn_wrapper">
               <div className="button-wrapper container">
-                <button className="btn btn-primary btn-checkout">
-                  체크아웃 진행
+                <button
+                  className="btn btn-primary btn-checkout"
+                  onClick={() => navigate("/shop_checkout")}>
+                  주문하기
                 </button>
               </div>
             </div>

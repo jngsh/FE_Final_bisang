@@ -6,12 +6,15 @@ import { useEffect, useState } from "react";
 import CartLength from "./components/CartLength";
 import { openCart } from "@/utils/openCart";
 import MobileNav from "./components/MobileNav";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContextElement } from "@/context/Context";
 
 // 모바일 사이즈일 때의 header 파일
 
 export default function MobileHeader() {
+  const { cartId } = useContextElement();
   const [scrollDirection, setScrollDirection] = useState("down");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,9 +49,8 @@ export default function MobileHeader() {
 
   return (
     <div
-      className={`header-mobile header_sticky ${
-        scrollDirection == "up" ? "header_sticky-active" : "position-absolute"
-      } `}
+      className={`header-mobile header_sticky ${scrollDirection == "up" ? "header_sticky-active" : "position-absolute"
+        } `}
     >
       {/* 메뉴 navbar 아이콘 */}
       <div className="container d-flex align-items-center h-100">
@@ -78,7 +80,8 @@ export default function MobileHeader() {
         </div>
 
         <a
-          onClick={() => openCart()}
+          // onClick={() => openCart()}
+          onClick={() => navigate(`/shop_cart`)}
           className="header-tools__item header-tools__cart js-open-aside"
         >
           <svg
@@ -158,70 +161,13 @@ export default function MobileHeader() {
             >
               <use href="#icon_user" />
             </svg>
-            <span className="d-inline-block ms-2 text-uppercase align-middle fw-medium">
-              My Account
-            </span>
+            <Link
+              to="/account_dashboard">
+              <span className="d-inline-block ms-2 text-uppercase align-middle fw-medium">
+                My Account
+              </span>
+            </Link>
           </div>
-
-          <div className="container d-flex align-items-center">
-            <label className="me-2 text-secondary">Language</label>
-            <select
-              className="form-select form-select-sm bg-transparent border-0"
-              aria-label="Default select example"
-              name="store-language"
-            >
-              {languageOptions.map((option, index) => (
-                <option
-                  key={index}
-                  className="footer-select__option"
-                  value={option.value}
-                >
-                  {option.text}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="container d-flex align-items-center">
-            <label className="me-2 text-secondary">Currency</label>
-            <select
-              className="form-select form-select-sm bg-transparent border-0"
-              aria-label="Default select example"
-              name="store-language"
-              defaultValue={"fghgjhgj"}
-            >
-              {currencyOptions.map((option, index) => (
-                <option
-                  key={index}
-                  className="footer-select__option"
-                  value={option.value}
-                >
-                  {option.text}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <ul className="container social-links list-unstyled d-flex flex-wrap mb-0">
-            {socialLinks.map((link, index) => (
-              <li key={index}>
-                <a
-                  href={link.href}
-                  className="footer__social-link d-block color-white"
-                >
-                  <svg
-                    className={link.className}
-                    width={link.width}
-                    height={link.height}
-                    viewBox={link.viewBox}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <use href={link.icon} />
-                  </svg>
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
       </nav>
     </div>
