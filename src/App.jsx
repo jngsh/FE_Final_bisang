@@ -45,10 +45,10 @@ import ShopCartPage from "./pages/shop-cart-checkout/shop_cart";
 import ShopCheckoutPage from "./pages/shop-cart-checkout/shop_checkout";
 import ShopOrderComplete from "./pages/shop-cart-checkout/shop_order_complete";
 import ShopOrderTrackingPage from "./pages/shop-cart-checkout/shop_order_tracking";
-import BlogPage1 from "./pages/blogs/blog_list1";
-import BlogPage2 from "./pages/blogs/blog_list2";
-import BlogPage3 from "./pages/blogs/blog_list3";
-import BlogDetailsPage from "./pages/blogs/blog_single/[id]";
+// import BlogPage1 from "./pages/blogs/blog_list1";
+// import BlogPage2 from "./pages/blogs/blog_list2";
+// import BlogPage3 from "./pages/blogs/blog_list3";
+// import BlogDetailsPage from "./pages/blogs/blog_single/[id]";
 import AccountPage from "./pages/dashboard/account_dashboard";
 import LoginPage from "./pages/otherPages/login_register";
 import StoreLocationPage from "./pages/otherPages/store_location";
@@ -67,6 +67,7 @@ import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
 import QrHome from "./pages/homes/QrReader";
+import QrReader from "./pages/homes/QrReader/QrReader";
 
 function App() {
   useEffect(() => {
@@ -88,7 +89,7 @@ function App() {
             <Route index element={<HomePage12 />} />
             <Route path="home-1" element={<HomePage1 />} />
             <Route path="home-2" element={<HomePage2 />} />
-            <Route path="QrReader" element={<QrHome />} />
+            <Route path="QrReader" element={<QrReader />} />
             {/* 우리 쓰는 메인 페이지 !!! */}
             <Route path="home-12" element={<HomePage12 />} />
 
@@ -118,17 +119,17 @@ function App() {
             <Route path="product5_onsale/:id" element={<ProductDetailsPage5 />} />
             <Route path="product6_outofstock/:id" element={<ProductDetailsPage6 />} />
 
-            <Route path="shop_cart/:cartId" element={<ShopCartPage />} />
+            <Route path="shop_cart" element={<ShopCartPage />} />
             <Route path="shop_checkout" element={<ShopCheckoutPage />} />
             <Route path="OrderCompleted" element={<ShopOrderComplete />} />
             <Route
               path="shop_order_tracking"
               element={<ShopOrderTrackingPage />}
             />
-            <Route path="blog_list1" element={<BlogPage1 />} />
+            {/* <Route path="blog_list1" element={<BlogPage1 />} />
             <Route path="blog_list2" element={<BlogPage2 />} />
             <Route path="blog_list3" element={<BlogPage3 />} />
-            <Route path="blog_single/:id" element={<BlogDetailsPage />} />
+            <Route path="blog_single/:id" element={<BlogDetailsPage />} /> */}
 
             <Route path="account_dashboard" element={<AccountPage />} />
             <Route path="login_register" element={<LoginPage />} />

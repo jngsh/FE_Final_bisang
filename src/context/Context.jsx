@@ -15,9 +15,9 @@ const storedOrderDetails = JSON.parse(localStorage.getItem('orderDetails')) || n
   
 const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   const storedCartId = localStorage.getItem('cartId');
-
+  const storedCartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
   const [orderDetails, setOrderDetails] = useState(storedOrderDetails);
-  const [cartProducts, setCartProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState(storedCartProducts);
   const [wishList, setWishList] = useState([]);
   const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -112,7 +112,7 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
     return false;
   };
   useEffect(() => {
-    const items = JSON.parse(localStorage.getItem("cartList"));
+    const items = JSON.parse(localStorage.getItem("cartProducts"));
     if (items?.length) {
       setCartProducts(items);
     }
@@ -120,7 +120,7 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("cartList", JSON.stringify(cartProducts));
+    localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
 
   useEffect(() => {
