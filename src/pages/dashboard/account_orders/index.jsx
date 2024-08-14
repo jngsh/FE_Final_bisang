@@ -5,8 +5,8 @@ import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
 import MetaComponent from "@/components/common/MetaComponent";
 import Footer1 from "@/components/footers/Footer1";
 const metadata = {
-  title: "Dashboard Account Orders || Uomo eCommerce Reactjs Template",
-  description: "Uomo eCommerce Reactjs Template",
+  title: "Dashboard Account Orders || :: PETER PET",
+  description: ":: PETER PET",
 };
 export default function AccountOrderPage() {
   return (

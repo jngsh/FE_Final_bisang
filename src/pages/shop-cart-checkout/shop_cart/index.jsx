@@ -6,7 +6,7 @@ import CheckoutSteps from "@/components/shopCartandCheckout/CheckoutSteps";
 // import CheckoutSteps from "@/components/shopCartandCheckout/CheckoutSteps";
 const metadata = {
   title: "Shop Cart | peterPet",
-  // description: "Uomo eCommerce Reactjs Template",
+  // description: ":: PETER PET",
 };
 export default function ShopCartPage() {
   return (

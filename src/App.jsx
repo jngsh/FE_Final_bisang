@@ -46,10 +46,10 @@ import ShopOrderTrackingPage from "./pages/shop-cart-checkout/shop_order_trackin
 
 import AccountPage from "./pages/dashboard/account_dashboard";
 import LoginPage from "./pages/otherPages/login_register";
-import StoreLocationPage from "./pages/otherPages/store_location";
+// import StoreLocationPage from "./pages/otherPages/store_location";
 // import LookbookPage from "./pages/otherPages/lookbook";
-import FaqPage from "./pages/otherPages/faq";
-import TermsPage from "./pages/otherPages/terms";
+// import FaqPage from "./pages/otherPages/faq";
+// import TermsPage from "./pages/otherPages/terms";
 import NotFound from "./pages/not-found";
 import CommingSoonPage from "./pages/otherPages/coming_soon";
 import AccountOrderPage from "./pages/dashboard/account_orders";
@@ -116,10 +116,10 @@ function App() {
 
             <Route path="account_dashboard" element={<AccountPage />} />
             <Route path="login_register" element={<LoginPage />} />
-            <Route path="store_location" element={<StoreLocationPage />} />
+            {/* <Route path="store_location" element={<StoreLocationPage />} /> */}
             {/* <Route path="lookbook" element={<LookbookPage />} /> */}
-            <Route path="faq" element={<FaqPage />} />
-            <Route path="terms" element={<TermsPage />} />
+            {/* <Route path="faq" element={<FaqPage />} /> */}
+            {/* <Route path="terms" element={<TermsPage />} /> */}
             <Route path="page-not-found" element={<NotFound />} />
             <Route path="coming_soon" element={<CommingSoonPage />} />
             <Route path="account_orders" element={<AccountOrderPage />} />

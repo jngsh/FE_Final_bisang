@@ -12,8 +12,8 @@ import Products5 from "@/components/homes/home-1/Products5";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Home 1 || Uomo eCommerce Reactjs Template",
-  description: "Uomo eCommerce Reactjs Template",
+  title: "Home 1 || :: PETER PET",
+  description: ":: PETER PET",
 };
 export default function HomePage1() {
   return (
