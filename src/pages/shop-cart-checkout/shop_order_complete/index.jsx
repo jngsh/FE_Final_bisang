@@ -6,7 +6,7 @@ import Header1 from "@/components/headers/Header1";
 import OrderCompleted from "@/components/shopCartandCheckout/OrderCompleted";
 const metadata = {
   title: "결제 완료 :: Peter Pet",
-  description: "Uomo eCommerce Reactjs Template",
+  description: ":: PETER PET",
 };
 export default function ShopOrderComplete() {
   return (

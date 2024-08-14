@@ -8,7 +8,7 @@ import MetaComponent from "@/components/common/MetaComponent";
 import Categories from "@/components/shoplist/Categories";
 const metadata = {
   title: "피터펫 :: PETER PET",
-  // description: "Uomo eCommerce Reactjs Template",
+  // description: ":: PETER PET",
 };
 export default function ShopPage5() {
   return (
