@@ -127,6 +127,13 @@ export default function SingleProduct10({ productId }) {
     }
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
   return (
     <section className="product-single container product-single__type-9">
       <div className="row">
@@ -195,7 +202,7 @@ export default function SingleProduct10({ productId }) {
           {/* 제품 가격 부분 */}
           <div className="product-single__price">
             {/* <span className="current-price">${product.price}</span> */}
-            <span className="current-price">₩{product1.productPrice}</span>
+            <span className="current-price">₩{formatCurrency(product1.productPrice)}</span>
           </div>
 
           {/* 짧은 제품 상세 설명란 */}

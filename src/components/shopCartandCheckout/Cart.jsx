@@ -271,6 +271,17 @@ export default function Cart() {
     }));
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
+  // const formatNumberWithCommas = (value) => {
+  //   return new Intl.NumberFormat('ko-KR').format(value);
+  // };
+
   if (loading) return <div>로딩 중...</div>;
 
   return (
@@ -312,7 +323,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__product-price">
-                        {item.product.productPrice}원
+                        {formatCurrency(item.product.productPrice)}원
                       </span>
                     </td>
                     <td>
@@ -343,7 +354,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__subtotal">
-                        {item.product.productPrice * item.amount}원
+                        {formatCurrency(item.product.productPrice * item.amount)}원
                       </span>
                       
 
@@ -476,9 +487,7 @@ export default function Cart() {
                   <tr>
                     <th>총계</th>
                     <td>
-                      {49 * (checkboxes.flat_rate ? 1 : 0) +
-                        8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice}원
+                      {formatCurrency(totalPrice)}원
                     </td>
                   </tr>
                 </tbody>
