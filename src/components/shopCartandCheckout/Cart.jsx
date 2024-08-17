@@ -27,6 +27,17 @@ export default function Cart() {
 
   //배송지
   const userId = localStorage.getItem("userId");
+  const [savedData, setSavedData] = useState({
+    deliveryName:'',
+    address1:'',
+    address2: '',
+    post: '',
+    email1: '',
+    email2: '',
+    phone1: '',
+    phone2: '',
+    phone3: ''
+  });
   const [formData, setFormData] = useState({
     deliveryName:'',
     address1:'',
@@ -38,14 +49,8 @@ export default function Cart() {
     phone2: '',
     phone3: ''
   });
-
-  // const storedData = localStorage.getItem("cartProducts");
-  // const parsedData = JSON.parse(storedData);
-  // const isShipping = parsedData.map(item => item.shipping);
-  // console.log("로컬shipping:",isShipping);
-  // console.log(typeof isShipping);
   const [shippingStatus, setShippingStatus] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -123,40 +128,7 @@ export default function Cart() {
 
     fetchCartItems();
   }, [totalPrice]);
-
-  const addOrUpdateCartItem = async (productId, quantity) => {
-    try {
-      const existingItem = cartProducts.find(item => item.product.id === productId);
-      let updatedCart = [];
-
-      if (existingItem) {
-        // Update quantity if item already exists in the cart
-        updatedCart = cartProducts.map(item => 
-          item.product.id === productId
-            ? { ...item, amount: item.amount + quantity }
-            : item
-        );
-      } else {
-        // Add new item to the cart
-        const response = await axios.get(`${BASE_URL}/products/${productId}`);
-        const newProduct = response.data;
-        const newItem = { product: newProduct, amount: quantity };
-        updatedCart = [...cartProducts, newItem];
-      }
-
-      setCartProducts(updatedCart);
-      setLocalCart(updatedCart);
-      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
-
-      const newTotalPrice = updatedCart.reduce(
-        (total, item) => total + (item.amount * item.product.productPrice), 0
-      );
-      setTotalPrice(newTotalPrice);
-    } catch (error) {
-      console.error("상품 추가 또는 업데이트 중 오류 발생:", error);
-    }
-  };
-
+  
   const setQuantity = async (cartItemId, quantity) => {
     if (quantity >= 1) {
       try {
@@ -295,6 +267,8 @@ export default function Cart() {
       navigate("/shop_checkout");
     }
   };
+
+  //솔님 주소 띄우실 때 사용하세요!!
   useEffect(()=>{
   
     if (!userId) {
@@ -315,6 +289,7 @@ export default function Cart() {
         if (response.data) {
           console.log('User data fetched:', response.data[0]); // 데이터 로드 성공 시 로그
           setFormData(response.data[0]);
+          setSavedData(response.data[0]);
           console.log("formdata:",formData);
         } else {
           console.log('No data found'); // 데이터가 없을 경우 로그
@@ -385,6 +360,49 @@ export default function Cart() {
     e.preventDefault();
 
   };
+
+  const updateDelivery = async() => {
+
+    const updateDeliveryAddr = {...formData};
+
+    try {
+      const response = await axios.put(`${BASE_URL}/bisang/deliveryAddr/${userId}`, updateDeliveryAddr, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      });
+
+      if (response.status == 200){
+        console.log("주소변경성공",formData);
+        setSavedData(formData);
+      }else{
+        console.log("주소변경실패");
+      }
+    } catch (error) {
+      console.error('Error:',error);
+    }
+  };
+
+  const handlePageChange = ()=>{
+    const  {deliveryName, address1, address2, post, phone1, phone2, phone3} = formData;
+    if (!deliveryName || !address1 || !post || !phone1 || !phone2 || !phone3){
+      setErrorMessage("정보를 입력해주세요.");
+      return ;
+    }
+    if (
+      deliveryName === savedData.deliveryName
+      && address1 === savedData.address1
+      && address2 === savedData.address2
+      && post === savedData.post
+      && phone1 === savedData.phone1
+      && phone2 === savedData.phone2
+      && phone3 === savedData.phone3
+    ){
+      navigate("/shop_checkout");
+    } else {
+      setErrorMessage("변경하기 버튼을 누른 후 주문해주세요.");
+    }
+  }
   
 
 
@@ -744,11 +762,23 @@ export default function Cart() {
                             />
                           </div>
                         </div>
+                        <button
+                          className="btn btn-primary btn-checkout"
+                          onClick={updateDelivery}>
+                          변경하기
+                        </button>
+                        <button
+                          className="btn btn-primary btn-checkout"
+                          onClick={handlePageChange}>
+                          주문하기
+                        </button>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         </form>
                       </div>
                     )}  
                     {/* </td> */}
 
+            {!shippingStatus && (
             <div className="mobile_fixed-btn_wrapper">
               <div className="button-wrapper container">
                 <button
@@ -759,6 +789,7 @@ export default function Cart() {
                 </button>
               </div>
             </div>
+            )}
           </div>
         </div>
       )}
