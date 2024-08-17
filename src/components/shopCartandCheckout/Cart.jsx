@@ -135,10 +135,10 @@ export default function Cart() {
     }
   };
 
-  const setQuantity = async (cartItemId, quantity) => {
+  const setQuantity = async (productId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { productId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
@@ -334,18 +334,18 @@ export default function Cart() {
                           value={item.amount}
                           min={1}
                           onChange={(e) =>
-                            setQuantity(item.cartItemId, parseInt(e.target.value, 10))
+                            setQuantity(item.productId, parseInt(e.target.value, 10))
                           }
                           className="qty-control__number text-center"
                         />
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount - 1)}
+                          onClick={() => setQuantity(item.productId, item.amount - 1)}
                           className="qty-control__reduce"
                         >
                           -
                         </div>
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount + 1)}
+                          onClick={() => setQuantity(item.productId, item.amount + 1)}
                           className="qty-control__increase"
                         >
                           +
