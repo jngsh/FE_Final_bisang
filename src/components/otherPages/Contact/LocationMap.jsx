@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StoreMap from "../StoreMap";
-import { storesLocations } from "@/data/storeLocations";
+// import { storesLocations } from "@/data/storeLocations";
 
 export default function LocationMap() {
   const [getLocation, setLocation] = useState(null);
@@ -10,7 +10,7 @@ export default function LocationMap() {
       <StoreMap
         getLocation={getLocation}
         setLocation={setLocation}
-        storesLocations={storesLocations}
+        // storesLocations={storesLocations}
       />
     </>
   );
