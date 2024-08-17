@@ -10,7 +10,7 @@ import { useContextElement } from "@/context/Context";
 import { openModalShopFilter } from "@/utils/aside";
 
 import { sortingOptions } from "@/data/products/productCategories";
-import BannerLinks from "./BannerLinks";
+// import BannerLinks from "./BannerLinks";
 const itemPerRow = [2, 3, 4];
 
 export default function Shop11() {

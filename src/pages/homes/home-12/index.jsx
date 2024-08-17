@@ -1,7 +1,7 @@
 import Footer1 from "@/components/footers/Footer1.jsx" ;
 
-import Header12 from "@/components/headers/Header12";
-import Blogs from "@/components/homes/home-12/Blogs";
+// import Header12 from "@/components/headers/Header12";
+// import Blogs from "@/components/homes/home-12/Blogs";
 import Category from "@/components/homes/home-12/Category";
 import Cta from "@/components/homes/home-12/Cta";
 import DiscountSlider from "@/components/homes/home-12/DiscountSlider";
@@ -17,7 +17,7 @@ import Cart from "@/components/shopCartandCheckout/Cart";
 
 const metadata = {
   title: "피터펫 :: PETER PET",
-  // description: "Uomo eCommerce Reactjs Template",
+  // description: ":: PETER PET",
 };
 export default function HomePage12() {
 
