@@ -128,11 +128,12 @@ export default function Cart() {
 
     fetchCartItems();
   }, [totalPrice]);
-  
-  const setQuantity = async (cartItemId, quantity) => {
+
+
+  const setQuantity = async (productId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { productId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
@@ -414,6 +415,17 @@ export default function Cart() {
     }));
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
+  // const formatNumberWithCommas = (value) => {
+  //   return new Intl.NumberFormat('ko-KR').format(value);
+  // };
+
   if (loading) return <div>로딩 중...</div>;
 
   return (
@@ -455,7 +467,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__product-price">
-                        {item.product.productPrice}원
+                        {formatCurrency(item.product.productPrice)}원
                       </span>
                     </td>
                     <td>
@@ -466,18 +478,18 @@ export default function Cart() {
                           value={item.amount}
                           min={1}
                           onChange={(e) =>
-                            setQuantity(item.cartItemId, parseInt(e.target.value, 10))
+                            setQuantity(item.productId, parseInt(e.target.value, 10))
                           }
                           className="qty-control__number text-center"
                         />
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount - 1)}
+                          onClick={() => setQuantity(item.productId, item.amount - 1)}
                           className="qty-control__reduce"
                         >
                           -
                         </div>
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount + 1)}
+                          onClick={() => setQuantity(item.productId, item.amount + 1)}
                           className="qty-control__increase"
                         >
                           +
@@ -486,7 +498,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__subtotal">
-                        {item.product.productPrice * item.amount}원
+                        {formatCurrency(item.product.productPrice * item.amount)}원
                       </span>
                       
 
@@ -620,9 +632,7 @@ export default function Cart() {
                   <tr>
                     <th>총계</th>
                     <td>
-                      {49 * (checkboxes.flat_rate ? 1 : 0) +
-                        8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice}원
+                      {formatCurrency(totalPrice)}원
                     </td>
                   </tr>
                 </tbody>

@@ -59,6 +59,13 @@ export default function OrderCompleted() {
     }
   }, [cartId, setOrderDetails]);
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
   if (loading) return <div>Loading...</div>;
 
 // orderedDetail이 null이거나 비어있을 경우 처리
@@ -95,7 +102,7 @@ if (!orderDetails || orderDetails.length === 0) {
         </div>
         <div className="order-info__item">
           <label>총 결제금액</label>
-          <span>{totalPrice}원 </span>
+          <span>{formatCurrency(totalPrice)}원 </span>
         </div>
         <div className="order-info__item">
           <label>결제 수단</label>
@@ -124,7 +131,7 @@ if (!orderDetails || orderDetails.length === 0) {
                   <td>
                     {items.productName} x {items.amount}
                   </td>
-                  <td>{items.productPrice * items.amount}원</td>
+                  <td>{formatCurrency(items.productPrice * items.amount)}원</td>
                 </tr>
                ))}
             </tbody>
@@ -133,7 +140,7 @@ if (!orderDetails || orderDetails.length === 0) {
             <tbody>
               <tr>
                 <th>상품 전체 금액</th>
-                <td>{totalPrice}원 </td>
+                <td>{formatCurrency(totalPrice)}원 </td>
               </tr>
               <tr>
                 <th>배송비</th>
@@ -141,7 +148,7 @@ if (!orderDetails || orderDetails.length === 0) {
               </tr>
               <tr>
                 <th>총 결제 금액</th>
-                <td>{totalPrice}원</td>
+                <td>{formatCurrency(totalPrice)}원</td>
               </tr>
             </tbody>
           </table>
