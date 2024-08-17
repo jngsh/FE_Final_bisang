@@ -79,6 +79,10 @@ export default function OrderCompleted() {
       <div className="orderDetailsSub1">주문 상세정보</div>
 
       <div className="checkout__totals-wrapper">
+
+
+      {orderDetails.some((items) => items.shipping === false) ? (
+  <>
         <div className="orderDetailsSub2">✔️pick-up</div>
         <div className="checkout__totals">
           <table className="checkout-cart-items">
@@ -91,7 +95,9 @@ export default function OrderCompleted() {
               </tr>
             </thead>
             <tbody>
-              {orderDetails.map((items, i) => (
+              {orderDetails
+                  .filter((items) => items.shipping === false)  // shipping이 0인 항목만 필터링
+              .map((items, i) => (
                 <tr key={i}>
                   <td>
                     <img className="productImage" src={items.productImage}/>
@@ -108,6 +114,7 @@ export default function OrderCompleted() {
               ))}
             </tbody>
           </table>
+       
           {/* <table className="checkout-totals">
             <tbody>
               <tr>
@@ -125,7 +132,12 @@ export default function OrderCompleted() {
             </tbody>
           </table> */}
         </div>
+        </>
+          ):null}
 
+
+{orderDetails.some((items) => items.shipping === true) ? (
+  <>
         <div className="orderDetailsSub2">✔️delivery</div>
         <div className="checkout__totals">
           <table className="checkout-cart-items">
@@ -138,7 +150,9 @@ export default function OrderCompleted() {
               </tr>
             </thead>
             <tbody>
-              {orderDetails.map((items, i) => (
+              {orderDetails
+              .filter((items) => items.shipping === true)  // shipping이 0인 항목만 필터링
+              .map((items, i) => (
                 <tr key={i}>
                   <td>
                     <img className="productImage" src={items.productImage} />
@@ -172,7 +186,7 @@ export default function OrderCompleted() {
             </tbody>
           </table> */}
         </div>
-
+</>):null}
 
 
 
