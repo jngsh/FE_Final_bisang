@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
@@ -19,11 +20,13 @@ const YearlySalesLineChart = () => {
         ]
     });
 
+    const [maxY, setMaxY] = useState(10000000);
+
     const options = {
         scales: {
             y: {
                 beginAtZero: true,
-                max: 10000000,
+                max: maxY,
                 ticks: {
                     callback: function(value) {
                         return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
@@ -38,16 +41,15 @@ const YearlySalesLineChart = () => {
     }, []);
 
     const fetchYearlySales = () => {
-        fetch(`${BASE_URL}/bisang/admin/stats/sales/yearly`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/yearly`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
+                const data = response.data;
                 const labels = data.map(d => `${d.saleYear}년`);
                 const salesData = data.map(d => d.totalSale);
+                const maxSales = Math.max(...salesData);
+
+                const newMaxY = Math.ceil(maxSales / 1000000) * 1000000;
+                setMaxY(newMaxY);
 
                 setData({
                     labels: labels,
@@ -63,13 +65,12 @@ const YearlySalesLineChart = () => {
                 });
             })
             .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
+                console.error('axios request error:', error);
             });
     };
 
     return (
         <div>
-            <h2>연 매출</h2>
             <Line data={data} options={options} />
         </div>
     );

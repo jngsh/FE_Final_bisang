@@ -2,19 +2,23 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 
-const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
-
+const Sidebar = ({ isOpen, toggleSidebar }) => {
+    
     return (
+        
         <div className={`Sidebar ${isOpen ? "open" : "closed"}`}>
             <div className={`toggle-btn ${isOpen ? "open" : "closed"}`} onClick={toggleSidebar}>
                 {isOpen ? "←" : "→"}
             </div>
             <ul>
+                <li>
+                    <NavLink 
+                        to="sales" 
+                        className={({ isActive }) => (isActive ? "active" : undefined)}
+                    >
+                        매출 달력
+                    </NavLink>
+                </li>
                 <li>
                     <NavLink 
                         to="stats" 

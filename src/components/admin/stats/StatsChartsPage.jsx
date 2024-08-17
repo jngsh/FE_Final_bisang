@@ -7,7 +7,7 @@ import DailySalesLineChart from './DailySalesLineChart';
 import TopProductsList from './TopProductsList';
 import PetTypeDoughnutChart from './PetTypeDoughnutChart';
 import PetAgeTypeDoughnutChart from './PetAgeTypeDoughnutChart';
-import DailySalesCalendar from './DailySalesCalendar';
+import './StatsChartsPage.css';
 
 const StatsChartsPage = () => {
     const today = new Date().toISOString().split('T')[0];
@@ -19,60 +19,57 @@ const StatsChartsPage = () => {
         setView('hourly');
     };
 
-    const handleViewDaily = () => {
-        setView('daily');
-    };
-
-    const handleViewWeekly = () => {
-        setSelectedDate(today);
-        setView('weekly');
-    };
-
-    const handleViewMonthly = () => {
-        setView('monthly');
-    };
-
-    const handleViewYearly = () => {
-        setView('yearly');
-    };
-
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div>
-                <div>
-                    <h2>기간별 매출</h2>
-                    <div>
-                        <label htmlFor="datePicker">날짜 선택:</label>
-                        <input type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
-                        <button onClick={handleViewWeekly}>최근 일주일 매출</button>
-                        <button onClick={handleViewDaily}>일 매출</button>
-                        <button onClick={handleViewMonthly}>월 매출</button>
-                        <button onClick={handleViewYearly}>연 매출</button>
-                    </div>
-                    {view === 'weekly' && <WeeklySalesLineChart selectedDate={selectedDate} />}
-                    {view === 'hourly' && <HourlySalesLineChart selectedDate={selectedDate} />}
-                    {view === 'daily' && <DailySalesLineChart />}
-                    {view === 'monthly' && <MonthlySalesLineChart />}
-                    {view === 'yearly' && <YearlySalesLineChart />}
+        <div className="stats-container">
+            <div className="chart-section">
+                <div className="stats-controls">
+                    <h2>기간별 매출 추이</h2>
+                    <label htmlFor="datePicker">날짜 선택:</label>
+                    <input type="date" id="datePicker" value={selectedDate} onChange={handleDateChange} />
+                    <button 
+                        onClick={() => setView('weekly')} 
+                        className={view === 'weekly' ? 'selected' : ''}
+                    >
+                        최근 일주일 매출
+                    </button>
+                    <button 
+                        onClick={() => setView('daily')} 
+                        className={view === 'daily' ? 'selected' : ''}
+                    >
+                        일 매출
+                    </button>
+                    <button 
+                        onClick={() => setView('monthly')} 
+                        className={view === 'monthly' ? 'selected' : ''}
+                    >
+                        월 매출
+                    </button>
+                    <button 
+                        onClick={() => setView('yearly')} 
+                        className={view === 'yearly' ? 'selected' : ''}
+                    >
+                        연 매출
+                    </button>
                 </div>
+                
+                {view === 'weekly' && <WeeklySalesLineChart selectedDate={selectedDate} />}
+                {view === 'hourly' && <HourlySalesLineChart selectedDate={selectedDate} />}
+                {view === 'daily' && <DailySalesLineChart />}
+                {view === 'monthly' && <MonthlySalesLineChart />}
+                {view === 'yearly' && <YearlySalesLineChart />}
+                <br/>
+                <hr/>
                 <br/><br/>
-                <div>
-                    <h2>제품 판매 순위</h2>
-                    <TopProductsList />
-                    <br/><br/>
-                    <h2>반려동물 비율</h2>
-                    {/* <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                        <PetTypePieChart />
-                        <PetAgeTypePieChart />
-                    </div> */}
-                    <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                <div className="chart-group">
+                    <div className="chart-item">
+                        <h4>제품 판매 순위</h4>
+                        <TopProductsList />
+                    </div>
+                    <div className="chart-item">
+                        <h4>반려동물 비율</h4>
                         <PetTypeDoughnutChart />
                         <PetAgeTypeDoughnutChart />
                     </div>
-                </div>
-                <div>
-                    Calender
-                    <DailySalesCalendar />
                 </div>
             </div>
         </div>
