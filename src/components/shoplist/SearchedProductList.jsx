@@ -7,8 +7,6 @@ import { useContextElement } from "@/context/Context";
 import { openModalShopFilter } from "@/utils/aside";
 import { sortingOptions } from "@/components/shoplist/data/sorting.js";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import BASE_URL from '@/utils/globalBaseUrl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import Slider from 'rc-slider';
@@ -43,11 +41,10 @@ const sortProducts = (products, sortBy) => {
   }
 };
 
-
 const formatPrice = (price) => {
   return new Intl.NumberFormat().format(price);
 };
-  
+
 const calculateUnitPrice = (product) => {
   const { unit, value, productPrice, discountRate } = product;
   if (unit === 'g' || unit === 'ml' || unit === '개') {
@@ -59,7 +56,7 @@ const calculateUnitPrice = (product) => {
   return null;
 };
 
-export default function ProductList({ petType, typeValue }) {
+export default function SearchedProductList({ searchedProducts }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedColView, setSelectedColView] = useState(2);
@@ -73,21 +70,17 @@ export default function ProductList({ petType, typeValue }) {
   const { addProductToCart, isAddedToCartProducts, toggleWishlist, isAddedtoWishlist } = useContextElement();
 
   useEffect(() => {
-    if (petType && typeValue) {
-      axios.get(`${BASE_URL}/bisang/category/products-list/${petType}/${typeValue}`)
-        .then(response => {
-          setProducts(response.data);
-          setLoading(false);
-        })
-        .catch(error => {
-          console.error("axios error", error);
-          setLoading(false);
-        });
+    if (searchedProducts) {
+      setProducts(searchedProducts);
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
-    setCurrentPage(1);
-  }, [petType, typeValue]);
+  }, [searchedProducts]);
 
   useEffect(() => {
+    if (products.length === 0) return;
+
     const newFilteredProducts = products.filter(product => {
       const discountedPrice = product.discountRate
         ? product.productPrice * (1 - product.discountRate)
@@ -96,11 +89,10 @@ export default function ProductList({ petType, typeValue }) {
     });
 
     const sortedProducts = sortProducts(newFilteredProducts, sortBy);
-  
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredProducts(sortedProducts.slice(startIndex, endIndex));
-  
+
     setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
   }, [priceRange, products, sortBy, currentPage]);
 
@@ -126,72 +118,64 @@ export default function ProductList({ petType, typeValue }) {
   return (
     <section className="shop-main container d-flex pt-4 pt-xl-5">
       <div className="shop-sidebar side-sticky bg-body">
-
         <div className="aside-filters aside aside_right" id="shopFilterAside">
-      <div className="aside-header d-flex align-items-center">
-        <h3 className="text-uppercase fs-6 mb-0">Filter By</h3>
-        <button
-          onClick={() => closeModalShopFilter()}
-          className="btn-close-lg js-close-aside btn-close-aside ms-auto"
-        />
-      </div>
-      <div className="aside-content">
-
-    </div>
-        <div className="accordion" id="price-filters">
-          <div className="accordion-item mb-4">
-            <h5 className="accordion-header mb-2" id="accordion-heading-price">
-              <button
-                className="accordion-button p-0 border-0 fs-5 text-uppercase"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#accordion-filter-price"
-                aria-expanded="true"
-                aria-controls="accordion-filter-price"
-              >
-                가격
-                <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                  <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                    <path
-                      className="svg-path-vertical"
-                      d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                    />
-                    <path
-                      className="svg-path-horizontal"
-                      d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                    />
-                  </g>
-                </svg>
-              </button>
-            </h5>
-            <div
-              id="accordion-filter-price"
-              className="accordion-collapse collapse show border-0"
-              aria-labelledby="accordion-heading-price"
-              data-bs-parent="#price-filters"
-            >
-              <Slider
-                range
-                max={100000}
-                min={0}
-                defaultValue={priceRange}
-                onChange={(value) => handlePriceChange(value)}
-                id="slider"
-              />
-              <div className="price-range__info d-flex align-items-center mt-2">
-                <div className="me-auto">
-                  <span className="text-secondary">최소 금액: </span>
-                  <span className="price-range__min">{priceRange[0]}원</span>
-                </div>
-                <div>
-                  <span className="text-secondary">최대 금액: </span>
-                  <span className="price-range__max">{priceRange[1]}원</span>
+          <div className="aside-header d-flex align-items-center">
+            <h3 className="text-uppercase fs-6 mb-0">Filter By</h3>
+            <button
+              onClick={() => closeModalShopFilter()}
+              className="btn-close-lg js-close-aside btn-close-aside ms-auto"
+            />
+          </div>
+          <div className="aside-content">
+            <div className="accordion" id="price-filters">
+              <div className="accordion-item mb-4">
+                <h5 className="accordion-header mb-2" id="accordion-heading-price">
+                  <button
+                    className="accordion-button p-0 border-0 fs-5 text-uppercase"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-filter-price"
+                    aria-expanded="true"
+                    aria-controls="accordion-filter-price"
+                  >
+                    가격
+                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                        <path className="svg-path-vertical" d="M14,6 L14,8 L0,8 L0,6 L14,6" />
+                        <path className="svg-path-horizontal" d="M14,6 L14,8 L0,8 L0,6 L14,6" />
+                      </g>
+                    </svg>
+                  </button>
+                </h5>
+                <div
+                  id="accordion-filter-price"
+                  className="accordion-collapse collapse show border-0"
+                  aria-labelledby="accordion-heading-price"
+                  data-bs-parent="#price-filters"
+                >
+                  <Slider
+                    range
+                    max={100000}
+                    min={0}
+                    defaultValue={priceRange}
+                    onChange={handlePriceChange}
+                    id="slider"
+                  />
+                  <div className="price-range__info d-flex align-items-center mt-2">
+                    <div className="me-auto">
+                      <span className="text-secondary">최소 금액: </span>
+                      <span className="price-range__min">{priceRange[0]}원</span>
+                    </div>
+                    <div>
+                      <span className="text-secondary">최대 금액: </span>
+                      <span className="price-range__max">{priceRange[1]}원</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
       <div className="shop-list flex-grow-1">
         <div className="d-flex justify-content-between mb-4 pb-md-2">
@@ -221,8 +205,7 @@ export default function ProductList({ petType, typeValue }) {
                 <button
                   key={i}
                   onClick={() => setSelectedColView(elm)}
-                  className={`btn-link fw-medium me-2 js-cols-size ${selectedColView === elm ? "btn-link_active" : ""
-                    } `}
+                  className={`btn-link fw-medium me-2 js-cols-size ${selectedColView === elm ? 'btn-link_active' : ''}`}
                 >
                   {elm}
                 </button>
@@ -253,7 +236,7 @@ export default function ProductList({ petType, typeValue }) {
         </div>
 
         <div className={`products-grid row row-cols-2 row-cols-md-3  row-cols-lg-${selectedColView}`} id="products-grid">
-          {filteredProducts.slice(0, itemsPerPage).map((product, i) => {
+          {filteredProducts.map((product, i) => {
             const { discountRate, productPrice } = product;
             const discountedPrice = discountRate
               ? productPrice * (1 - discountRate)
@@ -264,7 +247,7 @@ export default function ProductList({ petType, typeValue }) {
                 <div className="product-card mb-3 mb-md-4 mb-xxl-5">
                   <div className="pc__img-wrapper">
                     <Swiper
-                      className="shop-list-swiper  swiper-container background-img js-swiper-slider"
+                      className="shop-list-swiper swiper-container background-img js-swiper-slider"
                       slidesPerView={1}
                       modules={[Navigation]}
                       navigation={{
@@ -286,28 +269,13 @@ export default function ProductList({ petType, typeValue }) {
                           </Link>
                         </SwiperSlide>
                       ))}
-
-                      <span
-                        className={`cursor-pointer pc__img-prev ${"prev3" + i} `}
-                      >
-                        <svg
-                          width="7"
-                          height="11"
-                          viewBox="0 0 7 11"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                      <span className={`cursor-pointer pc__img-prev ${"prev3" + i} `}>
+                        <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
                           <use href="#icon_prev_sm" />
                         </svg>
                       </span>
-                      <span
-                        className={`cursor-pointer pc__img-next ${"next3" + i} `}
-                      >
-                        <svg
-                          width="7"
-                          height="11"
-                          viewBox="0 0 7 11"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                      <span className={`cursor-pointer pc__img-next ${"next3" + i} `}>
+                        <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
                           <use href="#icon_next_sm" />
                         </svg>
                       </span>
@@ -317,45 +285,37 @@ export default function ProductList({ petType, typeValue }) {
                       onClick={() => addProductToCart(product.productId)}
                       title={
                         isAddedToCartProducts(product.productId)
-                          ? "Already Added"
-                          : "Add to Cart"
+                          ? 'Already Added'
+                          : 'Add to Cart'
                       }
                     >
                       {isAddedToCartProducts(product.productId)
-                        ? "Already Added"
-                        : "Add To Cart"}
+                        ? 'Already Added'
+                        : 'Add To Cart'}
                     </button>
                   </div>
 
                   <div className="pc__info position-relative">
-                    <br/>
                     <h6 className="pc__title">
                       <Link to={`/bisang/products/${product.productId}`}>
                         {product.productName}
                       </Link>
                     </h6>
-                      <div className="product-card__review d-flex align-items-center">
-                        <div className="reviews-group d-flex">
-                          <Star stars={product.rating} />
-                        </div>
-                        <span className="reviews-note text-lowercase text-secondary ms-1">
-                          {product.reviews || "no reviews"}
-                        </span>
+                    <div className="product-card__review d-flex align-items-center">
+                      <div className="reviews-group d-flex">
+                        <Star stars={product.rating} />
                       </div>
+                      <span className="reviews-note text-lowercase text-secondary ms-1">
+                        {product.reviews || 'no reviews'}
+                      </span>
+                    </div>
 
                     <button
-                      className={`pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist ${isAddedtoWishlist(product.productId) ? "active" : ""
-                        }`}
+                      className={`pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist ${isAddedtoWishlist(product.productId) ? 'active' : ''}`}
                       onClick={() => toggleWishlist(product.productId)}
                       title="Add To Wishlist"
                     >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_heart" />
                       </svg>
                     </button>
@@ -366,7 +326,7 @@ export default function ProductList({ petType, typeValue }) {
                         1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
                       </span>
                     ) : (
-                    <br />
+                      <br />
                     )}
                     {discountRate > 0 ? (
                       <span>
@@ -382,7 +342,7 @@ export default function ProductList({ petType, typeValue }) {
                         {formatPrice(productPrice)}원
                       </span>
                     )}
-                    </div>
+                  </div>
                   {product.createdDate > '2024-08-01' && (
                     <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
                       <div className="pc-labels__left">
@@ -401,7 +361,6 @@ export default function ProductList({ petType, typeValue }) {
         {totalPages > 1 && (
           <Pagination2 totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
         )}
-
       </div>
     </section>
   );
