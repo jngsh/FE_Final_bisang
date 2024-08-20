@@ -188,7 +188,7 @@ export const dashboardMenuItems = [
   },
   {
     id: 2,
-    href: "/account_orders/:userId",
+    href: "/my-orders",
     title: "Orders",
   },
   {

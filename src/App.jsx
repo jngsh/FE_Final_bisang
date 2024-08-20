@@ -123,7 +123,7 @@ function App() {
             {/* <Route path="terms" element={<TermsPage />} /> */}
             <Route path="page-not-found" element={<NotFound />} />
             <Route path="coming_soon" element={<CommingSoonPage />} />
-            <Route path="account_orders" element={<AccountOrderPage />} />
+            <Route path="my-orders" element={<AccountOrderPage />} />
             <Route
               path="account_edit_address"
               element={<AccountEditAddressPage />}
