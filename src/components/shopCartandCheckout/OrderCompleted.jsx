@@ -82,117 +82,87 @@ export default function OrderCompleted() {
           fill="none"
         />
         <h3>주문이 완료되었어요💚</h3>
-        <p>빠르게 배송해드릴게요!</p>
+        {orderDetails.some((items) => items.shipping === true) ?
+          <p>배송 상품은 빠르게 보내드릴게요!</p> : null}
+        <p>이용해 주셔서 감사합니다. <br />또 뵈어요🥰</p>
       </div>
       <div className="orderDetailsSub1">주문 상세정보</div>
 
       <div className="checkout__totals-wrapper">
 
 
-      {orderDetails.some((items) => items.shipping === false) ? (
-  <>
-        <div className="orderDetailsSub2">✔️PICK-UPs</div>
-        <div className="checkout__totals">
-          <table className="checkout-cart-items">
-            <thead>
-              <tr>
-                <th></th>
-                <th className="center">상품명</th>
-                <th className="right">수량</th>
-                {/* <th>금액</th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {orderDetails
-                  .filter((items) => items.shipping === false)  // shipping이 0인 항목만 필터링
-              .map((items, i) => (
-                <tr key={i}>
-                  <td>
-                    <img className="productImage" src={items.productImage}/>
-                  </td>
-                  {/* <td className="productName">
+        {orderDetails.some((items) => items.shipping === false) ? (
+          <>
+            <div className="orderDetailsSub2">✔️PICK-UPs</div>
+            <div className="checkout__totals">
+              <table className="checkout-cart-items">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th className="center">상품명</th>
+                    <th className="right">수량</th>
+                    {/* <th>금액</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderDetails
+                    .filter((items) => items.shipping === false)  // shipping이 0인 항목만 필터링
+                    .map((items, i) => (
+                      <tr key={i}>
+                        <td>
+                          <img className="productImage" src={items.productImage} />
+                        </td>
+                        {/* <td className="productName">
                     {items.productName} x {items.amount}
                   </td> */}
-                  <td>{items.productName}</td>
-                  <td className="right">{items.amount}</td>
-                  {/* <td>{items.productPrice * items.amount}원</td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-       
-          {/* <table className="checkout-totals">
-            <tbody>
-              <tr>
-                <th>pick-up 상품</th>
-                <td>{totalPrice}원 </td>
-              </tr>
-              <tr>
-                <th>배송비</th>
-                <td>0원</td>
-              </tr> 
-              <tr>
-                <th>총 결제 금액</th>
-                <td>{totalPrice}원</td>
-              </tr>
-            </tbody>
-          </table> */}
-        </div>
-        </>
-          ):null}
+                        <td>{items.productName}</td>
+                        <td className="right">{items.amount}</td>
+                        {/* <td>{items.productPrice * items.amount}원</td> */}
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : null}
 
 
-{orderDetails.some((items) => items.shipping === true) ? (
-  <>
-        <div className="orderDetailsSub2">✔️DELIVERYs</div>
-        <div className="checkout__totals">
-          <table className="checkout-cart-items">
-            <thead>
-              <tr>
-                <th></th>
-                <th className="center">상품명</th>
-                <th className="right">수량</th>
-                {/* <th>금액</th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {orderDetails
-              .filter((items) => items.shipping === true)  // shipping이 0인 항목만 필터링
-              .map((items, i) => (
-                <tr key={i}>
-                  <td>
-                    <img className="productImage" src={items.productImage} />
-                  </td>
-                  {/* <td className="productName">
+        {orderDetails.some((items) => items.shipping === true) ? (
+          <>
+            <div className="orderDetailsSub2">✔️DELIVERYs</div>
+            <div className="checkout__totals">
+              <table className="checkout-cart-items">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th className="center">상품명</th>
+                    <th className="right">수량</th>
+                    {/* <th>금액</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderDetails
+                    .filter((items) => items.shipping === true)  // shipping이 0인 항목만 필터링
+                    .map((items, i) => (
+                      <tr key={i}>
+                        <td>
+                          <img className="productImage" src={items.productImage} />
+                        </td>
+                        {/* <td className="productName">
                     {items.productName} x {items.amount}
                   </td> */}
-                  <td className="productName">
-                  {items.productName}
-                  </td>
-                  <td className="right">{items.amount}</td>
-                  {/* <td>{items.productPrice * items.amount}원</td> */}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* <table className="checkout-totals">
-            <tbody>
-              <tr>
-                <th>상품 전체 금액</th>
-                <td>{totalPrice}원 </td>
-              </tr>
-              <tr>
-                <th>배송비</th>
-                <td>0원</td>
-              </tr> 
-              <tr>
-                <th>총 결제 금액</th>
-                <td>{totalPrice}원</td>
-              </tr>
-            </tbody>
-          </table> */}
-        </div>
-</>):null}
+                        <td className="productName">
+                          {items.productName}
+                        </td>
+                        <td className="right">{items.amount}</td>
+                        {/* <td>{items.productPrice * items.amount}원</td> */}
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+             
+            </div>
+          </>) : null}
 
 
 
