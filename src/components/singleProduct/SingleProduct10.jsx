@@ -93,38 +93,134 @@ export default function SingleProduct10({ productId }) {
       setQuantity(quantity - 1 ? quantity : 1);
     }
   };
-  // "장바구니에 담기" 버튼 누르면 실행됨
-  const addToCart = async () => {
-    // cartId가 null이 아니면 함수 실행
-    console.log(">>>>>>>", cartId);
-    
-    if (cartId !== null) {
-      if (!isIncludeCard()) {
-        const item = product1;
-        item.quantity = quantity;
-        // 이부분 실행하면 cartDrawer가 실행되네,,,,,,,,
-        setCartProducts((pre) => [...pre, item]);
 
-        try {
-          const response = await axios.post(`${BASE_URL}/bisang/carts/items`, {
-            cartId: cartId,
-            productId: productId, // props에서 가져옴
-            amount: quantity, // 상태에서 관리하는 quantity
-          }, {
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': true,
+  const addToCart = async () => {
+    console.log(">>>>>>> cartId: ", cartId);
+
+    if (cartId !== null) {
+        if (!isIncludeCard()) {
+            const productIdAsNumber = Number(productId);
+            const quantityAsNumber = Number(quantity); // Ensure quantity is a number
+
+            // Log productId and quantity to verify their values
+            console.log("ProductId as number: ", productIdAsNumber);
+            console.log("Quantity as number: ", quantityAsNumber);
+
+            if (isNaN(productIdAsNumber)) {
+                console.error("Invalid productId: Not a number");
+                return;
             }
-          });
-          console.log("addToCart: Response >>>>>>> ", response);
-          // alert("제품이 장바구니에 담겼습니다!");
-        } catch (error) {
-          console.error("Failed to add item to cart : ", error);
+
+            if (isNaN(quantityAsNumber)) {
+                console.error("Invalid quantity: Not a number");
+                return;
+            }
+
+            setCartProducts((prev) => {
+                console.log("Prev cart products before update: ", prev);
+
+                const prevProducts = prev.map(item => ({
+                    ...item,
+                    productId: Number(item.productId)
+                }));
+
+                console.log("Previous cart products after map: ", prevProducts);
+
+                const existingItemIndex = prevProducts.findIndex(
+                    (item) => item.productId === productIdAsNumber
+                );
+
+                // Additional logs
+                console.log("Calculated existingItemIndex: ", existingItemIndex);
+                if (existingItemIndex !== -1) {
+                    console.log("Matching item found: ", prevProducts[existingItemIndex]);
+                } else {
+                    console.log("No matching item found.");
+                }
+
+                let updatedCart;
+                if (existingItemIndex !== -1) {
+                  //update
+                    updatedCart = prevProducts.map((item, index) =>
+                        index === existingItemIndex
+                            ? { ...item, quantity: item.quantity + quantityAsNumber } // Use quantityAsNumber
+                            : item
+                    );
+                    console.log("Updated cart after modifying existing item: ", updatedCart);
+                    setCartProducts((updatedCart) => {
+                      console.log("Cart products after state update: ", updatedCart);
+      
+                      axios.put(
+                          `${BASE_URL}/bisang/carts/items`,
+                          {
+                              // cartId: cartId,
+                              productId: productIdAsNumber,
+                              amount: quantityAsNumber, // Use quantityAsNumber
+                          },
+                          {
+                              headers: {
+                                  "Content-Type": "application/json",
+                                  "ngrok-skip-browser-warning": true,
+                              },
+                          }
+                      )
+                      .then(response => {
+                          console.log("addToCart: Response >>>>>>> ", response);
+                      })
+                      .catch(error => {
+                          console.error("Failed to add item to cart : ", error);
+                      });
+      
+                      return updatedCart;
+                  });
+                } else {
+                  //insert
+                    const newItem = { ...product1, productId: productIdAsNumber, quantity: quantityAsNumber };
+                    updatedCart = [...prevProducts, newItem];
+                    console.log("Updated cart after adding new item: ", updatedCart);
+                    setCartProducts((updatedCart) => {
+                      console.log("Cart products after state update: ", updatedCart);
+      
+                      axios.post(
+                          `${BASE_URL}/bisang/carts/items`,
+                          {
+                              cartId: cartId,
+                              productId: productIdAsNumber,
+                              amount: quantityAsNumber, // Use quantityAsNumber
+                          },
+                          {
+                              headers: {
+                                  "Content-Type": "application/json",
+                                  "ngrok-skip-browser-warning": true,
+                              },
+                          }
+                      )
+                      .then(response => {
+                          console.log("addToCart: Response >>>>>>> ", response);
+                      })
+                      .catch(error => {
+                          console.error("Failed to add item to cart : ", error);
+                      });
+      
+                      return updatedCart;
+                  });
+                }
+
+                return updatedCart;
+            });
+
+          
         }
-      }
     } else {
-      console.error("cartId is null, cannot add to cart.");
+        console.error("cartId is null, cannot add to cart.");
     }
+};
+  
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
   };
 
   return (
@@ -195,7 +291,7 @@ export default function SingleProduct10({ productId }) {
           {/* 제품 가격 부분 */}
           <div className="product-single__price">
             {/* <span className="current-price">${product.price}</span> */}
-            <span className="current-price">₩{product1.productPrice}</span>
+            <span className="current-price">₩{formatCurrency(product1.productPrice)}</span>
           </div>
 
           {/* 짧은 제품 상세 설명란 */}
@@ -269,7 +365,7 @@ export default function SingleProduct10({ productId }) {
               </div>
               {/* 여기는 ADD TO CART 버튼 */}
               <button
-                type="submit"
+                type="button"
                 className="btn btn-primary btn-addtocart js-open-aside"
                 onClick={() => addToCart()}
               >

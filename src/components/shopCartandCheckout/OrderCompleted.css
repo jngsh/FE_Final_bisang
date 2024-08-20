@@ -32,11 +32,12 @@ border: 1px solid gray;
 }
 
 .productName{
-  /* width: 100px; */
-  /* white-space: nowrap; */
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  font-size: medium;
+  width: 80%;
+  /* overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical; */
 
 }
 

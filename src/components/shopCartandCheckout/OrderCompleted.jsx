@@ -4,6 +4,7 @@ import { useContextElement } from "@/context/Context";
 import axiosInstance from "@/utils/globalAxios";
 import { useEffect, useState } from "react";
 
+
 export default function OrderCompleted() {
 
   const { orderDetails, setOrderDetails, cartId } = useContextElement();
@@ -54,6 +55,13 @@ export default function OrderCompleted() {
     }
   }, [cartId, setOrderDetails]);
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
   if (loading) return <div>Loading...</div>;
 
   // orderedDetail이 null이거나 비어있을 경우 처리
@@ -83,7 +91,7 @@ export default function OrderCompleted() {
 
       {orderDetails.some((items) => items.shipping === false) ? (
   <>
-        <div className="orderDetailsSub2">✔️pick-up</div>
+        <div className="orderDetailsSub2">✔️PICK-UPs</div>
         <div className="checkout__totals">
           <table className="checkout-cart-items">
             <thead>
@@ -105,9 +113,7 @@ export default function OrderCompleted() {
                   {/* <td className="productName">
                     {items.productName} x {items.amount}
                   </td> */}
-                  <td className="productName">
-                    {items.productName}
-                  </td>
+                  <td>{items.productName}</td>
                   <td className="right">{items.amount}</td>
                   {/* <td>{items.productPrice * items.amount}원</td> */}
                 </tr>
@@ -138,7 +144,7 @@ export default function OrderCompleted() {
 
 {orderDetails.some((items) => items.shipping === true) ? (
   <>
-        <div className="orderDetailsSub2">✔️delivery</div>
+        <div className="orderDetailsSub2">✔️DELIVERYs</div>
         <div className="checkout__totals">
           <table className="checkout-cart-items">
             <thead>
@@ -161,7 +167,7 @@ export default function OrderCompleted() {
                     {items.productName} x {items.amount}
                   </td> */}
                   <td className="productName">
-                    {items.productName}
+                  {items.productName}
                   </td>
                   <td className="right">{items.amount}</td>
                   {/* <td>{items.productPrice * items.amount}원</td> */}
@@ -178,7 +184,7 @@ export default function OrderCompleted() {
               <tr>
                 <th>배송비</th>
                 <td>0원</td>
-              </tr>
+              </tr> 
               <tr>
                 <th>총 결제 금액</th>
                 <td>{totalPrice}원</td>
@@ -205,7 +211,7 @@ export default function OrderCompleted() {
           </div>
           <div className="order-info__item">
             <label>총 결제금액</label>
-            <span>{totalPrice}원 </span>
+            <span>{formatCurrency(totalPrice)}원 </span>
           </div>
           <div className="order-info__item">
             <label>결제 수단</label>
