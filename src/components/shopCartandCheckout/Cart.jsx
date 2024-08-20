@@ -268,7 +268,7 @@ export default function Cart() {
     if (hasShippedItems){
       setShippingStatus(true);
     } else {
-      navigate("/shop_checkout");
+      handleButtonClick();
     }
   };
 
@@ -402,7 +402,7 @@ export default function Cart() {
       && phone2 === savedData.phone2
       && phone3 === savedData.phone3
     ){
-      navigate("/shop_checkout");
+      handleButtonClick();
     } else {
       setErrorMessage("변경하기 버튼을 누른 후 주문해주세요.");
     }
@@ -825,11 +825,21 @@ export default function Cart() {
                           변경하기
                         </button>
                         <button
-                          className="btn btn-primary btn-checkout"
+                          className="btn btn-checkout"
                           onClick={handlePageChange}>
-                          주문하기
+                          <img
+                            style={{ height: "fit-content" }}
+                            className="h-auto"
+                            loading="lazy"
+                            src="/assets/images/카카오페이로결제하기버튼.png"
+                            width="375"
+                            height="80"
+                            alt="image"
+                          />
                         </button>
+                        <div className="errorMessage">
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
+                        </div>
                         </form>
                       </div>
                     )}  
@@ -841,7 +851,7 @@ export default function Cart() {
             
             
             
-              <button className="btn btn-checkout" onClick={handleButtonClick}>
+              <button className="btn btn-checkout" onClick={Checkout}>
             <img
               style={{ height: "fit-content" }}
               className="h-auto"
