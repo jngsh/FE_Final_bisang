@@ -53,6 +53,7 @@ import LoginPage from "./pages/otherPages/login_register";
 import NotFound from "./pages/not-found";
 import CommingSoonPage from "./pages/otherPages/coming_soon";
 import AccountOrderPage from "./pages/dashboard/account_orders";
+// import OrderDetails from "./components/otherPages/orderDetails.jsx";
 import AccountEditAddressPage from "./pages/dashboard/account_edit_address";
 import AccountEditPage from "./pages/dashboard/account_edit";
 import AccountWishlistPage from "./pages/dashboard/account_wishlist";
@@ -63,6 +64,7 @@ import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
 import QrHome from "./pages/homes/QrReader";
 import QrReader from "./pages/homes/QrReader/QrReader";
+import OrderDetails from "./components/otherPages/OrderDetails.jsx";
 
 function App() {
   useEffect(() => {
@@ -124,6 +126,8 @@ function App() {
             <Route path="page-not-found" element={<NotFound />} />
             <Route path="coming_soon" element={<CommingSoonPage />} />
             <Route path="my-orders" element={<AccountOrderPage />} />
+            <Route path="order-details/:orderId" element={<OrderDetails />} />
+
             <Route
               path="account_edit_address"
               element={<AccountEditAddressPage />}
