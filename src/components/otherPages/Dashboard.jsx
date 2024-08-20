@@ -10,9 +10,11 @@ export default function Dashboard() {
           Hello <strong>{userId}</strong> (not <strong>{userId}?</strong>
           <Link to="/login_register">Log out</Link>)
         </p>
+        {/*
         <p>
           From your account dashboard you can view your
-          <Link className="unerline-link" to={`/account_orders/${userId}`}>
+           <Link className="unerline-link" to={`/account_orders/${userId}`}> 
+          <Link className="unerline-link" to={`/my-orders`}>
             recent orders
           </Link>
           , manage your
@@ -24,6 +26,7 @@ export default function Dashboard() {
             edit your password and account details.
           </Link>
         </p>
+        */}
       </div>
     </div>
   );

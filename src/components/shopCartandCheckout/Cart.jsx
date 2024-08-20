@@ -1,9 +1,12 @@
 import { useParams, Link, useNavigate  } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import ToggleButton from "@/utils/toggleButton";
+
+//카카오페이
+import axiosInstance from '../../utils/globalAxios.js';
 
 export default function Cart() {
   const context = useContextElement();
@@ -23,7 +26,34 @@ export default function Cart() {
     local_pickup: false,
     shipping: false
   });
+  
 
+  //배송지
+  const userId = localStorage.getItem("userId");
+  const [savedData, setSavedData] = useState({
+    deliveryName:'',
+    address1:'',
+    address2: '',
+    post: '',
+    email1: '',
+    email2: '',
+    phone1: '',
+    phone2: '',
+    phone3: ''
+  });
+  const [formData, setFormData] = useState({
+    deliveryName:'',
+    address1:'',
+    address2: '',
+    post: '',
+    email1: '',
+    email2: '',
+    phone1: '',
+    phone2: '',
+    phone3: ''
+  });
+  const [shippingStatus, setShippingStatus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -102,43 +132,11 @@ export default function Cart() {
     fetchCartItems();
   }, [totalPrice]);
 
-  const addOrUpdateCartItem = async (productId, quantity) => {
-    try {
-      const existingItem = cartProducts.find(item => item.product.id === productId);
-      let updatedCart = [];
 
-      if (existingItem) {
-        // Update quantity if item already exists in the cart
-        updatedCart = cartProducts.map(item => 
-          item.product.id === productId
-            ? { ...item, amount: item.amount + quantity }
-            : item
-        );
-      } else {
-        // Add new item to the cart
-        const response = await axios.get(`${BASE_URL}/products/${productId}`);
-        const newProduct = response.data;
-        const newItem = { product: newProduct, amount: quantity };
-        updatedCart = [...cartProducts, newItem];
-      }
-
-      setCartProducts(updatedCart);
-      setLocalCart(updatedCart);
-      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
-
-      const newTotalPrice = updatedCart.reduce(
-        (total, item) => total + (item.amount * item.product.productPrice), 0
-      );
-      setTotalPrice(newTotalPrice);
-    } catch (error) {
-      console.error("상품 추가 또는 업데이트 중 오류 발생:", error);
-    }
-  };
-
-  const setQuantity = async (cartItemId, quantity) => {
+  const setQuantity = useCallback(async (cartId, productId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
@@ -152,9 +150,9 @@ export default function Cart() {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
     }
-  };
+  });
 
-  const removeItem = async (cartItemId) => {
+  const removeItem = useCallback(async (cartItemId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
       const updatedCart = response.data || [];
@@ -170,9 +168,9 @@ export default function Cart() {
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
-  };
+  });
 
-  const updateShippingStatus = async (cartItemId, shipping) => {
+  const updateShippingStatus = useCallback(async (cartItemId, shipping) => {
     try {
       const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, { cartItemId, shipping });
   
@@ -200,7 +198,7 @@ export default function Cart() {
     } catch (error) {
       console.error("배송 상태 업데이트 중 오류 발생:", error.response ? error.response.data : error.message);
     }
-  };
+  });
 
   // const handleShippingToggle = async (cartItemId, newStatus) => {
   //   try {
@@ -261,6 +259,155 @@ export default function Cart() {
     }
   };
   
+  // 주소
+  const Checkout = () =>{
+    console.log("cartCheckout:",cartProducts);
+    const hasShippedItems = cartProducts.some(item => item.shipping === true);
+    console.log("shipping?",hasShippedItems);
+    
+    if (hasShippedItems){
+      setShippingStatus(true);
+    } else {
+      navigate("/shop_checkout");
+    }
+  };
+
+  //솔님 주소 띄우실 때 사용하세요!!
+  useEffect(()=>{
+  
+    if (!userId) {
+      console.error("userId is not defined");
+      console.log('userIderror:', userId);
+      return;
+    }
+    
+    else{
+    const fetchUserData = async () => {
+      try{
+        console.log('Fetching user data...'); // 데이터 로드 시작 시 로그
+        const response = await axios.get(`${BASE_URL}/bisang/deliveryAddr/${userId}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          } 
+        });
+        if (response.data) {
+          console.log('User data fetched:', response.data[0]); // 데이터 로드 성공 시 로그
+          setFormData(response.data[0]);
+          setSavedData(response.data[0]);
+          console.log("formdata:",formData);
+        } else {
+          console.log('No data found'); // 데이터가 없을 경우 로그
+        }
+      }catch(error){
+        console.error('Error fetching user data:', error);
+      }
+    };
+      fetchUserData();
+  }
+  }, [userId]);
+  
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    script.async = true;
+    script.onload = () => {
+      console.log("Daum Postcode script loaded");
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handlePostcodeSearch = () => {
+    if (!window.daum) {
+      console.error("Daum Postcode script is not loaded yet");
+      return;
+    }
+
+    new window.daum.Postcode({
+      oncomplete: function (data) {
+        let fullAddress = data.roadAddress;
+        let extraAddress = "";
+
+        if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+          extraAddress += data.bname;
+        }
+        if (data.buildingName !== "" && data.apartment === "Y") {
+          extraAddress += extraAddress !== "" ? ", " + data.buildingName : data.buildingName;
+        }
+        if (extraAddress !== "") {
+          extraAddress = " (" + extraAddress + ")";
+        }
+        fullAddress += extraAddress;
+
+        setFormData((prevData) => ({
+          ...prevData,
+          post: data.zonecode,
+          address1: fullAddress,
+          address2: ''
+        }));
+      },
+    }).open();
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+
+  };
+
+  const updateDelivery = async() => {
+
+    const updateDeliveryAddr = {...formData};
+
+    try {
+      const response = await axios.put(`${BASE_URL}/bisang/deliveryAddr/${userId}`, updateDeliveryAddr, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      });
+
+      if (response.status == 200){
+        console.log("주소변경성공",formData);
+        setSavedData(formData);
+      }else{
+        console.log("주소변경실패");
+      }
+    } catch (error) {
+      console.error('Error:',error);
+    }
+  };
+
+  const handlePageChange = ()=>{
+    const  {deliveryName, address1, address2, post, phone1, phone2, phone3} = formData;
+    if (!deliveryName || !address1 || !post || !phone1 || !phone2 || !phone3){
+      setErrorMessage("정보를 입력해주세요.");
+      return ;
+    }
+    if (
+      deliveryName === savedData.deliveryName
+      && address1 === savedData.address1
+      && address2 === savedData.address2
+      && post === savedData.post
+      && phone1 === savedData.phone1
+      && phone2 === savedData.phone2
+      && phone3 === savedData.phone3
+    ){
+      navigate("/shop_checkout");
+    } else {
+      setErrorMessage("변경하기 버튼을 누른 후 주문해주세요.");
+    }
+  }
+  
 
 
   const handleCheckboxChange = (event) => {
@@ -271,6 +418,64 @@ export default function Cart() {
     }));
   };
 
+
+  //카카오페이버튼
+  const handleButtonClick = async () => {
+    console.log("버튼눌림");
+    let xxx = {'cartId': cartId};
+    console.log(xxx);
+    try {
+      const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
+        {
+          headers: { //body에 뭐넣을지 미리 알려주는 역할
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Credentials': true,
+            'ngrok-skip-browser-warning': true,
+
+          }
+        }
+  
+      );
+
+      console.log("PaymentResponse:", response.data);
+      console.log("그렇다면 이거는? PaymentResponse:", JSON.stringify(response.data, null, 2));
+
+      //모바일/데스크탑 웹 여부에 따라 연결되는 url 선택
+      const pcUrl = response.data.next_redirect_pc_url;
+      const mobileUrl = response.data.next_redirect_mobile_url;
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      const redirectUrl = isMobile ? mobileUrl : pcUrl;
+      // const redirectUrl =pcUrl;
+      console.log(">>>>>>>>>>:" + redirectUrl);
+
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("Error:", error.message);
+      if (error.response) {
+        console.error('Error data:', error.response.data);
+        console.error('Error status:', error.response.status);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      }
+    }
+  };
+
+
+
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
+  // const formatNumberWithCommas = (value) => {
+  //   return new Intl.NumberFormat('ko-KR').format(value);
+  // };
+  
   if (loading) return <div>로딩 중...</div>;
 
   return (
@@ -291,7 +496,6 @@ export default function Cart() {
                 </tr>
               </thead>
               <tbody>
-
                 {cartProducts.map((item, i) => (
                   <tr key={i}>
                     <td>
@@ -312,7 +516,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__product-price">
-                        {item.product.productPrice}원
+                        {formatCurrency(item.product.productPrice)}원
                       </span>
                     </td>
                     <td>
@@ -323,18 +527,18 @@ export default function Cart() {
                           value={item.amount}
                           min={1}
                           onChange={(e) =>
-                            setQuantity(item.cartItemId, parseInt(e.target.value, 10))
+                            setQuantity(item.cartId, item.productId, parseInt(e.target.value, 10))
                           }
                           className="qty-control__number text-center"
                         />
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount - 1)}
+                          onClick={() => setQuantity(item.cartId, item.productId, item.amount - 1)}
                           className="qty-control__reduce"
                         >
                           -
                         </div>
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount + 1)}
+                          onClick={() => setQuantity(item.cartId, item.productId, item.amount + 1)}
                           className="qty-control__increase"
                         >
                           +
@@ -343,11 +547,12 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__subtotal">
-                        {item.product.productPrice * item.amount}원
+                        {formatCurrency(item.product.productPrice * item.amount)}원
                       </span>
                       
 
                     </td>
+                    
                     <td>
                       <div className="form-check form-switch">
                         <input
@@ -376,8 +581,6 @@ export default function Cart() {
                       onToggle={() => handleShippingToggle(item.cartItemId, !item.isShipping)}
                     />
                   </td> */}
-
-
                     <td>
                       <a
                         onClick={() => removeItem(item.cartItemId)}
@@ -476,23 +679,192 @@ export default function Cart() {
                   <tr>
                     <th>총계</th>
                     <td>
-                      {49 * (checkboxes.flat_rate ? 1 : 0) +
-                        8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice}원
+                      {formatCurrency(totalPrice)}원
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+
+                  {/* 배송주소 */}
+                  {/* <td> */}
+                  {shippingStatus && (
+                    <div className="delivery-Address">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="needs-validation"
+                      >
+                      {/* <div className="delivery-form"> */}
+                      <div className="col-md-6">
+                        <div className="form-floating my-3">
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="deliveryName"
+                            placeholder="이름"
+                            value={formData.deliveryName}
+                            onChange={handleChange}
+                          />
+                          <label htmlFor="deliveryName">이름</label>
+                        </div>
+                      </div>
+                      <div className="address-form">
+                        <div className="address-row">
+                        <div className="col-md-6">
+                          <div className="form-floating my-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="post"
+                              value={formData.post}
+                              onChange={handleChange}
+                              readOnly
+                            />
+                            <label htmlFor="post">우편주소</label>
+                          </div>
+                        </div>
+                        <button type="button" onClick={handlePostcodeSearch} className="address-btn">주소 찾기</button>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-floating my-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="address1"
+                              value={formData.address1}
+                              onChange={handleChange}
+                            />
+                            <label htmlFor="address1">주소</label>
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-floating my-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="address2"
+                              value={formData.address2}
+                              onChange={handleChange}
+                            />
+                            <label htmlFor="address2">상세주소</label>
+                          </div>
+                        </div>
+                        </div>
+
+                        {/* <div className="email-form">
+                          <div className="form-floating my-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="email1"
+                              value={formData.email1}
+                              onChange={handleChange}
+                            />
+                            <label htmlFor="email1">이메일 1</label>
+                          </div>
+
+                          <span className="email-separator">@</span>
+                        
+                          <div className="form-floating my-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="email2"
+                              value={formData.email2}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div> */}
+
+                        <div className="phone-form">
+                          <div className="form-floating my-3">
+                            <select
+                              type="number"
+                              className="form-control"
+                              id="phone1"
+                              value={formData.phone1}
+                              onChange={handleChange}
+                            >
+                            <option value="010">010</option>
+                            <option value="011">011</option>
+                            </select>
+                            <label htmlFor="phone1">전화번호</label>
+                          </div>
+
+                          <span className="phone-seperator">-</span>
+
+                          <div className="form-floating my-3">
+                            <input
+                              type="number"
+                              className="form-control"
+                              id="phone2"
+                              value={formData.phone2}
+                              onChange={handleChange}
+                              pattern="[0-9]*"
+                            />
+                          </div>
+
+                          <span className="phone-seperator">-</span>
+
+                          <div className="form-floating my-3">
+                            <input
+                              type="number"
+                              className="form-control"
+                              id="phone3"
+                              value={formData.phone3}
+                              onChange={handleChange}
+                              pattern="[0-9]*"
+                            />
+                          </div>
+                        </div>
+                        <button
+                          className="btn btn-primary btn-checkout"
+                          onClick={updateDelivery}>
+                          변경하기
+                        </button>
+                        <button
+                          className="btn btn-primary btn-checkout"
+                          onClick={handlePageChange}>
+                          주문하기
+                        </button>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                        </form>
+                      </div>
+                    )}  
+                    {/* </td> */}
+
+            {!shippingStatus && (
             <div className="mobile_fixed-btn_wrapper">
               <div className="button-wrapper container">
-                <button
+            
+            
+            
+              <button className="btn btn-checkout" onClick={handleButtonClick}>
+            <img
+              style={{ height: "fit-content" }}
+              className="h-auto"
+              loading="lazy"
+              src="/assets/images/카카오페이로결제하기버튼.png"
+              width="375"
+              height="80"
+              alt="image"
+            />
+            </button>
+               
+               
+               
+          
+                {/* <button
                   className="btn btn-primary btn-checkout"
-                  onClick={() => navigate("/shop_checkout")}>
+                  // onClick={() => navigate("/shop_checkout")}
+                  onClick={Checkout}>
                   주문하기
-                </button>
+                </button> */}
               </div>
             </div>
+            )}
           </div>
         </div>
       )}

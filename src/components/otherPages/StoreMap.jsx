@@ -188,7 +188,7 @@ const containerStyle = {
 };
 
 export default function StoreMap({
-  storesLocations,
+  // storesLocations,
   getLocation,
   setLocation,
 }) {
@@ -205,7 +205,7 @@ export default function StoreMap({
       lng: sumLng / numLocations,
     };
   };
-  const center = useMemo(() => calculateCenter(storesLocations), []);
+  // const center = useMemo(() => calculateCenter(storesLocations), []);
 
   // add lng & lat
   const locationHandler = (location) => {
@@ -229,7 +229,7 @@ export default function StoreMap({
           options={option}
         >
           <MarkerClusterer>
-            {(clusterer) =>
+            {/* {(clusterer) =>
               storesLocations.map((marker) => (
                 <Marker
                   key={marker.id}
@@ -241,7 +241,7 @@ export default function StoreMap({
                   onClick={() => locationHandler(marker)}
                 ></Marker>
               ))
-            }
+            } */}
           </MarkerClusterer>
           {getLocation !== null && (
             <InfoWindow

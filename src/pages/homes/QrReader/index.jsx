@@ -1,5 +1,5 @@
 
-import Header3 from "@/components/headers/Header3";
+// import Header3 from "@/components/headers/Header3";
 import Categories from "@/components/homes/home-3/Categories";
 import CategoryBanner from "@/components/homes/home-3/CategoryBanner";
 import FeaturesProducts from "@/components/homes/home-3/FeaturesProducts";

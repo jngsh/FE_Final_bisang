@@ -6,7 +6,7 @@ import ColorSelection from "../common/ColorSelection";
 import Star from "../common/Star";
 import Pagination2 from "../common/Pagination2";
 import { Swiper } from "swiper/react";
-import Banner3 from "./Banner3";
+// import Banner3 from "./Banner3";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
@@ -38,7 +38,7 @@ export default function Shop3() {
       </div>
 
       <div className="shop-list flex-grow-1">
-        <Banner3 />
+        {/* <Banner3 /> */}
         {/* <!-- /.slideshow --> */}
 
         <div className="mb-3 pb-2 pb-xl-3"></div>
