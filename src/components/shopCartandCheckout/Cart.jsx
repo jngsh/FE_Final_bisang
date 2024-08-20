@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate  } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import ToggleButton from "@/utils/toggleButton";
@@ -133,10 +133,10 @@ export default function Cart() {
   }, [totalPrice]);
 
 
-  const setQuantity = async (productId, quantity) => {
+  const setQuantity = useCallback(async (cartId, productId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { productId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
@@ -150,9 +150,9 @@ export default function Cart() {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
     }
-  };
+  });
 
-  const removeItem = async (cartItemId) => {
+  const removeItem = useCallback(async (cartItemId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
       const updatedCart = response.data || [];
@@ -168,9 +168,9 @@ export default function Cart() {
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
-  };
+  });
 
-  const updateShippingStatus = async (cartItemId, shipping) => {
+  const updateShippingStatus = useCallback(async (cartItemId, shipping) => {
     try {
       const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, { cartItemId, shipping });
   
@@ -198,7 +198,7 @@ export default function Cart() {
     } catch (error) {
       console.error("배송 상태 업데이트 중 오류 발생:", error.response ? error.response.data : error.message);
     }
-  };
+  });
 
   // const handleShippingToggle = async (cartItemId, newStatus) => {
   //   try {
@@ -475,7 +475,7 @@ export default function Cart() {
   // const formatNumberWithCommas = (value) => {
   //   return new Intl.NumberFormat('ko-KR').format(value);
   // };
-
+  
   if (loading) return <div>로딩 중...</div>;
 
   return (
@@ -496,7 +496,6 @@ export default function Cart() {
                 </tr>
               </thead>
               <tbody>
-
                 {cartProducts.map((item, i) => (
                   <tr key={i}>
                     <td>
@@ -528,18 +527,18 @@ export default function Cart() {
                           value={item.amount}
                           min={1}
                           onChange={(e) =>
-                            setQuantity(item.productId, parseInt(e.target.value, 10))
+                            setQuantity(item.cartId, item.productId, parseInt(e.target.value, 10))
                           }
                           className="qty-control__number text-center"
                         />
                         <div
-                          onClick={() => setQuantity(item.productId, item.amount - 1)}
+                          onClick={() => setQuantity(item.cartId, item.productId, item.amount - 1)}
                           className="qty-control__reduce"
                         >
                           -
                         </div>
                         <div
-                          onClick={() => setQuantity(item.productId, item.amount + 1)}
+                          onClick={() => setQuantity(item.cartId, item.productId, item.amount + 1)}
                           className="qty-control__increase"
                         >
                           +
@@ -582,8 +581,6 @@ export default function Cart() {
                       onToggle={() => handleShippingToggle(item.cartItemId, !item.isShipping)}
                     />
                   </td> */}
-
-
                     <td>
                       <a
                         onClick={() => removeItem(item.cartItemId)}
