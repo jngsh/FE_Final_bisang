@@ -5,8 +5,8 @@ import CommingSoon from "@/components/otherPages/CommingSoon";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Comming Soon || Uomo eCommerce Reactjs Template",
-  description: "Uomo eCommerce Reactjs Template",
+  title: "Comming Soon || :: PETER PET",
+  description: ":: PETER PET",
 };
 export default function CommingSoonPage() {
   return (

@@ -322,4 +322,58 @@
     font-size: 1rem;
     font-weight: 500;
   }
+
+  .address-form{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .delivery-Address{
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin-top: 3.625rem;
+    border-top: 1px solid #e4e4e4;
+  }
+  .address-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .address-btn{
+    margin-left: 1rem;
+    // flex-shrink: 0;
+    height: 3.75rem;
+  }
+
+  .email-form{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+   }
+
+   .email-form .form-floating {
+     width: 100%;
+   }
+
+   .email-separator {
+     padding: 0 0.5rem;
+     font-size: 1.25rem;
+   }
+
+   .phone-form {
+     display: flex;
+     align-items: center;
+     gap:0.5rem ;
+   }
+
+   .phone-form .form-floating {
+     float: left;
+     width: 7rem; /* 각 입력 필드의 너비를 설정합니다 */
+     position: relative;
+     margin-right: 0.5rem; /* 필드 간의 간격을 설정합니다 */
+     width: 100%;
+   }
 }

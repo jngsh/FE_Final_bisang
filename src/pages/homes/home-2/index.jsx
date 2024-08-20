@@ -1,8 +1,8 @@
 // import Footer2 from "@/components/footers/Footer2";
 
-import Header2 from "@/components/headers/Header2";
-import Banner from "@/components/homes/home-2/Banner";
-import Blogs from "@/components/homes/home-2/Blogs";
+// import Header2 from "@/components/headers/Header2";
+// import Banner from "@/components/homes/home-2/Banner";
+// import Blogs from "@/components/homes/home-2/Blogs";
 import Brands from "@/components/homes/home-2/Brands";
 import Categories from "@/components/homes/home-2/Categories";
 import GridBanner from "@/components/homes/home-2/GridBanner";
@@ -29,7 +29,7 @@ export default function HomePage2() {
 
   return (
     <>
-      <Header2 />
+      {/* <Header2 /> */}
       <main style={{ paddingTop: "100px", height: "1000px"}}>
         {showButton && (
           <button style={{ width: "100px", height: "100px"}} onClick={openBarcodeScanner}>클릭해서 스캔하기 !!!</button>

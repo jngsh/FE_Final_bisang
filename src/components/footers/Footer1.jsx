@@ -3,17 +3,19 @@ import { Link } from "react-router-dom";
 
 import {
   currencyOptions,
-  footerLinks1,
-  footerLinks2,
-  footerLinks3,
+  // footerLinks1,
+  // footerLinks2,
+  // footerLinks3,
   languageOptions,
-  socialLinks,
+  // socialLinks,
 } from "@/data/footer";
 
 const Footer1 = () => {
   const handleClick = (event) => {
+    console.log(event);
+    
     event.preventDefault(); // 폼 제출 방지 (필요시)
-    alert('이메일 주소가 등록되었습니다');
+    alert('구독해주셔서 감사합니다. 좋은 소식 전해드릴게요🤭');
   };
 
 
@@ -70,7 +72,7 @@ const Footer1 = () => {
           </div>
           {/* <!-- /.footer-column --> */}
 
-          <div className="footer-column footer-menu mb-4 mb-lg-0">
+          {/* <div className="footer-column footer-menu mb-4 mb-lg-0">
             <h5 className="sub-menu__title text-uppercase">Company</h5>
             <ul className="sub-menu__list list-unstyled">
               {footerLinks1.map((elm, i) => (
@@ -81,9 +83,9 @@ const Footer1 = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
           {/* <!-- /.footer-column --> */}
-          <div className="footer-column footer-menu mb-4 mb-lg-0">
+          {/* <div className="footer-column footer-menu mb-4 mb-lg-0">
             <h5 className="sub-menu__title text-uppercase">Shop</h5>
             <ul className="sub-menu__list list-unstyled">
               {footerLinks2.map((elm, i) => (
@@ -94,9 +96,9 @@ const Footer1 = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
           {/* <!-- /.footer-column --> */}
-          <div className="footer-column footer-menu mb-4 mb-lg-0">
+          {/* <div className="footer-column footer-menu mb-4 mb-lg-0">
             <h5 className="sub-menu__title text-uppercase">Help</h5>
             <ul className="sub-menu__list list-unstyled">
               {footerLinks3.map((elm, i) => (
@@ -107,7 +109,7 @@ const Footer1 = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
           {/* <!-- /.footer-column --> */}
           <div className="footer-column footer-newsletter col-12 mb-4 mb-lg-0">
             <h5 className="sub-menu__title text-uppercase">구독</h5>

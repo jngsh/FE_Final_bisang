@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js';
+import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
@@ -9,7 +10,6 @@ const MonthlySalesLineChart = () => {
     const currentYear = new Date().getFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
     const [years, setYears] = useState([]);
-
     const [data, setData] = useState({
         labels: Array.from({ length: 12 }, (_, i) => `${i + 1}월`),
         datasets: [
@@ -19,15 +19,18 @@ const MonthlySalesLineChart = () => {
                 fill: false,
                 backgroundColor: 'rgba(75,192,192,0.4)',
                 borderColor: 'rgba(75,192,192,1)',
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(75,192,192,1)',
             }
         ]
     });
+    const [maxY, setMaxY] = useState(1000000);
 
     const options = {
         scales: {
             y: {
                 beginAtZero: true,
-                max: 1000000,
+                max: maxY,
                 ticks: {
                     callback: function(value) {
                         return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
@@ -47,30 +50,19 @@ const MonthlySalesLineChart = () => {
     }, [selectedYear]);
 
     const fetchYears = () => {
-        fetch(`${BASE_URL}/bisang/admin/stats/sales/years`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                setYears(data);
+                setYears(response.data);
             })
             .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
+                console.error('axios request error:', error);
             });
     };
 
     const fetchMonthlySales = (year) => {
-        fetch(`${BASE_URL}/bisang/admin/stats/sales/monthly/${year}`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/monthly/${year}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
+                const data = response.data;
                 const defaultLabels = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
                 const defaultSalesData = Array(12).fill(0);
 
@@ -79,6 +71,10 @@ const MonthlySalesLineChart = () => {
                     defaultSalesData[monthIndex] = d.totalSale;
                 });
 
+                const maxSales = Math.max(...defaultSalesData);
+                const newMaxY = Math.ceil(maxSales / 500000) * 500000;
+                setMaxY(newMaxY);
+
                 setData({
                     labels: defaultLabels,
                     datasets: [
@@ -86,14 +82,16 @@ const MonthlySalesLineChart = () => {
                             label: 'Monthly Sales',
                             data: defaultSalesData,
                             fill: false,
-                            backgroundColor: 'rgba(75,192,192,0.4)',
-                            borderColor: 'rgba(75,192,192,1)',
+                            borderColor: 'rgba(0, 128, 0, 1)',
+                            backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                            pointRadius: 3,
+                            pointBackgroundColor: 'rgba(0, 128, 0, 1)',
                         }
                     ]
                 });
             })
             .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
+                console.error('axios request error:', error);
             });
     };
 
@@ -103,7 +101,6 @@ const MonthlySalesLineChart = () => {
 
     return (
         <div>
-            <h2>{selectedYear}년 월 매출</h2>
             <select id="yearPicker" value={selectedYear} onChange={handleYearChange}>
                 {years.map(year => (
                     <option key={year} value={year}>

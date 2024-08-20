@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StoreMap from "./StoreMap";
-import { storesLocations } from "@/data/storeLocations";
+// import { storesLocations } from "@/data/storeLocations";
 
 export default function StoreLocator() {
   const [getLocation, setLocation] = useState(null);
@@ -36,7 +36,7 @@ export default function StoreLocator() {
             </div>
 
             <div className="store-location__search-result">
-              {storesLocations.map((elm, i) => (
+              {/* {storesLocations.map((elm, i) => (
                 <div key={i} className="store-location__search-result__item">
                   <h5>Store in {elm.city}</h5>
                   <p>
@@ -52,7 +52,7 @@ export default function StoreLocator() {
                     See on the map
                   </a>
                 </div>
-              ))}
+              ))} */}
             </div>
           </form>
         </div>
@@ -61,7 +61,7 @@ export default function StoreLocator() {
             <StoreMap
               getLocation={getLocation}
               setLocation={setLocation}
-              storesLocations={storesLocations}
+              // storesLocations={storesLocations}
             />
           </div>
         </div>
