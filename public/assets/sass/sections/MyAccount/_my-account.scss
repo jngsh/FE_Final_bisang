@@ -214,6 +214,13 @@
       opacity: 1;
       visibility: visible;
     }
+
+    .products-grid {
+      display: flex;
+      flex-direction: column; /* 수직 배치 */
+      align-items: center; /* 중앙 정렬 */
+      gap: 20px; /* 카드 사이 간격 */
+    }
   }
 }
 

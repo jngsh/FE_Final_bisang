@@ -2,28 +2,65 @@ import { useContextElement } from "@/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link } from "react-router-dom";
 import { Navigation } from "swiper/modules";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { allProducts } from "@/data/products";
+import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 export default function AccountWishlist() {
-  const { wishList, toggleWishlist } = useContextElement();
-  const [wishlistProducts, setWishlistProducts] = useState(
-    allProducts.filter((elm) => wishList.includes(elm.id))
-  );
-  useEffect(() => {
-    setWishlistProducts(allProducts.filter((elm) => wishList.includes(elm.id)));
-  }, [wishList]);
+  const token = localStorage.getItem("token");
+  // const {userId} = useContextElement();
+  const userId = localStorage.getItem("userId");
+  const [reviewList, setReviewList] = useState([]);
+  
+  useEffect(()=>{
+    const fetchReviewList = async () => {
+      console.log('token??',token);
+      try {
+      const response = await axios.get(`${BASE_URL}/bisang/review/${userId}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          } 
+      });
+
+      if(response.data){
+        console.log('Orders data:',response.data);
+        const processedData = response.data.map(orderDTO => ({
+          orderId:orderDTO.orderId,
+          orderDate: orderDTO.orderDate,
+          orderDetails: orderDTO.orderDetails.map(detailDTO => ({
+            orderDetailId: detailDTO.orderDetailId,
+            productId: detailDTO.productId,
+            productName: detailDTO.productName,
+            productPrice: detailDTO.productPrice,
+            productImage: detailDTO.productImage
+          }))
+        }));
+        setReviewList(processedData);
+      }
+    } catch(error) {
+        console.error("Error fetching reviewlist:", error);
+    }
+  };
+  fetchReviewList();
+},[]);
+
+const toggleWishlist = (productId) => {
+  // Wishlist 토글 로직 구현
+  console.log("Toggling wishlist for product:", productId);
+};
 
   return (
     <div className="col-lg-9">
       <div className="page-content my-account__wishlist">
-        {wishList.length ? (
+        {reviewList.length ? (
           <div
             className="products-grid row row-cols-2 row-cols-lg-3"
             id="products-grid"
           >
             {" "}
-            {wishlistProducts.map((elm, i) => (
+            {reviewList.flatMap(orderDTO =>
+              orderDTO.orderDetails.map((detailDTO, i) => (
               <div className="product-card-wrapper" key={i}>
                 <div className="product-card mb-3 mb-md-4 mb-xxl-5">
                   <div className="pc__img-wrapper">
@@ -37,15 +74,15 @@ export default function AccountWishlist() {
                         nextEl: ".next" + i,
                       }}
                     >
-                      {[elm.imgSrc, elm.imgSrc].map((elm2, i) => (
-                        <SwiperSlide key={i} className="swiper-slide">
-                          <Link to={`/product1_simple/${elm.id}`}>
+                      {[detailDTO.productImage, detailDTO.productImage].map((imgSrc, idx) => (
+                        <SwiperSlide key={idx} className="swiper-slide">
+                          <Link to={`/product1_simple/${detailDTO.productId}`}>
                             <img
                               loading="lazy"
-                              src={elm.imgSrc}
+                              src={imgSrc}
                               width="330"
                               height="400"
-                              alt="Cropped Faux leather Jacket"
+                              alt={detailDTO.productName}
                               className="pc__img"
                             />
                           </Link>
@@ -79,7 +116,7 @@ export default function AccountWishlist() {
                     </Swiper>
                     <button
                       className="btn-remove-from-wishlist"
-                      onClick={() => toggleWishlist(elm.id)}
+                      onClick={() => toggleWishlist(detailDTO.productId)}
                     >
                       <svg
                         width="12"
@@ -94,16 +131,16 @@ export default function AccountWishlist() {
                   </div>
 
                   <div className="pc__info position-relative">
-                    <p className="pc__category">{elm.category}</p>
-                    <h6 className="pc__title">{elm.title}</h6>
+                    <p className="pc__category">{detailDTO.productId}</p>
+                    <h6 className="pc__title">{detailDTO.productName}</h6>
                     <div className="product-card__price d-flex">
-                      <span className="money price">${elm.price}</span>
+                      <span className="money price">${detailDTO.productPrice}</span>
                     </div>
 
                     <button
                       className="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist active"
                       title="Remove From Wishlist"
-                      onClick={() => toggleWishlist(elm.id)}
+                      onClick={() => toggleWishlist(detailDTO.productId)}
                     >
                       <svg
                         width="16"
@@ -118,10 +155,10 @@ export default function AccountWishlist() {
                   </div>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         ) : (
-          <div className="fs-18">No products added to wishlist yet</div>
+          <div className="fs-18">리뷰를 남길 상품이 없습니다.</div>
         )}
         {/* <!-- /.products-grid row --> */}
       </div>
