@@ -1,11 +1,11 @@
-import { storesLocations } from "@/data/storeLocations";
+// import { storesLocations } from "@/data/storeLocations";
 
 export default function Contact() {
   return (
     <section className="contact-us container">
       <div className="mw-930">
         <div className="row mb-5">
-          {storesLocations.slice(0, 2).map((elm, i) => (
+          {/* {storesLocations.slice(0, 2).map((elm, i) => (
             <div key={i} className="col-lg-6">
               <h3 className="mb-4">Store in {elm.city}</h3>
               <p className="mb-4">
@@ -19,7 +19,7 @@ export default function Contact() {
                 {elm.phone}
               </p>
             </div>
-          ))}
+          ))} */}
         </div>
         <div className="contact-us__form">
           <form

@@ -7,22 +7,22 @@ const steps = [
     id: 1,
     href: "/shop_cart",
     number: "01",
-    title: "장바구니",
-    description: "Manage Your Items List",
+    title: "장바구니 & 배송지 입력",
+    // description: "Manage Your Items List",
   },
-  {
-    id: 2,
-    href: "/shop_checkout",
-    number: "02",
-    title: "Shipping and Checkout",
-    description: "Checkout Your Items List",
-  },
+  // {
+  //   id: 2,
+  //   href: "/shop_checkout",
+  //   number: "02",
+  //   title: "Shipping and Checkout",
+  //   description: "Checkout Your Items List",
+  // },
   {
     id: 3,
-    href: "/orderCompleted",
-    number: "03",
-    title: "Confirmation",
-    description: "Review And Submit Your Order",
+    href: "/orderCompleted", //추후 링크 삭제할것
+    number: "02",
+    title: "주문 확인",
+    // description: "Review And Submit Your Order",
   },
 ];
 export default function CheckoutSteps() {

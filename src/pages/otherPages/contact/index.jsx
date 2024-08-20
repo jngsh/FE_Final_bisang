@@ -1,12 +1,12 @@
 import Header1 from "@/components/headers/Header1";
-import Contact from "@/components/otherPages/Contact/Contact";
-import LocationMap from "@/components/otherPages/Contact/LocationMap";
+// import Contact from "@/components/otherPages/Contact/Contact";
+// import LocationMap from "@/components/otherPages/Contact/LocationMap";
 
 import MetaComponent from "@/components/common/MetaComponent";
 import Footer1 from "@/components/footers/Footer1";
 const metadata = {
-  title: "Contact || Uomo eCommerce Reactjs Template",
-  description: "Uomo eCommerce Reactjs Template",
+  title: "Contact || :: PETER PET",
+  description: ":: PETER PET",
 };
 export default function ContactPage() {
   return (
@@ -24,10 +24,10 @@ export default function ContactPage() {
         <section className="google-map mb-5">
           <h2 className="d-none">Contact US</h2>
           <div id="map" className="google-map__wrapper">
-            <LocationMap />
+            {/* <LocationMap /> */}
           </div>
         </section>
-        <Contact />
+        {/* <Contact /> */}
       </main>
       <div className="mb-5 pb-xl-5"></div>
       < Footer1 />
