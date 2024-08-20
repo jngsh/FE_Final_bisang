@@ -68,9 +68,7 @@ export default function ProductList({ petType, typeValue }) {
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const itemsPerPage = 10;
-
 
   const { addProductToCart, isAddedToCartProducts, toggleWishlist, isAddedtoWishlist } = useContextElement();
 
@@ -79,21 +77,15 @@ export default function ProductList({ petType, typeValue }) {
       axios.get(`${BASE_URL}/bisang/category/products-list/${petType}/${typeValue}`)
         .then(response => {
           setProducts(response.data);
-          setTotalPages(Math.ceil(response.data.length / itemsPerPage));
           setLoading(false);
-          console.log(">>>>>>>확인", response.data, petType, typeValue);
         })
         .catch(error => {
-          console.error("There was an error fetching the products!", error);
+          console.error("axios error", error);
           setLoading(false);
         });
     }
     setCurrentPage(1);
   }, [petType, typeValue]);
-
-  const handlePriceChange = (value) => {
-    setPriceRange(value);
-  };
 
   useEffect(() => {
     const newFilteredProducts = products.filter(product => {
@@ -102,28 +94,20 @@ export default function ProductList({ petType, typeValue }) {
         : product.productPrice;
       return discountedPrice >= priceRange[0] && discountedPrice <= priceRange[1];
     });
+
     const sortedProducts = sortProducts(newFilteredProducts, sortBy);
-    setFilteredProducts(sortedProducts);
-    setCurrentPage(1); 
-  }, [priceRange, products, sortBy]);
   
-
-  useEffect(() => {
-    const pageOverlay = document.getElementById("pageOverlay");
-
-    pageOverlay.addEventListener("click", closeModalShopFilter);
-
-    return () => {
-      pageOverlay.removeEventListener("click", closeModalShopFilter);
-    };
-  }, []);
-
-  useEffect(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    setFilteredProducts(products.slice(startIndex, endIndex));
-  }, [currentPage, products, priceRange, sortBy]);
+    setFilteredProducts(sortedProducts.slice(startIndex, endIndex));
   
+    setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
+  }, [priceRange, products, sortBy, currentPage]);
+
+  const handlePriceChange = (value) => {
+    setPriceRange(value);
+    setCurrentPage(1);
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -134,8 +118,6 @@ export default function ProductList({ petType, typeValue }) {
     setSortBy(e.target.value);
     setCurrentPage(1);
   };
-
-  const paginatedProducts = filteredProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   if (loading) {
     return <p>상품 목록을 불러오는 중입니다...</p>;

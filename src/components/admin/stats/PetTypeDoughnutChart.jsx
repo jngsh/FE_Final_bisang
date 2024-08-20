@@ -46,7 +46,7 @@ const PetTypeDoughnutChart = () => {
 
     return (
         <div className="chart-container">
-            <h3>반려동물 종 비율</h3>
+            <h5>반려동물 종 비율</h5>
             <Doughnut data={data} />
         </div>
     );
