@@ -1,9 +1,12 @@
 import { useParams, Link, useNavigate  } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import ToggleButton from "@/utils/toggleButton";
+
+//카카오페이
+import axiosInstance from '../../utils/globalAxios.js';
 
 export default function Cart() {
   const context = useContextElement();
@@ -128,11 +131,12 @@ export default function Cart() {
 
     fetchCartItems();
   }, [totalPrice]);
-  
-  const setQuantity = async (cartItemId, quantity) => {
+
+
+  const setQuantity = useCallback(async (cartId, productId, quantity) => {
     if (quantity >= 1) {
       try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartItemId, amount: quantity });
+        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
         const updatedCart = response.data || [];
         setCartProducts(updatedCart);
         setLocalCart(updatedCart);
@@ -146,9 +150,9 @@ export default function Cart() {
         console.error("수량 업데이트 중 오류 발생:", error);
       }
     }
-  };
+  });
 
-  const removeItem = async (cartItemId) => {
+  const removeItem = useCallback(async (cartItemId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
       const updatedCart = response.data || [];
@@ -164,9 +168,9 @@ export default function Cart() {
     } catch (error) {
       console.error("아이템 삭제 중 오류 발생:", error);
     }
-  };
+  });
 
-  const updateShippingStatus = async (cartItemId, shipping) => {
+  const updateShippingStatus = useCallback(async (cartItemId, shipping) => {
     try {
       const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, { cartItemId, shipping });
   
@@ -194,7 +198,7 @@ export default function Cart() {
     } catch (error) {
       console.error("배송 상태 업데이트 중 오류 발생:", error.response ? error.response.data : error.message);
     }
-  };
+  });
 
   // const handleShippingToggle = async (cartItemId, newStatus) => {
   //   try {
@@ -414,6 +418,64 @@ export default function Cart() {
     }));
   };
 
+
+  //카카오페이버튼
+  const handleButtonClick = async () => {
+    console.log("버튼눌림");
+    let xxx = {'cartId': cartId};
+    console.log(xxx);
+    try {
+      const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
+        {
+          headers: { //body에 뭐넣을지 미리 알려주는 역할
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Credentials': true,
+            'ngrok-skip-browser-warning': true,
+
+          }
+        }
+  
+      );
+
+      console.log("PaymentResponse:", response.data);
+      console.log("그렇다면 이거는? PaymentResponse:", JSON.stringify(response.data, null, 2));
+
+      //모바일/데스크탑 웹 여부에 따라 연결되는 url 선택
+      const pcUrl = response.data.next_redirect_pc_url;
+      const mobileUrl = response.data.next_redirect_mobile_url;
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      const redirectUrl = isMobile ? mobileUrl : pcUrl;
+      // const redirectUrl =pcUrl;
+      console.log(">>>>>>>>>>:" + redirectUrl);
+
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("Error:", error.message);
+      if (error.response) {
+        console.error('Error data:', error.response.data);
+        console.error('Error status:', error.response.status);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      }
+    }
+  };
+
+
+
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'decimal',
+      currency: 'KRW',
+    }).format(value);
+  };
+
+  // const formatNumberWithCommas = (value) => {
+  //   return new Intl.NumberFormat('ko-KR').format(value);
+  // };
+  
   if (loading) return <div>로딩 중...</div>;
 
   return (
@@ -434,7 +496,6 @@ export default function Cart() {
                 </tr>
               </thead>
               <tbody>
-
                 {cartProducts.map((item, i) => (
                   <tr key={i}>
                     <td>
@@ -455,7 +516,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__product-price">
-                        {item.product.productPrice}원
+                        {formatCurrency(item.product.productPrice)}원
                       </span>
                     </td>
                     <td>
@@ -466,18 +527,18 @@ export default function Cart() {
                           value={item.amount}
                           min={1}
                           onChange={(e) =>
-                            setQuantity(item.cartItemId, parseInt(e.target.value, 10))
+                            setQuantity(item.cartId, item.productId, parseInt(e.target.value, 10))
                           }
                           className="qty-control__number text-center"
                         />
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount - 1)}
+                          onClick={() => setQuantity(item.cartId, item.productId, item.amount - 1)}
                           className="qty-control__reduce"
                         >
                           -
                         </div>
                         <div
-                          onClick={() => setQuantity(item.cartItemId, item.amount + 1)}
+                          onClick={() => setQuantity(item.cartId, item.productId, item.amount + 1)}
                           className="qty-control__increase"
                         >
                           +
@@ -486,7 +547,7 @@ export default function Cart() {
                     </td>
                     <td>
                       <span className="shopping-cart__subtotal">
-                        {item.product.productPrice * item.amount}원
+                        {formatCurrency(item.product.productPrice * item.amount)}원
                       </span>
                       
 
@@ -520,8 +581,6 @@ export default function Cart() {
                       onToggle={() => handleShippingToggle(item.cartItemId, !item.isShipping)}
                     />
                   </td> */}
-
-
                     <td>
                       <a
                         onClick={() => removeItem(item.cartItemId)}
@@ -620,9 +679,7 @@ export default function Cart() {
                   <tr>
                     <th>총계</th>
                     <td>
-                      {49 * (checkboxes.flat_rate ? 1 : 0) +
-                        8 * (checkboxes.local_pickup ? 1 : 0) +
-                        totalPrice}원
+                      {formatCurrency(totalPrice)}원
                     </td>
                   </tr>
                 </tbody>
@@ -781,12 +838,30 @@ export default function Cart() {
             {!shippingStatus && (
             <div className="mobile_fixed-btn_wrapper">
               <div className="button-wrapper container">
-                <button
+            
+            
+            
+              <button className="btn btn-checkout" onClick={handleButtonClick}>
+            <img
+              style={{ height: "fit-content" }}
+              className="h-auto"
+              loading="lazy"
+              src="/assets/images/카카오페이로결제하기버튼.png"
+              width="375"
+              height="80"
+              alt="image"
+            />
+            </button>
+               
+               
+               
+          
+                {/* <button
                   className="btn btn-primary btn-checkout"
                   // onClick={() => navigate("/shop_checkout")}
                   onClick={Checkout}>
                   주문하기
-                </button>
+                </button> */}
               </div>
             </div>
             )}
