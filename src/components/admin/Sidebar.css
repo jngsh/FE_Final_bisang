@@ -7,11 +7,24 @@
     left: 0;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transition: width 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.Sidebar.closed {
+    width: 60px;
+}
+
+.Sidebar.open {
+    width: 200px;
 }
 
 .Sidebar ul {
     list-style-type: none;
-    padding: 0;
+    padding: 40px;
+    margin: 0;
 }
 
 .Sidebar li {
@@ -22,4 +35,46 @@
     text-decoration: none;
     color: #333;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Sidebar .active {
+    color: #007bff;
+    font-weight: bold;
+    border-left: 4px solid #007bff;
+    padding-left: 16px;
+}
+
+.toggle-btn {
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.Sidebar.open .toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.Sidebar.closed .toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+.Sidebar.open .toggle-btn:hover,
+.Sidebar.closed .toggle-btn:hover {
+    background-color: #0056b3;
 }

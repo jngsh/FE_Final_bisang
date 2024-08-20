@@ -419,7 +419,8 @@ const Checkout = () => {
               width="375"
               height="80"
               alt="image"
-            />            </button>
+            />
+            </button>
           </div>
         </div>
       </div>

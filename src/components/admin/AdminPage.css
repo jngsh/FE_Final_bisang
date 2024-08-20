@@ -1,8 +1,19 @@
 .AdminPage {
     display: flex;
+    height: 100vh;
 }
 
 .MainContent {
+    flex: 1;
+    transition: margin-left 0.3s, width 0.3s;
+    padding: 20px;
+    overflow: auto;
+}
+
+.MainContent.open {
     margin-left: 200px;
-    width: calc(100% - 200px);
+}
+
+.MainContent.closed {
+    margin-left: 60px;
 }
