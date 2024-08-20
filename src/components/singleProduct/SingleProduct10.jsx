@@ -99,10 +99,10 @@ export default function SingleProduct10({ productId }) {
 
     if (cartId !== null) {
         if (!isIncludeCard()) {
+            const cartIdFromStorage = localStorage.getItem("cartId");
             const productIdAsNumber = Number(productId);
-            const quantityAsNumber = Number(quantity); // Ensure quantity is a number
+            const quantityAsNumber = Number(quantity);
 
-            // Log productId and quantity to verify their values
             console.log("ProductId as number: ", productIdAsNumber);
             console.log("Quantity as number: ", quantityAsNumber);
 
@@ -116,105 +116,95 @@ export default function SingleProduct10({ productId }) {
                 return;
             }
 
-            setCartProducts((prev) => {
-                console.log("Prev cart products before update: ", prev);
+            // 로컬스토리지에서 장바구니 데이터 가져오기
+            const cartData = JSON.parse(localStorage.getItem("cartProducts")) || [];
 
-                const prevProducts = prev.map(item => ({
-                    ...item,
-                    productId: Number(item.productId)
-                }));
+            // 기존 제품이 있는지 확인
+            const existingItemIndex = cartData.findIndex(
+                (item) => item.productId === productIdAsNumber
+            );
 
-                console.log("Previous cart products after map: ", prevProducts);
+            if (existingItemIndex !== -1) {
+                // 기존 제품이 있으면 수량을 합산하여 업데이트
+                const amount = cartData[existingItemIndex].amount + quantityAsNumber;
+                
+                console.log("cartData[existingItemIndex].quantity: ", cartData[existingItemIndex].amount);
+                console.log("Updated cart after modifying existing item: ", cartData);
 
-                const existingItemIndex = prevProducts.findIndex(
-                    (item) => item.productId === productIdAsNumber
-                );
+                // 서버에 업데이트된 수량을 전달
+                axios.put(
+                    `${BASE_URL}/bisang/carts/items`,
+                    {
+                        cartId: cartIdFromStorage,
+                        productId: productIdAsNumber,
+                        amount: amount, // 합산된 수량을 서버에 전달
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "ngrok-skip-browser-warning": true,
+                        },
+                    }
+                )
+                .then(response => {
+                    console.log("addToCart: Response >>>>>>> ", response);
+                    
+                    // 상태 업데이트
+                    cartData[existingItemIndex].amount = amount;
+                    setCartProducts(cartData);
 
-                // Additional logs
-                console.log("Calculated existingItemIndex: ", existingItemIndex);
-                if (existingItemIndex !== -1) {
-                    console.log("Matching item found: ", prevProducts[existingItemIndex]);
-                } else {
-                    console.log("No matching item found.");
-                }
+                    // 로컬스토리지에 업데이트된 장바구니 데이터 저장
+                    localStorage.setItem("cartProducts", JSON.stringify(cartData));
+                })
+                .catch(error => {
+                    console.error("Failed to update item in cart : ", error);
+                });
+            } else {
+                // 새로운 제품을 장바구니에 추가
+                const newItem = {
+                    ...product1,
+                    productId: productIdAsNumber,
+                    quantity: quantityAsNumber,
+                };
+                cartData.push(newItem);
 
-                let updatedCart;
-                if (existingItemIndex !== -1) {
-                  //update
-                    updatedCart = prevProducts.map((item, index) =>
-                        index === existingItemIndex
-                            ? { ...item, quantity: item.quantity + quantityAsNumber } // Use quantityAsNumber
-                            : item
-                    );
-                    console.log("Updated cart after modifying existing item: ", updatedCart);
-                    setCartProducts((updatedCart) => {
-                      console.log("Cart products after state update: ", updatedCart);
-      
-                      axios.put(
-                          `${BASE_URL}/bisang/carts/items`,
-                          {
-                              // cartId: cartId,
-                              productId: productIdAsNumber,
-                              amount: quantityAsNumber, // Use quantityAsNumber
-                          },
-                          {
-                              headers: {
-                                  "Content-Type": "application/json",
-                                  "ngrok-skip-browser-warning": true,
-                              },
-                          }
-                      )
-                      .then(response => {
-                          console.log("addToCart: Response >>>>>>> ", response);
-                      })
-                      .catch(error => {
-                          console.error("Failed to add item to cart : ", error);
-                      });
-      
-                      return updatedCart;
-                  });
-                } else {
-                  //insert
-                    const newItem = { ...product1, productId: productIdAsNumber, quantity: quantityAsNumber };
-                    updatedCart = [...prevProducts, newItem];
-                    console.log("Updated cart after adding new item: ", updatedCart);
-                    setCartProducts((updatedCart) => {
-                      console.log("Cart products after state update: ", updatedCart);
-      
-                      axios.post(
-                          `${BASE_URL}/bisang/carts/items`,
-                          {
-                              cartId: cartId,
-                              productId: productIdAsNumber,
-                              amount: quantityAsNumber, // Use quantityAsNumber
-                          },
-                          {
-                              headers: {
-                                  "Content-Type": "application/json",
-                                  "ngrok-skip-browser-warning": true,
-                              },
-                          }
-                      )
-                      .then(response => {
-                          console.log("addToCart: Response >>>>>>> ", response);
-                      })
-                      .catch(error => {
-                          console.error("Failed to add item to cart : ", error);
-                      });
-      
-                      return updatedCart;
-                  });
-                }
+                console.log("Updated cart after adding new item: ", cartData);
 
-                return updatedCart;
-            });
+                // 서버에 새로운 아이템 추가
+                axios.post(
+                    `${BASE_URL}/bisang/carts/items`,
+                    {
+                        cartId: cartIdFromStorage,
+                        productId: productIdAsNumber,
+                        amount: quantityAsNumber,
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "ngrok-skip-browser-warning": true,
+                        },
+                    }
+                )
+                .then(response => {
+                    console.log("addToCart: Response >>>>>>> ", response);
+                    
+                    // 상태 업데이트
+                    setCartProducts(cartData);
 
-          
+                    // 로컬스토리지에 업데이트된 장바구니 데이터 저장
+                    localStorage.setItem("cartProducts", JSON.stringify(cartData));
+                })
+                .catch(error => {
+                    console.error("Failed to add item to cart : ", error);
+                });
+            }
         }
     } else {
         console.error("cartId is null, cannot add to cart.");
     }
 };
+
+
   
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('ko-KR', {
