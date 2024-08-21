@@ -112,7 +112,8 @@ export default function SearchedProductList({ searchedProducts }) {
   };
 
   if (loading) {
-    return <p>상품 목록을 불러오는 중입니다...</p>;
+    // return <p>상품 목록을 불러오는 중입니다...</p>;
+    return <p></p>;
   }
 
   return (

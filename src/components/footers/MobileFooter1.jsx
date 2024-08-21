@@ -14,7 +14,7 @@ export default function MobileFooter1() {
 
   useEffect(() => {
     setShowFooter(true);
-  },[]);
+  }, []);
 
 
 
@@ -71,8 +71,8 @@ export default function MobileFooter1() {
 
         {/* SHOP 메뉴 */}
         <div className="col-3">
-          <Link
-            to="/shop-5"
+          <a
+            href="/shop-5"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
             <svg
@@ -86,13 +86,13 @@ export default function MobileFooter1() {
               <use href="#icon_hanger" />
             </svg>
             <span>Categories</span>
-          </Link>
+          </a>
         </div>
         {/* <!-- /.col-3 --> */}
-        
-        
-        {logined ? <MyPageBtn/> : <LoginBtn/>}
-        
+
+
+        {logined ? <MyPageBtn /> : <LoginBtn />}
+
         {/* <!-- /.col-3 --> */}
 
       </div>
