@@ -1,19 +1,45 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import './UploadFile.css';
 import BASE_URL from '@/utils/globalBaseUrl';
 
 function UploadFile() {
-  const [file, setFile] = useState(null);
+  const [dragging, setDragging] = useState(false);
+  const [selectFile, setSelectFile] = useState(null);
+  const [dragAndDropFile, setDragAndDropFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [message, setMessage] = useState('여기에 재고관리 엑셀 파일을 끌어서 놓거나, 파일을 선택하세요.');
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setDragging(false);
+  };
+
+  const handleDrop = useCallback((e) => {
+    e.preventDefault();
+    setDragging(false);
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && droppedFile.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      setDragAndDropFile(droppedFile);
+      setMessage(droppedFile.name);
+    } else {
+      alert('유효한 엑셀 파일(.xlsx)을 드래그 앤 드롭하세요.');
+    }
+  }, []);
 
   const onFileChange = (e) => {
-    setFile(e.target.files[0]);
+    setSelectFile(e.target.files[0]);
   };
 
   const onUpload = async () => {
-    if (!file) {
-      alert("파일을 먼저 선택하세요.");
+    if (!dragAndDropFile && !selectFile) {
+      alert("먼저 엑셀 파일을 선택하세요.");
       return;
     }
     
@@ -22,7 +48,11 @@ function UploadFile() {
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+    if(dragAndDropFile){
+      formData.append('file', dragAndDropFile);
+    }else if(selectFile){
+      formData.append('file', selectFile);
+    }
     
     try {
       const response = await axios.post(`${BASE_URL}/bisang/admin/stocks/upload`, formData, {
@@ -35,7 +65,9 @@ function UploadFile() {
       alert("파일 업로드에 실패했습니다. 다시 시도해 주세요.");
       console.error('Error uploading file:', error);
     } finally {
-      setFile(null);
+      setSelectFile(null);
+      setDragAndDropFile(null);
+      setMessage('여기에 재고관리 엑셀 파일을 끌어서 놓거나, 파일을 선택하세요.');
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -44,6 +76,15 @@ function UploadFile() {
 
   return (
     <div className="UploadFile">
+      <h4>재고관리 엑셀 파일 업로드</h4>
+      <div
+        className={`dropzone ${dragging ? 'dragging' : ''}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <p>{message}</p>
+      </div>
       <input
         type="file"
         accept=".xlsx"

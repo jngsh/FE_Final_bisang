@@ -1,7 +1,8 @@
 import BASE_URL from '@/utils/globalBaseUrl';
 import React from 'react';
+import './DownloadFile.css';
 
-const DownloadButton = () => {
+const DownloadFile = () => {
 
     const downloadFile = async () => {
         try {
@@ -31,8 +32,11 @@ const DownloadButton = () => {
     };
 
     return (
-        <button onClick={downloadFile}>다운로드</button>
+        <div className="DownloadFile">
+            <h4>상품관리 엑셀 파일 다운로드</h4>
+            <button onClick={downloadFile}>다운로드</button>
+        </div>
     );
 };
 
-export default DownloadButton;
+export default DownloadFile;

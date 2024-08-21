@@ -6,6 +6,9 @@ import BASE_URL from "@/utils/globalBaseUrl";
 import ToggleButton from "@/utils/toggleButton";
 import debounce from 'lodash.debounce';
 
+//카카오페이
+import axiosInstance from '../../utils/globalAxios.js';
+
 export default function Cart() {
   const context = useContextElement();
   if (!context) {
@@ -314,7 +317,7 @@ const removeItem = async (cartItemId) => {
     if (hasShippedItems){
       setShippingStatus(true);
     } else {
-      navigate("/shop_checkout");
+      handleButtonClick();
     }
   };
 
@@ -448,7 +451,7 @@ const removeItem = async (cartItemId) => {
       && phone2 === savedData.phone2
       && phone3 === savedData.phone3
     ){
-      navigate("/shop_checkout");
+      handleButtonClick();
     } else {
       setErrorMessage("변경하기 버튼을 누른 후 주문해주세요.");
     }
@@ -463,6 +466,53 @@ const removeItem = async (cartItemId) => {
       [id]: checked,
     }));
   };
+
+
+  //카카오페이버튼
+  const handleButtonClick = async () => {
+    console.log("버튼눌림");
+    let xxx = {'cartId': cartId};
+    console.log(xxx);
+    try {
+      const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
+        {
+          headers: { //body에 뭐넣을지 미리 알려주는 역할
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Credentials': true,
+            'ngrok-skip-browser-warning': true,
+
+          }
+        }
+  
+      );
+
+      console.log("PaymentResponse:", response.data);
+      console.log("그렇다면 이거는? PaymentResponse:", JSON.stringify(response.data, null, 2));
+
+      //모바일/데스크탑 웹 여부에 따라 연결되는 url 선택
+      const pcUrl = response.data.next_redirect_pc_url;
+      const mobileUrl = response.data.next_redirect_mobile_url;
+
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      const redirectUrl = isMobile ? mobileUrl : pcUrl;
+      // const redirectUrl =pcUrl;
+      console.log(">>>>>>>>>>:" + redirectUrl);
+
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("Error:", error.message);
+      if (error.response) {
+        console.error('Error data:', error.response.data);
+        console.error('Error status:', error.response.status);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      }
+    }
+  };
+
+
+
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('ko-KR', {
@@ -827,11 +877,21 @@ const removeItem = async (cartItemId) => {
                           변경하기
                         </button>
                         <button
-                          className="btn btn-primary btn-checkout"
+                          className="btn btn-checkout"
                           onClick={handlePageChange}>
-                          주문하기
+                          <img
+                            style={{ height: "fit-content" }}
+                            className="h-auto"
+                            loading="lazy"
+                            src="/assets/images/카카오페이로결제하기버튼.png"
+                            width="375"
+                            height="80"
+                            alt="image"
+                          />
                         </button>
+                        <div className="errorMessage">
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
+                        </div>
                         </form>
                       </div>
                     )}  
@@ -840,12 +900,30 @@ const removeItem = async (cartItemId) => {
             {!shippingStatus && (
             <div className="mobile_fixed-btn_wrapper">
               <div className="button-wrapper container">
-                <button
+            
+            
+            
+              <button className="btn btn-checkout" onClick={Checkout}>
+            <img
+              style={{ height: "fit-content" }}
+              className="h-auto"
+              loading="lazy"
+              src="/assets/images/카카오페이로결제하기버튼.png"
+              width="375"
+              height="80"
+              alt="image"
+            />
+            </button>
+               
+               
+               
+          
+                {/* <button
                   className="btn btn-primary btn-checkout"
                   // onClick={() => navigate("/shop_checkout")}
                   onClick={Checkout}>
                   주문하기
-                </button>
+                </button> */}
               </div>
             </div>
             )}
