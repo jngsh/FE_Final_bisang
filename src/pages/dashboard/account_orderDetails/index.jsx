@@ -17,7 +17,7 @@ export default function OrderDetailsPage() {
         <div className="mb-4 pb-4"></div>
         <section className="my-account container">
           <h2 className="page-title">주문 상세 정보</h2>
-          <div className="row">
+          <div>
             <OrderDetails />
           </div>
         </section>

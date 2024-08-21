@@ -40,25 +40,27 @@ const OrderDetails = () => {
     }
 
     return (
-        <div className="col-lg-9">
-            <div className="page-content my-account__orders-list">
-                <div className="table-wrapper">
+        <div className="div1">
+            <div className="div2">
+                <div className="div3">
                     <table className="aboveTable" border={1}>
+                        <thead>
+                            <tr><td style={{ textAlign: "center", fontWeight: "bold" }}>✅ 주문 번호</td><td style={{ textAlign: "center", fontWeight: "bold" }}>✅ 주문 일자</td><td style={{ textAlign: "center", fontWeight: "bold" }}>&nbsp;✅ 총 결제금액</td></tr>
+                        </thead>
                         <tbody>
-                            <tr><td style={{ textAlign: "center", fontWeight:"bold" }}>✅ 주문 번호</td><td style={{ textAlign: "center", fontWeight:"bold" }}>✅ 주문 일자</td><td style={{ textAlign: "center", fontWeight:"bold" }}>&nbsp;✅ 총 결제금액</td></tr>
-                            <tr><td style={{ textAlign: "center" }}> {orderId}&nbsp;</td>
-                            <td style={{ textAlign: "center" }}>2024년 8월 20일<br/>오후 3:19</td>
-                            <td style={{ textAlign: "center" }}> {formatCurrency(totalAmount)} 원</td></tr>
+                            <tr><td style={{ textAlign: "center" }}> {orderId}</td>
+                                <td style={{ textAlign: "center" }}>2024년 8월 20일<br />오후 3:19</td>
+                                <td style={{ textAlign: "center" }}> {formatCurrency(totalAmount)} 원</td></tr>
                         </tbody>
                     </table>
-                    </div>
-                <div className="page-content my-account__orders-list">
+                </div>
+                <div className="div4">
                     <table className="orders-table">
                         <thead>
                             <tr>
                                 <th>no.</th>
                                 <th colSpan={2}>상품명</th>
-                                <th>단가<br/>수량</th>
+                                <th>단가<br />수량</th>
                                 <th>금액</th>
                                 <th>리뷰</th>
                             </tr>
@@ -70,11 +72,11 @@ const OrderDetails = () => {
                                     <td><img src={items.productImage} alt="Product" /></td>
                                     <td >{items.productName}</td>
                                     <td>
-                                        <div>{formatCurrency(items.productPrice)}원</div> 
-                                    <div>           {items.amount}개</div>
+                                        <div>{formatCurrency(items.productPrice)}원</div>
+                                        <div>           {items.amount}개</div>
 
                                     </td>
-                                   
+
                                     <td>{formatCurrency(items.totalPrice)}원</td>
                                     <td><button className="button" onClick={goToReview}>리뷰 작성</button></td>
                                 </tr>

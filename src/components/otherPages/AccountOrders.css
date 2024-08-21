@@ -1,17 +1,56 @@
+.div1{
+  width:100%;
+  margin:60px 15px 0px 15px;
+}
+.div2 {
+  width: 80%;
+  margin:0 auto;   
+  align-content: center;
+  @media (max-width:500px) {
+   width: 100%; 
+  }
+}
 
-.order-details {
+.orders-table {
+  width: 100%;
+  border-collapse: collapse; /* 테이블 셀 경계 중복 제거 */
+  font-size: 0.8rem;
+  
+  /* @media (max-width:500px) {
+    width: 100%;
+  } */
+}
+
+
+.orders-header th {
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  text-align: left;
+}
+
+.orders-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.orderNo {
+  width: 10%; /* 'no.' 열 너비 조정 */
+  font-size: 0.8rem;
+  
+}
+
+.orderDate {
+  width: 30%; /* '주문일자' 열 너비 조정 */
+  font-size: 0.8rem;
+}
+
+.orderPrice {
+  font-size: 0.8rem;
+  width: 20%; /* '결제금액' 열 너비 조정 */
+}
+
+.orderDetails {
+  width: 40%; /* '🎁' 열 너비 조정 */
   text-decoration: underline;
   font-weight: bold;
-}
-
-/* .orderNo {
-  text-decoration: overline;
-}
-
-.orders-header {
-  font-size: medium;
-} */
-
-.orderDate{
-  font-size: 12px;
 }
