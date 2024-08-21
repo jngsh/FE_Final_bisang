@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AccountOrders.css";
 
-export default function AccountOrders() {
+export default function MyOrders() {
   const { userId } = useContextElement();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState([]);
