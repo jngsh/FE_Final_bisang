@@ -1,6 +1,6 @@
 import { useContextElement } from "@/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import { useContext, useEffect, useState } from "react";
 import { allProducts } from "@/data/products";
@@ -8,10 +8,20 @@ import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 
 export default function AccountWishlist() {
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   // const {userId} = useContextElement();
   const userId = localStorage.getItem("userId");
   const [reviewList, setReviewList] = useState([]);
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
   
   useEffect(()=>{
     const fetchReviewList = async () => {
@@ -45,6 +55,10 @@ export default function AccountWishlist() {
   fetchReviewList();
 },[]);
 
+const handleReview = (productId, orderDetailId) => {
+  navigate('/review-form',{state:{productId, orderDetailId}});
+};
+
 const toggleWishlist = (productId) => {
   // Wishlist 토글 로직 구현
   console.log("Toggling wishlist for product:", productId);
@@ -55,16 +69,19 @@ const toggleWishlist = (productId) => {
       <div className="page-content my-account__wishlist">
         {reviewList.length ? (
           <div
-            className="products-grid row row-cols-2 row-cols-lg-3"
+            className="products-grid"
             id="products-grid"
           >
-            {" "}
+            {/* {" "} */}
             {reviewList.flatMap(orderDTO =>
               orderDTO.orderDetails.map((detailDTO, i) => (
               <div className="product-card-wrapper" key={i}>
-                <div className="product-card mb-3 mb-md-4 mb-xxl-5">
-                  <div className="pc__img-wrapper">
-                    <Swiper
+                <div className="product-card">
+                  <p className="pc__date">{formatDate(orderDTO.orderDate)}</p>
+                  <div className="pc__content">
+                    <div className="pc__img-wrapper">
+                  {/* <div className="pc__img-wrapper"> */}
+                    {/* <Swiper
                       resizeObserver
                       className="swiper-container background-img js-swiper-slider"
                       slidesPerView={1}
@@ -75,69 +92,36 @@ const toggleWishlist = (productId) => {
                       }}
                     >
                       {[detailDTO.productImage, detailDTO.productImage].map((imgSrc, idx) => (
-                        <SwiperSlide key={idx} className="swiper-slide">
+                        <SwiperSlide key={idx} className="swiper-slide"> */}
                           <Link to={`/product1_simple/${detailDTO.productId}`}>
                             <img
                               loading="lazy"
-                              src={imgSrc}
-                              width="330"
-                              height="400"
+                              src={detailDTO.productImage}
+                              // width="330"
+                              // height="400"
                               alt={detailDTO.productName}
                               className="pc__img"
                             />
                           </Link>
-                        </SwiperSlide>
-                      ))}
+                          </div>
+                        
 
-                      <span
-                        className={`cursor-pointer pc__img-prev ${"prev" + i} `}
-                      >
-                        <svg
-                          width="7"
-                          height="11"
-                          viewBox="0 0 7 11"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <use href="#icon_prev_sm" />
-                        </svg>
-                      </span>
-                      <span
-                        className={`cursor-pointer pc__img-next ${"next" + i} `}
-                      >
-                        <svg
-                          width="7"
-                          height="11"
-                          viewBox="0 0 7 11"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <use href="#icon_next_sm" />
-                        </svg>
-                      </span>
-                    </Swiper>
-                    <button
-                      className="btn-remove-from-wishlist"
-                      onClick={() => toggleWishlist(detailDTO.productId)}
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use href="#icon_close" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div className="pc__info position-relative">
-                    <p className="pc__category">{detailDTO.productId}</p>
+                  <div className="pc__info">
+                    
                     <h6 className="pc__title">{detailDTO.productName}</h6>
-                    <div className="product-card__price d-flex">
+                    {/* <div className="product-card__price d-flex">
                       <span className="money price">${detailDTO.productPrice}</span>
+                    </div> */}
                     </div>
-
-                    <button
+                  </div>
+                  
+                  <button 
+                    className="btn-review"
+                    onClick={()=>handleReview(detailDTO.productId, detailDTO.orderDetailId)}
+                  >
+                    리뷰쓰기
+                  </button>
+                    {/* <button
                       className="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist active"
                       title="Remove From Wishlist"
                       onClick={() => toggleWishlist(detailDTO.productId)}
@@ -151,8 +135,8 @@ const toggleWishlist = (productId) => {
                       >
                         <use href="#icon_heart" />
                       </svg>
-                    </button>
-                  </div>
+                    </button> */}
+                  
                 </div>
               </div>
             )))}
