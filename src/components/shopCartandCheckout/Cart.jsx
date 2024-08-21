@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useMemo, useLayoutEffect } from "reac
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import ToggleButton from "@/utils/toggleButton";
-import debounce from 'lodash.debounce';
 
 //카카오페이
 import axiosInstance from '../../utils/globalAxios.js';
@@ -136,59 +135,44 @@ export default function Cart() {
     fetchCartItems();
   }, [totalPrice]);
 
-// 로컬 상태 업데이트
-const updateLocalCart = (updatedProducts) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>3, updatedProducts: ", updatedProducts);
-  setCartProducts(updatedProducts);
-  console.log(">>>>>>>>>>>>>>>>>>>>>4, cartProducts: ", cartProducts);
-  const newTotalPrice = updatedProducts.reduce(
-      (total, item) => total + (item.amount * item.product.productPrice), 0
-  );
-  console.log(">>>>>>>>>>>>>>>>>>>>>5");
-  setTotalPrice(newTotalPrice);
-  console.log(">>>>>>>>>>>>>>>>>>>>>6");
-  localStorage.setItem('cartProducts', JSON.stringify(updatedProducts));
-};
-
 // 수량 변경 함수
 const setQuantity = async (cartId, productId, quantity) => {
   if (quantity < 1) return;
-  console.log(">>>>>>>>>>>>>>>>>>>>>1");
 
-  // UI를 즉시 업데이트
+  // UI에 즉시 반영
   const updatedProducts = cartProducts.map((product) =>
-      product.productId === productId ? { ...product, amount: quantity } : product
+    product.productId === productId ? { ...product, amount: quantity } : product
   );
-  console.log(">>>>>>>>>>>>>>>>>>>>>2, updatedProducts, cartProducts", updatedProducts, cartProducts);
-  updateLocalCart(updatedProducts);
-  console.log("updatedProducts: ", updatedProducts);
 
-  // 서버에 비동기로 수량 업데이트 요청
+  console.log("Updating UI with new quantity:", updatedProducts);
+  setCartProducts(updatedProducts); // UI 업데이트
+
   setIsUpdating(true);
   try {
-      await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
-  } catch (error) {
-      console.error("수량 업데이트 중 오류 발생:", error);
+    await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
+    console.log("서버에서 수량 변경 성공:", quantity);
 
-      // 서버 오류 시 상태 롤백
-      setCartProducts((prevProducts) => {
-          const rollbackProducts = prevProducts.map((product) =>
-              product.productId === productId ? { ...product, amount: prevProducts.find(p => p.productId === productId).amount } : product
-          );
-          console.log(">>>>>>>>>>>>>>>>>>>>>7");
-          updateLocalCart(rollbackProducts);
-          return rollbackProducts;
-      });
+    // 서버 응답 후 상태를 다시 확정
+    // 실제로는 필요하지 않지만 상태를 보장하기 위해
+    // setCartProducts((prevProducts) =>
+    //   prevProducts.map((product) =>
+    //     product.productId === productId ? { ...product, amount: quantity } : product
+    //   )
+    // );
+  } catch (error) {
+    console.error("수량 업데이트 중 오류 발생:", error);
+    alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+
+    // 오류 발생 시 원래 상태로 복구
+    setCartProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.productId === productId ? { ...product, amount: prevProducts.find(p => p.productId === productId).amount } : product
+      )
+    );
   } finally {
-      setIsUpdating(false);
-      console.log(">>>>>>>>>>>>>>>>>>>>>8");
+    setIsUpdating(false);
   }
 };
-
-// cartProducts 상태 변경 감지
-useEffect(() => {
-  console.log("cartProducts가 변경되었습니다: ", cartProducts);
-}, [cartProducts]);
 
 const removeItem = async (cartItemId) => {
   if (isUpdating) return;
@@ -199,25 +183,46 @@ const removeItem = async (cartItemId) => {
     return; // 사용자가 취소를 클릭하면 함수 종료
   }
 
-  // 로컬 상태에서 아이템 제거
-  const prevCartProducts = [...cartProducts];
-  const updatedProducts = prevCartProducts.filter((product) => product.cartItemId !== cartItemId);
-  updateLocalCart(updatedProducts);
-  console.log("cartProducts: ", cartProducts);
-
-  // 서버 요청
+  // 로컬 상태에서 아이템 제거 (최초 업데이트)
+  const updatedProducts = cartProducts.filter((product) => product.cartItemId !== cartItemId);
+  
   setIsUpdating(true);
+  
   try {
+    // 서버 요청
     await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
+    console.log("아이템 삭제 성공:", cartItemId);
+    
+    // 서버 요청이 성공하면 UI와 로컬스토리지 업데이트
+    setCartProducts(updatedProducts); // UI 업데이트
+    updateLocalCart(updatedProducts); // 로컬스토리지 업데이트
+
   } catch (error) {
     console.error("아이템 삭제 중 오류 발생:", error);
-
+    
     // 서버 오류 시 상태 롤백
-    updateLocalCart(prevCartProducts);
+    setCartProducts(cartProducts); // 원래 상태로 복구
+    updateLocalCart(cartProducts); // 원래 상태로 복구
   } finally {
     setIsUpdating(false);
   }
 };
+
+// 업데이트 로컬 상태 및 로컬스토리지
+const updateLocalCart = (updatedProducts) => {
+  console.log("Updated local cart products: ", updatedProducts);
+  const newTotalPrice = updatedProducts.reduce(
+    (total, item) => total + (item.amount * item.product.productPrice), 0
+  );
+  setTotalPrice(newTotalPrice);
+  localStorage.setItem('cartProducts', JSON.stringify(updatedProducts));
+};
+
+
+// cartProducts 상태 변경 감지
+useEffect(() => {
+  console.log("cartProducts가 변경되었습니다: ", cartProducts);
+}, [cartProducts]);
 
   const updateShippingStatus = useCallback(async (cartItemId, shipping) => {
     try {
