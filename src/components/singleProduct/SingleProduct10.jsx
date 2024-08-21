@@ -106,13 +106,8 @@ export default function SingleProduct10({ productId }) {
             console.log("ProductId as number: ", productIdAsNumber);
             console.log("Quantity as number: ", quantityAsNumber);
 
-            if (isNaN(productIdAsNumber)) {
-                console.error("Invalid productId: Not a number");
-                return;
-            }
-
-            if (isNaN(quantityAsNumber)) {
-                console.error("Invalid quantity: Not a number");
+            if (isNaN(productIdAsNumber) || isNaN(quantityAsNumber)) {
+                console.error("Invalid productId or quantity: Not a number");
                 return;
             }
 
@@ -126,10 +121,11 @@ export default function SingleProduct10({ productId }) {
 
             if (existingItemIndex !== -1) {
                 // 기존 제품이 있으면 수량을 합산하여 업데이트
-                const amount = cartData[existingItemIndex].amount + quantityAsNumber;
+                const existingItem = cartData[existingItemIndex];
+                const updatedAmount = existingItem.amount + quantityAsNumber;
                 
-                console.log("cartData[existingItemIndex].quantity: ", cartData[existingItemIndex].amount);
-                console.log("Updated cart after modifying existing item: ", cartData);
+                console.log("Existing item amount: ", existingItem.amount);
+                console.log("Updated amount: ", updatedAmount);
 
                 // 서버에 업데이트된 수량을 전달
                 axios.put(
@@ -137,7 +133,7 @@ export default function SingleProduct10({ productId }) {
                     {
                         cartId: cartIdFromStorage,
                         productId: productIdAsNumber,
-                        amount: amount, // 합산된 수량을 서버에 전달
+                        amount: updatedAmount, // 합산된 수량을 서버에 전달
                     },
                     {
                         headers: {
@@ -148,10 +144,10 @@ export default function SingleProduct10({ productId }) {
                 )
                 .then(response => {
                     console.log("addToCart: Response >>>>>>> ", response);
-                    
+
                     // 상태 업데이트
-                    cartData[existingItemIndex].amount = amount;
-                    setCartProducts(cartData);
+                    existingItem.amount = updatedAmount;
+                    setCartProducts([...cartData]);
 
                     // 로컬스토리지에 업데이트된 장바구니 데이터 저장
                     localStorage.setItem("cartProducts", JSON.stringify(cartData));
@@ -162,9 +158,8 @@ export default function SingleProduct10({ productId }) {
             } else {
                 // 새로운 제품을 장바구니에 추가
                 const newItem = {
-                    ...product1,
                     productId: productIdAsNumber,
-                    quantity: quantityAsNumber,
+                    amount: quantityAsNumber, // 새 제품의 수량
                 };
                 cartData.push(newItem);
 
@@ -187,9 +182,9 @@ export default function SingleProduct10({ productId }) {
                 )
                 .then(response => {
                     console.log("addToCart: Response >>>>>>> ", response);
-                    
+
                     // 상태 업데이트
-                    setCartProducts(cartData);
+                    setCartProducts([...cartData]);
 
                     // 로컬스토리지에 업데이트된 장바구니 데이터 저장
                     localStorage.setItem("cartProducts", JSON.stringify(cartData));
@@ -204,8 +199,6 @@ export default function SingleProduct10({ productId }) {
     }
 };
 
-
-  
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('ko-KR', {
       style: 'decimal',
