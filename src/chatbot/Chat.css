@@ -1,0 +1,55 @@
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Circular border */
+    background-color: rgb(144, 238, 144);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: width 0.3s ease, height 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1000; /* Make sure it's above other content */
+  }
+  
+  .App-header {
+    display: flex;
+    justify-content: center; /* 가로 방향으로 가운데 정렬 */
+    align-items: center; /* 세로 방향으로 가운데 정렬 */
+    height: 100vh; /* 화면 전체 높이로 설정 */
+    font-size: 1.35rem; /* h3 크기에 해당하는 폰트 크기 (기본 h3는 1.17em, 대략 1.75rem로 설정) */
+    text-align: center; /* 텍스트 가운데 정렬 */
+  }
+  
+  .chat-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow: auto;
+  }
+  .chat-container.open {
+    width: 400px; /* Expanded width */
+    height: 600px; /* Allow it to expand vertically */
+    border-radius: 20px; /* Rounded corners when open */
+  }
+  
+  .closed .chat-body {
+    display: none;
+  }
+  
+  .chat-header {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .chat-header img {
+    width: 30%; /* Smaller icon size */
+    height: auto;
+    float: inline-end;
+  }
