@@ -533,8 +533,12 @@ useEffect(() => {
   const isOverZero = useMemo(()=> {
     return cartProducts.length > 0
   }, [cartProducts])
+
+  const handleNavigation = (productId) => {
+    navigate(`/bisang/products/${productId}`);
+  };
   
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <div></div>;
 
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
@@ -557,7 +561,12 @@ useEffect(() => {
                 {cartProducts.map((item, i) => (
                   <tr key={i}>
                     <td>
-                      <div className="shopping-cart__product-item">
+                    <div
+                      className="shopping-cart__product-item"
+                      onClick={() => handleNavigation(item.product.productId)}
+                      role="button"
+                      tabIndex={0}
+                    >
                         <img
                           loading="lazy"
                           src={item.product.productImage}
@@ -568,7 +577,12 @@ useEffect(() => {
                       </div>
                     </td>
                     <td>
-                      <div className="shopping-cart__product-item__detail">
+                    <div
+                      className="shopping-cart__product-item__detail"
+                      onClick={() => handleNavigation(item.product.productId)}
+                      role="button"
+                      tabIndex={0}
+                    >
                         <h4>{item.product.productName}</h4>
                       </div>
                     </td>
