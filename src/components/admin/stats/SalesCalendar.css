@@ -1,0 +1,16 @@
+.SalesCalendarContainer {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.fc {
+  font-size: 0.875rem;
+}
+
+.fc-event-title {
+  font-size: 1.2rem;
+  color: #ffffff;
+  text-align: center;
+}
