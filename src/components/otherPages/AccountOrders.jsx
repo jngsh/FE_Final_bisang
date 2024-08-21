@@ -1,8 +1,11 @@
+
 import { useContextElement } from "@/context/Context";
 import axiosInstance from "@/utils/globalAxios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "./AccountOrders.css";
 
-export default function AccountOrders() {
+export default function MyOrders() {
   const { userId } = useContextElement();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState([]);
@@ -36,12 +39,20 @@ export default function AccountOrders() {
 
   const formatDate = (value) => {
     return new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
+      // year: '2-digit',
+      // month: 'short',
+      // date: 'short',
+      dateStyle:'medium',
+      // weekday: 'narrow'
+    }).format(new Date(value));
+  }
+
+  const formatTime = (value) => {
+    return new Intl.DateTimeFormat('ko-KR', {
+      // hour: 'numeric',
+      // minute: 'numeric',
+      // second: 'numeric'
+      timeStyle:'short'
     }).format(new Date(value));
   }
 
@@ -51,23 +62,22 @@ export default function AccountOrders() {
     <div className="col-lg-9">
       <div className="page-content my-account__orders-list">
         <table className="orders-table">
-          <thead>
+          <thead className="orders-header">
             <tr>
               <th>no.</th>
               <th>주문일자</th>
               <th>결제금액</th>
-              <th>내역보기</th>
+              <th>🎁</th>
             </tr>
           </thead>
           <tbody>
-
             {orders.map((items, i)=>(
             <tr key={i}>
-              <td>{items.orderId}</td>
-              <td>{formatDate(items.orderDate)}</td>
+              <td className="orderNo">{items.orderId}</td>
+              <td className="orderDate">{formatDate(items.orderDate)}<br/>{formatTime(items.orderDate)}</td>
               <td>{formatCurrency(items.totalPrice)}</td>
               <td>
-                <button className="btn btn-primary">VIEW</button>
+                <Link to={`/order-details/${items.orderId}`} className="order-details">상세보기</Link>
               </td>
             </tr>
             ))}

@@ -72,7 +72,7 @@ export default function Categories({ onSelectCategory }) {
         </div>
 
         <div className="shop-categories__list d-flex align-items-center flex-wrap justify-content-center">
-          {filteredCategories.map((elm, i) => (
+        {Array.isArray(filteredCategories) && filteredCategories.map((elm, i)  => (
             <a
               key={i}
               href="#"
