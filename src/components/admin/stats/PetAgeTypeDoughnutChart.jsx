@@ -46,7 +46,7 @@ const PetAgeTypeDoughnutChart = () => {
 
     return (
         <div className="chart-container">
-            <h3>반려동물 나이 비율</h3>
+            <h5>반려동물 나이 비율</h5>
             <Doughnut data={data} />
         </div>
     );

@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate  } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
-import { useState, useEffect, useCallback, memo } from "react";
+import { useState, useEffect, useCallback, useMemo, useLayoutEffect } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import ToggleButton from "@/utils/toggleButton";
@@ -26,6 +26,7 @@ export default function Cart() {
     local_pickup: false,
     shipping: false
   });
+  const [isUpdating, setIsUpdating] = useState(false);
   
 
   //배송지
@@ -61,7 +62,7 @@ export default function Cart() {
   //   setCheckboxes(savedCheckboxes);
   // }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // 로그인 상태가 true일 때만 카트 데이터를 가져옵니다.
     if (logined) {
       const fetchCartProducts = async () => {
@@ -90,7 +91,7 @@ export default function Cart() {
     }
   }, [logined, token]); // `logined`, `token`이 변경될 때마다 실행
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchCartItems = async () => {
       if (!cartId) {
         console.warn("No cartId found.");
@@ -119,9 +120,11 @@ export default function Cart() {
         return acc;
       }, {});
       setCheckboxes(initialCheckboxes);
-      console.log("initialCheckboxes", initialCheckboxes);
-
+      // console.log("initialCheckboxes", initialCheckboxes);
+      // console.log("item", items);
+// updateLocalCart(items);      
       localStorage.setItem('cartProducts', JSON.stringify(items));     
+      
       } catch (error) {
         console.error("카트 데이터를 가져오는 중 오류 발생:", error);
       } finally {
@@ -132,43 +135,94 @@ export default function Cart() {
     fetchCartItems();
   }, [totalPrice]);
 
+// 수량 변경 함수
+const setQuantity = async (cartId, productId, quantity) => {
+  if (quantity < 1) return;
 
-  const setQuantity = useCallback(async (cartId, productId, quantity) => {
-    if (quantity >= 1) {
-      try {
-        const response = await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
-        const updatedCart = response.data || [];
-        setCartProducts(updatedCart);
-        setLocalCart(updatedCart);
-        localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+  // UI에 즉시 반영
+  const updatedProducts = cartProducts.map((product) =>
+    product.productId === productId ? { ...product, amount: quantity } : product
+  );
 
-        const newTotalPrice = updatedCart.reduce(
-          (total, item) => total + (item.amount * item.product.productPrice), 0
-        );
-        setTotalPrice(newTotalPrice);
-      } catch (error) {
-        console.error("수량 업데이트 중 오류 발생:", error);
-      }
-    }
-  });
+  console.log("Updating UI with new quantity:", updatedProducts);
+  setCartProducts(updatedProducts); // UI 업데이트
 
-  const removeItem = useCallback(async (cartItemId) => {
-    try {
-      const response = await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
-      const updatedCart = response.data || [];
-      setCartProducts(updatedCart);
-      setLocalCart(updatedCart);
-      localStorage.setItem('cartProducts', JSON.stringify(updatedCart));
+  setIsUpdating(true);
+  try {
+    await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
+    console.log("서버에서 수량 변경 성공:", quantity);
 
-      const newTotalPrice = updatedCart.reduce(
-        (total, item) => total + (item.amount * item.product.productPrice), 
-        0
-      );
-      setTotalPrice(newTotalPrice);
-    } catch (error) {
-      console.error("아이템 삭제 중 오류 발생:", error);
-    }
-  });
+    // 서버 응답 후 상태를 다시 확정
+    // 실제로는 필요하지 않지만 상태를 보장하기 위해
+    // setCartProducts((prevProducts) =>
+    //   prevProducts.map((product) =>
+    //     product.productId === productId ? { ...product, amount: quantity } : product
+    //   )
+    // );
+  } catch (error) {
+    console.error("수량 업데이트 중 오류 발생:", error);
+    alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
+
+    // 오류 발생 시 원래 상태로 복구
+    setCartProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.productId === productId ? { ...product, amount: prevProducts.find(p => p.productId === productId).amount } : product
+      )
+    );
+  } finally {
+    setIsUpdating(false);
+  }
+};
+
+const removeItem = async (cartItemId) => {
+  if (isUpdating) return;
+
+  // 삭제 확인 대화 상자
+  const userConfirmed = window.confirm("정말 삭제하시겠습니까?");
+  if (!userConfirmed) {
+    return; // 사용자가 취소를 클릭하면 함수 종료
+  }
+
+  // 로컬 상태에서 아이템 제거 (최초 업데이트)
+  const updatedProducts = cartProducts.filter((product) => product.cartItemId !== cartItemId);
+  
+  setIsUpdating(true);
+  
+  try {
+    // 서버 요청
+    await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
+    console.log("아이템 삭제 성공:", cartItemId);
+    
+    // 서버 요청이 성공하면 UI와 로컬스토리지 업데이트
+    setCartProducts(updatedProducts); // UI 업데이트
+    updateLocalCart(updatedProducts); // 로컬스토리지 업데이트
+
+  } catch (error) {
+    console.error("아이템 삭제 중 오류 발생:", error);
+    
+    // 서버 오류 시 상태 롤백
+    setCartProducts(cartProducts); // 원래 상태로 복구
+    updateLocalCart(cartProducts); // 원래 상태로 복구
+  } finally {
+    setIsUpdating(false);
+  }
+};
+
+// 업데이트 로컬 상태 및 로컬스토리지
+const updateLocalCart = (updatedProducts) => {
+  console.log("Updated local cart products: ", updatedProducts);
+  const newTotalPrice = updatedProducts.reduce(
+    (total, item) => total + (item.amount * item.product.productPrice), 0
+  );
+  setTotalPrice(newTotalPrice);
+  localStorage.setItem('cartProducts', JSON.stringify(updatedProducts));
+};
+
+
+// cartProducts 상태 변경 감지
+useEffect(() => {
+  console.log("cartProducts가 변경되었습니다: ", cartProducts);
+}, [cartProducts]);
 
   const updateShippingStatus = useCallback(async (cartItemId, shipping) => {
     try {
@@ -198,7 +252,7 @@ export default function Cart() {
     } catch (error) {
       console.error("배송 상태 업데이트 중 오류 발생:", error.response ? error.response.data : error.message);
     }
-  });
+  }, [cartProducts, checkboxes, setCartProducts, setTotalPrice]);
 
   // const handleShippingToggle = async (cartItemId, newStatus) => {
   //   try {
@@ -268,12 +322,12 @@ export default function Cart() {
     if (hasShippedItems){
       setShippingStatus(true);
     } else {
-      navigate("/shop_checkout");
+      handleButtonClick();
     }
   };
 
   //솔님 주소 띄우실 때 사용하세요!!
-  useEffect(()=>{
+  useLayoutEffect(()=>{
   
     if (!userId) {
       console.error("userId is not defined");
@@ -306,7 +360,7 @@ export default function Cart() {
   }
   }, [userId]);
   
-  useEffect(() => {
+  useLayoutEffect(() => {
     const script = document.createElement("script");
     script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
     script.async = true;
@@ -402,7 +456,7 @@ export default function Cart() {
       && phone2 === savedData.phone2
       && phone3 === savedData.phone3
     ){
-      navigate("/shop_checkout");
+      handleButtonClick();
     } else {
       setErrorMessage("변경하기 버튼을 누른 후 주문해주세요.");
     }
@@ -475,13 +529,17 @@ export default function Cart() {
   // const formatNumberWithCommas = (value) => {
   //   return new Intl.NumberFormat('ko-KR').format(value);
   // };
+
+  const isOverZero = useMemo(()=> {
+    return cartProducts.length > 0
+  }, [cartProducts])
   
   if (loading) return <div>로딩 중...</div>;
 
   return (
     <div className="shopping-cart" style={{ minHeight: "calc(100vh - 300px)" }}>
       <div className="cart-table__wrapper">
-        {cartProducts.length > 0 ? (
+        {isOverZero ? (
           <>
             <table className="cart-table">
               <thead>
@@ -520,31 +578,30 @@ export default function Cart() {
                       </span>
                     </td>
                     <td>
-                      <div className="qty-control position-relative">
-                        <input
-                          type="number"
-                          name="quantity"
-                          value={item.amount}
-                          min={1}
-                          onChange={(e) =>
-                            setQuantity(item.cartId, item.productId, parseInt(e.target.value, 10))
-                          }
-                          className="qty-control__number text-center"
-                        />
-                        <div
-                          onClick={() => setQuantity(item.cartId, item.productId, item.amount - 1)}
-                          className="qty-control__reduce"
-                        >
-                          -
-                        </div>
-                        <div
-                          onClick={() => setQuantity(item.cartId, item.productId, item.amount + 1)}
-                          className="qty-control__increase"
-                        >
-                          +
-                        </div>
-                      </div>
-                    </td>
+                            <div className="qty-control position-relative">
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    value={item.amount}
+                                    min={1}
+                                    onChange={(e) =>
+                                      setQuantity(item.cartId, item.productId, parseInt(e.target.value, 10))}
+                                    className="qty-control__number text-center"
+                                />
+                                <div
+                                    onClick={() => setQuantity(item.cartId, item.productId, item.amount - 1)}
+                                    className="qty-control__reduce"
+                                >
+                                    -
+                                </div>
+                                <div
+                                    onClick={() => setQuantity(item.cartId, item.productId, item.amount + 1)}
+                                    className="qty-control__increase"
+                                >
+                                    +
+                                </div>
+                            </div>
+                        </td>
                     <td>
                       <span className="shopping-cart__subtotal">
                         {formatCurrency(item.product.productPrice * item.amount)}원
@@ -581,23 +638,23 @@ export default function Cart() {
                       onToggle={() => handleShippingToggle(item.cartItemId, !item.isShipping)}
                     />
                   </td> */}
-                    <td>
-                      <a
-                        onClick={() => removeItem(item.cartItemId)}
-                        className="remove-cart"
-                      >
-                        <svg
-                          width="10"
-                          height="10"
-                          viewBox="0 0 10 10"
-                          fill="#767676"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                          <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                        </svg>
-                      </a>
-                    </td>
+                  <td>
+                            <a
+                                onClick={() => removeItem(item.cartItemId)}
+                                className="remove-cart"
+                            >
+                                <svg
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 10 10"
+                                    fill="#767676"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
+                                    <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
+                                </svg>
+                            </a>
+                        </td>
                   </tr>
                 ))}
               </tbody>
@@ -825,11 +882,21 @@ export default function Cart() {
                           변경하기
                         </button>
                         <button
-                          className="btn btn-primary btn-checkout"
+                          className="btn btn-checkout"
                           onClick={handlePageChange}>
-                          주문하기
+                          <img
+                            style={{ height: "fit-content" }}
+                            className="h-auto"
+                            loading="lazy"
+                            src="/assets/images/카카오페이로결제하기버튼.png"
+                            width="375"
+                            height="80"
+                            alt="image"
+                          />
                         </button>
+                        <div className="errorMessage">
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
+                        </div>
                         </form>
                       </div>
                     )}  
@@ -841,7 +908,7 @@ export default function Cart() {
             
             
             
-              <button className="btn btn-checkout" onClick={handleButtonClick}>
+              <button className="btn btn-checkout" onClick={Checkout}>
             <img
               style={{ height: "fit-content" }}
               className="h-auto"

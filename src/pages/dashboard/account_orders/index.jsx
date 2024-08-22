@@ -4,6 +4,7 @@ import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
 //mypage-orders 이솔사용중
 import MetaComponent from "@/components/common/MetaComponent";
 import Footer1 from "@/components/footers/Footer1";
+import MyOrders from "@/components/otherPages/AccountOrders";
 const metadata = {
   title: "주문 목록 :: PETER PET",
 };
@@ -18,7 +19,7 @@ export default function AccountOrderPage() {
           <h2 className="page-title">주문 내역</h2>
           <div className="row">
             {/* <DashboardSidebar /> */}
-            <AccountOrders />
+            <MyOrders />
           </div>
         </section>
       </main>

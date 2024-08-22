@@ -55,15 +55,14 @@ export default function MobileHeader() {
       {/* 메뉴 navbar 아이콘 */}
       <div className="container d-flex align-items-center h-100">
         <a className="mobile-nav-activator d-block position-relative" href="#">
-          <svg
-            className="nav-icon"
-            width="25"
-            height="18"
-            viewBox="0 0 25 18"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <img
+              src="/assets/images/mobilefooter1/menu.png"
+              width="25"
+              height="25"
+              viewBox="0 0 18 18"
+              fill="none"
+            />
             <use href="#icon_nav" />
-          </svg>
           <span className="btn-close-lg position-absolute top-0 start-0 w-100"></span>
         </a>
 
@@ -84,16 +83,14 @@ export default function MobileHeader() {
           onClick={() => navigate(`/shop_cart`)}
           className="header-tools__item header-tools__cart js-open-aside"
         >
-          <svg
-            className="d-block"
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <img
+              src="/assets/images/mobilefooter1/cart.png"
+              width="25"
+              height="25"
+              viewBox="0 0 18 18"
+              fill="none"
+            />
             <use href="#icon_cart" />
-          </svg>
           <span className="cart-amount d-block position-absolute js-cart-items-count">
             <CartLength />
           </span>

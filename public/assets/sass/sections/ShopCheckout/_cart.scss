@@ -376,4 +376,12 @@
      margin-right: 0.5rem; /* 필드 간의 간격을 설정합니다 */
      width: 100%;
    }
+   
+   .errorMessage{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 3rem !important;
+    color: red;
+   }
 }
