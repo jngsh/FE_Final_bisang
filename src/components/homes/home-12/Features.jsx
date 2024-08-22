@@ -11,7 +11,7 @@ export default function Features() {
           {featuresData.map((elm, i) => (
             <div
               key={i}
-              className="col-md-6 col-xl-3 mb-5 mb-md-0 d-flex align-items-center justify-content-center gap-3"
+              className="col-md-6 col-xl-3 mb-5 mb-md-0 d-flex align-items-center justify-content-left gap-3"
             >
               <div className="service-promotion__icon">
                 <svg
