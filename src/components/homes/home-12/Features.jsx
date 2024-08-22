@@ -1,4 +1,4 @@
-import { FeaturesData } from "./data/FeaturesData";
+import { FeaturesData } from "./data/featuresData";
 
 export default function Features() {
   const featuresData = FeaturesData();
@@ -35,10 +35,7 @@ export default function Features() {
               </div>
             </div>
           ))}
-
-          {/* <!-- /.col-md-6.col-xl-3 --> */}
         </div>
-        {/* <!-- /.row --> */}
         <div className="pb-2"></div>
       </div>
     </section>
