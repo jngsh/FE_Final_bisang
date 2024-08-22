@@ -11,6 +11,11 @@
     overflow: hidden;
     cursor: pointer;
     z-index: 1000; /* Make sure it's above other content */
+    @media (max-width: 500px) {
+      bottom: 40px;
+    right: 20px;
+    }
+    
   }
   
   .App-header {
@@ -33,6 +38,11 @@
     width: 400px; /* Expanded width */
     height: 600px; /* Allow it to expand vertically */
     border-radius: 20px; /* Rounded corners when open */
+
+    @media (max-width: 500px) {
+      width: 75%;
+    height: 70%;
+    }
   }
   
   .closed .chat-body {

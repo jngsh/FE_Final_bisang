@@ -18,7 +18,6 @@ export default function AccountOrderPage() {
         <section className="my-account container">
           <h2 className="page-title">주문 내역</h2>
           <div>
-            {/* <DashboardSidebar /> */}
             <MyOrders />
           </div>
         </section>
