@@ -149,6 +149,11 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
     
   }, [orderDetails]);
 
+  const resetCart = () => {
+    setCartProducts([]);
+    localStorage.removeItem('cartProducts');
+  }
+
   const contextElement = {
     cartProducts,
     setCartProducts,
@@ -168,7 +173,8 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
     cartId,
     setCartId,
     cartAmount,
-    setCartAmount
+    setCartAmount,
+    resetCart
   };
   return (
     <dataContext.Provider value={contextElement}>
