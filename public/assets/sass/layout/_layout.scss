@@ -93,11 +93,11 @@ img {
 
 #scrollTop {
   position: fixed !important;
-  right: 0;
+  left: 0;
   bottom: 3.375rem;
   z-index: $zindex-fixed;
-  width: 45px;
-  height: 45px;
+  width: 35px;
+  height: 35px;
   background-color: $scroll-top-bg;
   background-image: escape-svg($svg-arrow-up-bg);
   background-position: center center;
