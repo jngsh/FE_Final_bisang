@@ -1,0 +1,17 @@
+
+.order-details {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* .orderNo {
+  text-decoration: overline;
+}
+
+.orders-header {
+  font-size: medium;
+} */
+
+.orderDate{
+  font-size: 12px;
+}

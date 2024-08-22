@@ -4,11 +4,11 @@ import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
 //mypage-orders 이솔사용중
 import MetaComponent from "@/components/common/MetaComponent";
 import Footer1 from "@/components/footers/Footer1";
-import MyOrders from "@/components/otherPages/AccountOrders";
+import OrderDetails from "@/components/otherPages/OrderDetails";
 const metadata = {
-  title: "주문 목록 :: PETER PET",
+  title: "주문 상세 목록 :: PETER PET",
 };
-export default function AccountOrderPage() {
+export default function OrderDetailsPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -16,9 +16,9 @@ export default function AccountOrderPage() {
       <main className="page-wrapper">
         <div className="mb-4 pb-4"></div>
         <section className="my-account container">
-          <h2 className="page-title">주문 내역</h2>
-          <div className="page-wrapper">
-            <MyOrders />
+          <h2 className="page-title">주문 상세 정보</h2>
+          <div className="row">
+            <OrderDetails />
           </div>
         </section>
       </main>

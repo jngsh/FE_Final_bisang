@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import ProductSlider1 from "./sliders/ProductSlider1";
 import BreadCumb from "./BreadCumb";
 import Star from "../common/Star";
@@ -20,6 +21,8 @@ export default function SingleProduct10({ productId }) {
 
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
+
+  const navigate = useNavigate();
 
   // 현아 부분
   const [product1, setProduct1] = useState(null);
@@ -95,49 +98,49 @@ export default function SingleProduct10({ productId }) {
   };
 
   const addToCart = async () => {
+    console.log("cartId: ", cartId); // cartId의 현재 값을 로그로 출력
+
+    if (cartId === "null") {
+        navigate('/login_register');
+        return; // 함수 종료
+    }
+
+    // cartId가 null이 아닐 때만 실행
     console.log(">>>>>>> cartId: ", cartId);
 
-    if (cartId !== null) {
-        if (!isIncludeCard()) {
-            const cartIdFromStorage = localStorage.getItem("cartId");
-            const productIdAsNumber = Number(productId);
-            const quantityAsNumber = Number(quantity);
+    if (!isIncludeCard()) {
+        const cartIdFromStorage = localStorage.getItem("cartId");
+        const productIdAsNumber = Number(productId);
+        const quantityAsNumber = Number(quantity);
 
-            console.log("ProductId as number: ", productIdAsNumber);
-            console.log("Quantity as number: ", quantityAsNumber);
+        console.log("ProductId as number: ", productIdAsNumber);
+        console.log("Quantity as number: ", quantityAsNumber);
 
-            if (isNaN(productIdAsNumber)) {
-                console.error("Invalid productId: Not a number");
-                return;
-            }
+        if (isNaN(productIdAsNumber) || isNaN(quantityAsNumber)) {
+            console.error("Invalid productId or quantity: Not a number");
+            return;
+        }
 
-            if (isNaN(quantityAsNumber)) {
-                console.error("Invalid quantity: Not a number");
-                return;
-            }
+        const cartData = JSON.parse(localStorage.getItem("cartProducts")) || [];
 
-            // 로컬스토리지에서 장바구니 데이터 가져오기
-            const cartData = JSON.parse(localStorage.getItem("cartProducts")) || [];
+        const existingItemIndex = cartData.findIndex(
+            (item) => item.productId === productIdAsNumber
+        );
 
-            // 기존 제품이 있는지 확인
-            const existingItemIndex = cartData.findIndex(
-                (item) => item.productId === productIdAsNumber
-            );
+        if (existingItemIndex !== -1) {
+            const existingItem = cartData[existingItemIndex];
+            const updatedAmount = existingItem.amount + quantityAsNumber;
 
-            if (existingItemIndex !== -1) {
-                // 기존 제품이 있으면 수량을 합산하여 업데이트
-                const amount = cartData[existingItemIndex].amount + quantityAsNumber;
-                
-                console.log("cartData[existingItemIndex].quantity: ", cartData[existingItemIndex].amount);
-                console.log("Updated cart after modifying existing item: ", cartData);
+            console.log("Existing item amount: ", existingItem.amount);
+            console.log("Updated amount: ", updatedAmount);
 
-                // 서버에 업데이트된 수량을 전달
-                axios.put(
+            try {
+                const response = await axios.put(
                     `${BASE_URL}/bisang/carts/items`,
                     {
                         cartId: cartIdFromStorage,
                         productId: productIdAsNumber,
-                        amount: amount, // 합산된 수량을 서버에 전달
+                        amount: updatedAmount,
                     },
                     {
                         headers: {
@@ -145,33 +148,28 @@ export default function SingleProduct10({ productId }) {
                             "ngrok-skip-browser-warning": true,
                         },
                     }
-                )
-                .then(response => {
-                    console.log("addToCart: Response >>>>>>> ", response);
-                    
-                    // 상태 업데이트
-                    cartData[existingItemIndex].amount = amount;
-                    setCartProducts(cartData);
+                );
+                
+                console.log("addToCart: Response >>>>>>> ", response);
 
-                    // 로컬스토리지에 업데이트된 장바구니 데이터 저장
-                    localStorage.setItem("cartProducts", JSON.stringify(cartData));
-                })
-                .catch(error => {
-                    console.error("Failed to update item in cart : ", error);
-                });
-            } else {
-                // 새로운 제품을 장바구니에 추가
-                const newItem = {
-                    ...product1,
-                    productId: productIdAsNumber,
-                    quantity: quantityAsNumber,
-                };
-                cartData.push(newItem);
+                existingItem.amount = updatedAmount;
+                setCartProducts([...cartData]);
 
-                console.log("Updated cart after adding new item: ", cartData);
+                localStorage.setItem("cartProducts", JSON.stringify(cartData));
+            } catch (error) {
+                console.error("Failed to update item in cart : ", error);
+            }
+        } else {
+            const newItem = {
+                productId: productIdAsNumber,
+                amount: quantityAsNumber,
+            };
+            cartData.push(newItem);
 
-                // 서버에 새로운 아이템 추가
-                axios.post(
+            console.log("Updated cart after adding new item: ", cartData);
+
+            try {
+                const response = await axios.post(
                     `${BASE_URL}/bisang/carts/items`,
                     {
                         cartId: cartIdFromStorage,
@@ -184,28 +182,23 @@ export default function SingleProduct10({ productId }) {
                             "ngrok-skip-browser-warning": true,
                         },
                     }
-                )
-                .then(response => {
-                    console.log("addToCart: Response >>>>>>> ", response);
-                    
-                    // 상태 업데이트
-                    setCartProducts(cartData);
+                );
+                
+                console.log("addToCart: Response >>>>>>> ", response);
 
-                    // 로컬스토리지에 업데이트된 장바구니 데이터 저장
-                    localStorage.setItem("cartProducts", JSON.stringify(cartData));
-                })
-                .catch(error => {
-                    console.error("Failed to add item to cart : ", error);
-                });
+                setCartProducts([...cartData]);
+
+                localStorage.setItem("cartProducts", JSON.stringify(cartData));
+            } catch (error) {
+                console.error("Failed to add item to cart : ", error);
             }
         }
-    } else {
-        console.error("cartId is null, cannot add to cart.");
     }
 };
 
 
-  
+
+
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('ko-KR', {
       style: 'decimal',

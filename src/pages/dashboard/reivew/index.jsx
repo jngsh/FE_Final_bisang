@@ -1,15 +1,21 @@
 import Footer1 from "@/components/footers/Footer1.jsx";
 
 import Header1 from "@/components/headers/Header1";
-import AccountWishlist from "@/components/otherPages/AccountWishlist";
-import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
+
 
 import MetaComponent from "@/components/common/MetaComponent";
+import ReviewForm from "@/components/blogs/ReviewForm";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 const metadata = {
   title: "Dashboard Account Wishlist || :: PETER PET",
   description: ":: PETER PET",
 };
-export default function AccountWishlistPage() {
+export default function ReviewPage() {
+  const location = useLocation();
+  const productId = location.state?.productId;
+  const orderDetailId = location.state?.orderDetailId;
+  
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -20,7 +26,7 @@ export default function AccountWishlistPage() {
           <h2 className="page-title">리뷰</h2>
           <div className="row">
             {/* <DashboardSidebar /> */}
-            <AccountWishlist />
+            <ReviewForm productId={productId} orderDetailId={orderDetailId}/>
           </div>
         </section>
       </main>

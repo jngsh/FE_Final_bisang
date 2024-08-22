@@ -3,11 +3,13 @@ import './OrderCompleted.css';
 import { useContextElement } from "@/context/Context";
 import axiosInstance from "@/utils/globalAxios";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 
 export default function OrderCompleted() {
 
-  const { orderDetails, setOrderDetails, cartId } = useContextElement();
+  const { orderDetails, setOrderDetails, cartId, resetCart } = useContextElement();
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [showDate, setShowDate] = useState(true);
@@ -39,6 +41,9 @@ export default function OrderCompleted() {
         setTotalPrice(calcultatedTotalPrice);
 
         // localStorage.setItem("orderDetails", JSON.stringify(response.data.orderDetails));
+
+        resetCart();
+        
       } catch (error) {
         console.log('Error fetching order details:', error);
       } finally {
@@ -98,10 +103,9 @@ export default function OrderCompleted() {
               <table className="checkout-cart-items">
                 <thead>
                   <tr>
-                    <th></th>
+                    <th className="numone"></th>
                     <th className="center">상품명</th>
                     <th className="right">수량</th>
-                    {/* <th>금액</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -112,19 +116,15 @@ export default function OrderCompleted() {
                         <td>
                           <img className="productImage" src={items.productImage} />
                         </td>
-                        {/* <td className="productName">
-                    {items.productName} x {items.amount}
-                  </td> */}
-                        <td>{items.productName}</td>
+                        <td className="productName">
+                          {items.productName}</td>
                         <td className="right">{items.amount}</td>
-                        {/* <td>{items.productPrice * items.amount}원</td> */}
                       </tr>
                     ))}
                 </tbody>
               </table>
             </div>
-          </>
-        ) : null}
+          </>        ) : null}
 
 
         {orderDetails.some((items) => items.shipping === true) ? (
@@ -134,7 +134,7 @@ export default function OrderCompleted() {
               <table className="checkout-cart-items">
                 <thead>
                   <tr>
-                    <th></th>
+                    <th className="numone"></th>
                     <th className="center">상품명</th>
                     <th className="right">수량</th>
                     {/* <th>금액</th> */}
@@ -148,32 +148,22 @@ export default function OrderCompleted() {
                         <td>
                           <img className="productImage" src={items.productImage} />
                         </td>
-                        {/* <td className="productName">
-                    {items.productName} x {items.amount}
-                  </td> */}
                         <td className="productName">
                           {items.productName}
                         </td>
                         <td className="right">{items.amount}</td>
-                        {/* <td>{items.productPrice * items.amount}원</td> */}
                       </tr>
                     ))}
                 </tbody>
               </table>
-             
             </div>
           </>) : null}
-
-
 
         <div className="order-info">
           <div className="order-info__item">
             <div className="receipt">🧾receipt🧾</div>
-
             <label>주문 번호</label>
             <span>{orderNumber}</span>
-
-            {/* <span>{response.data.orderDetails.orderId}</span> */}
           </div>
           <div className="order-info__item">
             <label>주문 일자</label>
