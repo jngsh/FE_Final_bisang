@@ -3,11 +3,13 @@ import './OrderCompleted.css';
 import { useContextElement } from "@/context/Context";
 import axiosInstance from "@/utils/globalAxios";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import BASE_URL from "@/utils/globalBaseUrl";
 
 
 export default function OrderCompleted() {
 
-  const { orderDetails, setOrderDetails, cartId } = useContextElement();
+  const { orderDetails, setOrderDetails, cartId, resetCart } = useContextElement();
 
   const [totalPrice, setTotalPrice] = useState(0);
   const [showDate, setShowDate] = useState(true);
@@ -39,6 +41,9 @@ export default function OrderCompleted() {
         setTotalPrice(calcultatedTotalPrice);
 
         // localStorage.setItem("orderDetails", JSON.stringify(response.data.orderDetails));
+
+        resetCart();
+        
       } catch (error) {
         console.log('Error fetching order details:', error);
       } finally {
