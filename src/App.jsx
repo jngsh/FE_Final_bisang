@@ -69,6 +69,7 @@ import ReviewPage from "./pages/dashboard/reivew";
 
 // import OrderDetails from "./components/otherPages/OrderDetails.jsx";
 import OrderDetailsPage from "./pages/dashboard/account_orderDetails";
+import './App.css';
 
 
 function App() {
