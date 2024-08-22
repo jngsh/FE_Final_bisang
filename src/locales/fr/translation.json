@@ -6,6 +6,7 @@
   "enter_email": "Veuillez entrer votre adresse e-mail",
   "send": "Envoyer",
   "subscription_thank_you": "Merci de vous être abonné! Nous vous tiendrons informé des bonnes nouvelles🤭",
+  "email_required": "Veuillez entrer votre adresse email.",
 
   "service_issue": "Un problème avec le service?",
   "customer_service": "Service Client",
