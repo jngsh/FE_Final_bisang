@@ -7,7 +7,7 @@ export default function DashboardSidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
-  const { setLogined, setCartId, setCartProducts} = useContextElement();
+  const { setLogined, setCartId, setCartProducts, setOrderDetails} = useContextElement();
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -16,9 +16,11 @@ export default function DashboardSidebar() {
     setLogined(false);
     setCartId(null);
     setCartProducts([]);
+    setOrderDetails([]);
     localStorage.setItem("logined", JSON.stringify(false));
     localStorage.setItem("cartId", null);
     localStorage.setItem("cartProducts", JSON.stringify([]));
+    localStorage.setItem("orderDetails", JSON.stringify([]));
     
     navigate("/login_register");
   }

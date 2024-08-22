@@ -53,6 +53,7 @@ import LoginPage from "./pages/otherPages/login_register";
 import NotFound from "./pages/not-found";
 import CommingSoonPage from "./pages/otherPages/coming_soon";
 import AccountOrderPage from "./pages/dashboard/account_orders";
+// import OrderDetails from "./components/otherPages/orderDetails.jsx";
 import AccountEditAddressPage from "./pages/dashboard/account_edit_address";
 import AccountEditPage from "./pages/dashboard/account_edit";
 import AccountWishlistPage from "./pages/dashboard/account_wishlist";
@@ -63,6 +64,14 @@ import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
 import QrHome from "./pages/homes/QrReader";
 import QrReader from "./pages/homes/QrReader/QrReader";
+import "./i18n";
+
+import ReviewPage from "./pages/dashboard/reivew";
+
+// import OrderDetails from "./components/otherPages/OrderDetails.jsx";
+import OrderDetailsPage from "./pages/dashboard/account_orderDetails";
+import './App.css';
+
 
 function App() {
   useEffect(() => {
@@ -124,6 +133,8 @@ function App() {
             <Route path="page-not-found" element={<NotFound />} />
             <Route path="coming_soon" element={<CommingSoonPage />} />
             <Route path="my-orders" element={<AccountOrderPage />} />
+            <Route path="order-details/:orderId" element={<OrderDetailsPage />} />
+
             <Route
               path="account_edit_address"
               element={<AccountEditAddressPage />}
@@ -131,12 +142,13 @@ function App() {
             <Route path="account_edit/:userId" element={<AccountEditPage />} />
             <Route path="account_wishlist" element={<AccountWishlistPage />} />
             <Route path="reset_password" element={<ResetPasswordPage />} />
-
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
 
             <Route path="8" element={<NotFound />} />
             <Route path="bisang/admin/*" element={<AdminPage />} />
+
+            <Route path="review-form" element={<ReviewPage/>}/>
           </Route>
         </Routes>
 

@@ -22,12 +22,12 @@
 // ];
 
 export const languageOptions = [
-  { value: "", text: "Republic of Korea | 한국어", selected: true },
-  { value: "1", text: "United States | English" },
-  { value: "2", text: "German" },
-  { value: "3", text: "French" },
-  { value: "4", text: "Swedish" },
-  { value: "5", text: "United Kingdom | English", selected: true },
+  { value: "ko", text: "한국어", selected: true },
+  { value: "en", text: "English" },
+  { value: "fr", text: "French" },
+  // { value: "3", text: "German" },
+  // { value: "4", text: "Swedish" },
+  // { value: "5", text: "United Kingdom | English", selected: true },
 ];
 
 export const languageOptions2 = [

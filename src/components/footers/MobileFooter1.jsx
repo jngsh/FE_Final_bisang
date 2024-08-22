@@ -30,16 +30,14 @@ export default function MobileFooter1() {
             to="/"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
-            <svg
-              className="d-block"
+            <img
+              src="/assets/images/mobilefooter1/home.png"
               width="18"
               height="18"
               viewBox="0 0 18 18"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <use href="#icon_home" />
-            </svg>
+            />
+            <use href="#icon_home" />
             <span>Home</span>
           </Link>
         </div>
@@ -50,22 +48,15 @@ export default function MobileFooter1() {
             to="/QrReader"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
-            <div className="position-relative">
-              <svg
-                className="d-block"
-                width="18"
-                height="18"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+            <img
+              src="/assets/images/mobilefooter1/qrscan.png"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+            />
                 <use href="#icon_heart" />
-              </svg>
-              {/* <span className="wishlist-amount d-block position-absolute js-wishlist-count">
-                {wishList.length}
-              </span> */}
-            </div>
-            <span>QR SCAN</span>
+            <span>QRscan</span>
           </Link>
         </div>
 
@@ -75,16 +66,14 @@ export default function MobileFooter1() {
             href="/shop-5"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
-            <svg
-              className="d-block"
+          <img
+              src="/assets/images/mobilefooter1/categories.png"
               width="18"
               height="18"
               viewBox="0 0 18 18"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            />
               <use href="#icon_hanger" />
-            </svg>
             <span>Categories</span>
           </a>
         </div>
