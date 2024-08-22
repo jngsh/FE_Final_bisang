@@ -5,6 +5,7 @@ import { useContextElement } from "@/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import BASE_URL from "@/utils/globalBaseUrl";
+import { useTranslation } from 'react-i18next';
 
 const generateBackgroundColor = (id) => {
   const hash = id * 31;
@@ -28,6 +29,7 @@ export default function DiscountSlider() {
   const { toggleWishlist, isAddedtoWishlist } = useContextElement();
   const { setQuickViewItem } = useContextElement();
   const { addProductToCart, isAddedToCartProducts } = useContextElement();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -236,7 +238,7 @@ export default function DiscountSlider() {
                                 <div className="product-card__price d-flex flex-column">
                                   {unitPrice ? (
                                     <span className="unit-price text-muted fs-6">
-                                      1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
+                                      1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currency_won')}
                                     </span>
                                   ) : (
                                   <br/>
@@ -244,15 +246,15 @@ export default function DiscountSlider() {
                                   {discountedPrice ? (
                                     <span>
                                       <span className="money price fs-5 text-muted text-decoration-line-through">
-                                        {formatPrice(product.productPrice)}원
+                                        {formatPrice(product.productPrice)}{t('currency_won')}
                                       </span>
                                       <span className="money price fs-5 ms-2">
-                                        {formatPrice(discountedPrice)}원
+                                        {formatPrice(discountedPrice)}{t('currency_won')}
                                       </span>
                                     </span>
                                   ) : (
                                     <span className="money price fs-5">
-                                      {formatPrice(product.productPrice)}원
+                                      {formatPrice(product.productPrice)}{t('currency_won')}
                                     </span>
                                   )}
                                   {/* <span>

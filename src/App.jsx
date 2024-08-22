@@ -63,6 +63,7 @@ import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
 import QrHome from "./pages/homes/QrReader";
 import QrReader from "./pages/homes/QrReader/QrReader";
+import "./i18n";
 
 function App() {
   useEffect(() => {

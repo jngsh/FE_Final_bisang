@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import BASE_URL from "@/utils/globalBaseUrl";
+import { useTranslation } from 'react-i18next';
 
 import itemType1 from './images/itemType1.jpeg';
 import itemType2 from './images/itemType2.jpeg';
@@ -11,19 +12,60 @@ import itemType3 from './images/itemType3.jpeg';
 
 export default function Category() {
   const [categories, setCategories] = useState([]);
+  const { t } = useTranslation();
+
+  const categoryMapping = {
+    '1': {
+      type: t("category_item_1"),
+      image: itemType1
+    },
+    '2': {
+      type: t("category_item_2"),
+      image: itemType2
+    },
+    '3': {
+      type: t("category_item_3"),
+      image: itemType3
+    }
+  };
 
   useEffect(() => {
     async function fetchCategories() {
       try {
         const response = await axios.get(`${BASE_URL}/bisang/home/item-category`);
-        setCategories(response.data);
+        const fetchedCategories = response.data;
+
+        const totalItemCount = fetchedCategories.reduce((acc, category) => acc + category.itemCount, 0);
+
+        const allCategories = fetchedCategories.map(category => {
+          const itemTypeMapping = categoryMapping[category.itemType] || { type: category.itemType, image: itemType1 };
+          return {
+            itemType: itemTypeMapping.type,
+            itemCount: category.itemCount,
+            image: itemTypeMapping.image
+          };
+        });
+
+        const finalCategories = [
+          { itemType: t("category_item_A"), itemCount: totalItemCount, image: itemType1 },
+          ...allCategories
+        ];
+
+        setCategories(finalCategories);
+
+        // console.log(finalCategories);
+        // finalCategories.forEach(category => {
+        //   console.log("카테고리 타입: " + category.itemType);
+        //   console.log("카테고리 개수: " + category.itemCount);
+        // });
+
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     }
 
     fetchCategories();
-  }, []);
+  }, [t]);
 
   const swiperOptions = {
     autoplay: {
@@ -58,35 +100,21 @@ export default function Category() {
     },
   };
 
-  const getImageForItemType = (itemType) => {
-    switch (itemType) {
-      case "간식":
-        return itemType2;
-      case "사료":
-        return itemType1;
-      case "용품":
-        return itemType3;
-      default:
-        return itemType1;
-    }
-  };
-
-  // const extendedCategories = [...categories, ...categories];
-
   return (
     <section className="category-carousel bg-grey-f7f5ee">
       <div className="container">
         <div className="mb-3 mb-xl-5 pb-3 pt-1 pb-xl-5"></div>
 
-        <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-          <h2 className="section-title fw-normal">Shop By Category</h2>
+        <div className="category-header d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
+          <h2 className="section-title fw-normal">{t('shop_by_category')}</h2>
           <Link
             className="btn-link btn-link_md default-underline text-uppercase fw-medium"
             to="/shop-5"
           >
-            Shop All Categories
+            {t('shop_all_categories')}
           </Link>
         </div>
+
 
         <div id="category_carousel" className="position-relative">
           <Swiper
@@ -98,7 +126,7 @@ export default function Category() {
                 <img
                   loading="lazy"
                   className="w-100 h-auto mb-3"
-                  src={getImageForItemType(elm.itemType)} // 이미지 선택
+                  src={elm.image}
                   width="260"
                   height="220"
                   alt={elm.itemType}
@@ -109,7 +137,7 @@ export default function Category() {
                   </a>
                   {elm.itemCount > 0 && (
                     <p className="mb-0 text-secondary">
-                      {elm.itemCount} 개
+                      {elm.itemCount} {t('category_item_count')}
                     </p>
                   )}
                 </div>
