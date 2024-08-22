@@ -6,7 +6,7 @@ export default function Cta() {
   const { t } = useTranslation();
 
   return (
-    <section className="theme-bg-color">
+    <section className="theme-bg-color-cta">
       <div className="container">
         <div className="mb-3 mb-xl-4 pb-4"></div>
 

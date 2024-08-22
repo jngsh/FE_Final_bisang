@@ -53,12 +53,6 @@ export default function Category() {
 
         setCategories(finalCategories);
 
-        // console.log(finalCategories);
-        // finalCategories.forEach(category => {
-        //   console.log("카테고리 타입: " + category.itemType);
-        //   console.log("카테고리 개수: " + category.itemCount);
-        // });
-
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -115,7 +109,6 @@ export default function Category() {
           </Link>
         </div>
 
-
         <div id="category_carousel" className="position-relative">
           <Swiper
             {...swiperOptions}
@@ -132,9 +125,12 @@ export default function Category() {
                   alt={elm.itemType}
                 />
                 <div className="text-center">
-                  <a href="#" className="menu-link fw-medium pb-0">
+                  <Link
+                    className="menu-link fw-medium pb-0"
+                    to="/shop-5"
+                  >
                     {elm.itemType}
-                  </a>
+                  </Link>
                   {elm.itemCount > 0 && (
                     <p className="mb-0 text-secondary">
                       {elm.itemCount} {t('category_item_count')}

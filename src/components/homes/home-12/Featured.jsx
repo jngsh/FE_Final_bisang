@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Star from "@/components/common/Star";
-import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { useTranslation } from 'react-i18next';
 
 export default function Featured() {
-  const { toggleWishlist, isAddedtoWishlist } = useContextElement();
-  const { setQuickViewItem } = useContextElement();
-  const { addProductToCart, isAddedToCartProducts } = useContextElement();
   const { t } = useTranslation();
   const filterCategories = [t("category_pet_A"), t("category_pet_D"), t("category_pet_C"), t("category_pet_Z")];
   const [currentCategory, setCurrentCategory] = useState(filterCategories[0]);
@@ -49,9 +45,6 @@ export default function Featured() {
     if (currentCategory === t("category_pet_A")) {
       filteredProducts = products;
 
-      // console.log("현재 카테고리: " + currentCategory);
-      // console.log("제품 개수: " + filteredProducts.length);
-
     } else {
       filteredProducts = products.filter(product => {
         const productFirstChar = product.productCode.charAt(0);
@@ -62,12 +55,6 @@ export default function Featured() {
         
         return productFirstChar === selectedCategoryKey;
       });
-
-      // console.log("현재 카테고리: " + currentCategory);
-      // console.log("제품 개수: " + filteredProducts.length);
-      // filteredProducts.forEach(product => {
-      //  console.log("제품코드: " + product.productCode);
-      // });
 
     }
   
@@ -119,8 +106,8 @@ export default function Featured() {
                 className="nav-item"
                 role="presentation"
               >
-                <a className={`nav-link nav-link_underscore ${currentCategory === category ? "active" : ""}`}>
-                  {/* style={{ padding: '0 8px' }}> */}
+                <a className={`nav-link nav-link_underscore ${currentCategory === category ? "active" : ""}`}
+                  style={{ padding: '5px 15px' }}>
                   {category}
                 </a>
               </li>
@@ -146,37 +133,6 @@ export default function Featured() {
                             className="pc__img"
                           />
                         </Link>
-                      </div>
-                      <div className="anim_appear-bottom position-absolute w-100 text-center">
-                        <button
-                          className="btn btn-round btn-hover-red border-0 text-uppercase me-2 js-add-cart js-open-aside"
-                          onClick={() => addProductToCart(product.productId)}
-                          title={isAddedToCartProducts(product.productId) ? "Already Added" : "Add to Cart"}
-                        >
-                          <svg className="d-inline-block" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <use href={isAddedToCartProducts(product.productId) ? "#icon_cart_added" : "#icon_cart"} />
-                          </svg>
-                        </button>
-                        <button
-                          className="btn btn-round btn-hover-red border-0 text-uppercase me-2 js-quick-view"
-                          data-bs-toggle="modal"
-                          data-bs-target="#quickView"
-                          onClick={() => setQuickViewItem(product)}
-                          title="Quick view"
-                        >
-                          <svg className="d-inline-block" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_view" />
-                          </svg>
-                        </button>
-                        <button
-                          className={`btn btn-round btn-hover-red border-0 text-uppercase js-add-wishlist ${isAddedtoWishlist(product.productId) ? "active" : ""}`}
-                          onClick={() => toggleWishlist(product.productId)}
-                          title="Add To Wishlist"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
                       </div>
                     </div>
 
