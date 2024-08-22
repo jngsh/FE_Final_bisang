@@ -75,27 +75,27 @@ export default function Category() {
     slidesPerView: 2,
     slidesPerGroup: 1,
     effect: "none",
-    loop: true,
+    loop: false,
     breakpoints: {
       320: {
         slidesPerView: 2,
-        slidesPerGroup: 2,
-        spaceBetween: 16,
+        slidesPerGroup: 1,
+        spaceBetween: 16
       },
       768: {
         slidesPerView: 3,
-        slidesPerGroup: 4,
-        spaceBetween: 20,
+        slidesPerGroup: 1,
+        spaceBetween: 20
       },
       992: {
         slidesPerView: 4,
-        slidesPerGroup: 2,
-        spaceBetween: 24,
+        slidesPerGroup: 1,
+        spaceBetween: 24
       },
       1200: {
-        slidesPerView: 5,
-        slidesPerGroup: 2,
-        spaceBetween: 28,
+        slidesPerView: 4,
+        slidesPerGroup: 1,
+        spaceBetween: 28
       },
     },
   };
