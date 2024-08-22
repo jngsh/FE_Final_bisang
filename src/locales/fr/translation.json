@@ -42,5 +42,7 @@
   "top_selling_products": "Produits les plus vendus",
   "see_all_products": "Voir tous les produits",
   "currency_won": " KRW",
-  "per": "pour"
+  "per": "pour",
+
+  "discount_title": "Promotion"
 }

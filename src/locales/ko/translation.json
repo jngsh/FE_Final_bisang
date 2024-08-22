@@ -39,9 +39,11 @@
   "shop_all_categories": "모든 카테고리 보기",
   "category_item_count": "개",
 
-  "top_selling_products": "인기 제품",
-  "see_all_products": "모든 제품 보기",
+  "top_selling_products": "인기 상품",
+  "see_all_products": "모든 상품 보기",
   "currency_won": "원",
-  "per": "당"
+  "per": "당",
+
+  "discount_title": "프로모션"
 
 }
