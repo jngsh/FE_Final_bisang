@@ -13,17 +13,23 @@ import {
 
 const Footer1 = () => {
   const handleClick = (event) => {
-    console.log(event);
-    
-    event.preventDefault(); // 폼 제출 방지 (필요시)
-    alert(t('subscription_thank_you'));
-
+    event.preventDefault();
+  
     const form = event.target.closest('form');
+    const emailInput = form.querySelector('input[name="email"]');
+  
+    if (!emailInput.value.trim()) {
+      alert(t('email_required'));
+      return;
+    }
+  
+    alert(t('subscription_thank_you'));
+  
     if (form) {
       form.reset();
     }
   };
-
+  
   const { i18n } = useTranslation();
   const { t } = useTranslation();
 
