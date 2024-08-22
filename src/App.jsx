@@ -66,6 +66,7 @@ import QrHome from "./pages/homes/QrReader";
 import QrReader from "./pages/homes/QrReader/QrReader";
 // import OrderDetails from "./components/otherPages/OrderDetails.jsx";
 import OrderDetailsPage from "./pages/dashboard/account_orderDetails";
+import './App.css';
 
 function App() {
   useEffect(() => {
