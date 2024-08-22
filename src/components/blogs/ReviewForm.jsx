@@ -2,9 +2,10 @@ import React from "react";
 import { useState } from "react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ReviewForm({ productId, orderDetailId }) {
-
+  const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
   // const orderDetailId = localStorage.getItem("orderDetailId");
   
@@ -23,6 +24,8 @@ export default function ReviewForm({ productId, orderDetailId }) {
     try {
       const response = await axios.post(`${BASE_URL}/bisang/review/${orderDetailId}/${productId}/${userId}`, reviewData);
       console.log('Review submitted successfully:', response.data);
+      alert('리뷰가 등록되었습니다.')
+      navigate('/account_wishlist');
     }catch (error) {
       console.error('Error submitting review:', error);
     }

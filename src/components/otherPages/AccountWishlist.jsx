@@ -13,6 +13,8 @@ export default function AccountWishlist() {
   // const {userId} = useContextElement();
   const userId = localStorage.getItem("userId");
   const [reviewList, setReviewList] = useState([]);
+  const { orderDetails } = useContextElement();
+  const [reviewedOrderDetailIds, setReviewedOrderDetailIds] = useState([]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -28,9 +30,9 @@ export default function AccountWishlist() {
       console.log('token??',token);
       try {
       const response = await axios.get(`${BASE_URL}/bisang/review/${userId}`, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : ''
-          } 
+          // headers: {
+          //   Authorization: token ? `Bearer ${token}` : ''
+          // } 
       });
 
       if(response.data){
@@ -54,6 +56,14 @@ export default function AccountWishlist() {
   };
   fetchReviewList();
 },[]);
+
+// useEffect(() => {
+//   const fetchReviewed = async () => {
+//     try{
+//       const response = await axios.get(`${BASE_URL}/bisang/review/reviewed/${userId}/${orderId}`)
+//     }
+//   }
+// });
 
 const handleReview = (productId, orderDetailId) => {
   navigate('/review-form',{state:{productId, orderDetailId}});
