@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   currencyOptions,
@@ -12,12 +13,29 @@ import {
 
 const Footer1 = () => {
   const handleClick = (event) => {
-    console.log(event);
-    
-    event.preventDefault(); // 폼 제출 방지 (필요시)
-    alert('구독해주셔서 감사합니다. 좋은 소식 전해드릴게요🤭');
+    event.preventDefault();
+  
+    const form = event.target.closest('form');
+    const emailInput = form.querySelector('input[name="email"]');
+  
+    if (!emailInput.value.trim()) {
+      alert(t('email_required'));
+      return;
+    }
+  
+    alert(t('subscription_thank_you'));
+  
+    if (form) {
+      form.reset();
+    }
   };
+  
+  const { i18n } = useTranslation();
+  const { t } = useTranslation();
 
+  const handleLanguageChange = (event) => {
+    i18n.changeLanguage(event.target.value);
+  };
 
   return (
     <footer className="footer footer_type_1">
@@ -37,7 +55,7 @@ const Footer1 = () => {
             </div>
             {/* <!-- /.logo --> */}
             <p className="footer-address">
-            부산광역시 해운대구 APEC로 17 센텀리더스마크 4층 스파로스아카데미
+            {t('address')}
             </p>
 
             <p className="m-0">
@@ -112,9 +130,9 @@ const Footer1 = () => {
           </div> */}
           {/* <!-- /.footer-column --> */}
           <div className="footer-column footer-newsletter col-12 mb-4 mb-lg-0">
-            <h5 className="sub-menu__title text-uppercase">구독</h5>
+            <h5 className="sub-menu__title text-uppercase">{t('subscribe')}</h5>
             <p>
-              피터펫의 새로운 소식을 가장 빠르게 받아보세요!
+              {t('news_prompt')}
               {/* Be the first to get the latest news about trends, promotions, and
               much more! */}
             </p>
@@ -126,12 +144,12 @@ const Footer1 = () => {
                 className="form-control border-white"
                 type="email"
                 name="email"
-                placeholder="이메일 주소를 입력해주세요"
+                placeholder={t('enter_email')}
               />
               <input
                 className="btn-link fw-medium bg-white position-absolute top-0 end-0 h-100"
                 type="submit"
-                value="send"
+                value={t('send')}
                 onClick={handleClick}
               />
             </form>
@@ -166,17 +184,19 @@ const Footer1 = () => {
                 htmlFor="footerSettingsLanguage"
                 className="me-2 text-secondary"
               >
-                언어
+                {t('language')}
               </label>
               <select
                 id="footerSettingsLanguage"
                 className="form-select form-select-sm bg-transparent"
                 aria-label="Default select example"
                 name="store-language"
+                onChange={handleLanguageChange}
+                defaultValue={languageOptions.find(option => option.selected)?.value || ''}
               >
-                {languageOptions.map((option, index) => (
+                {languageOptions.map((option) => (
                   <option
-                    key={index}
+                    key={option.value}
                     className="footer-select__option"
                     value={option.value}
                   >

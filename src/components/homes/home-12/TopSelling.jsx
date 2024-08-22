@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Star from "@/components/common/Star";
-import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import BASE_URL from "@/utils/globalBaseUrl";
+import { useTranslation } from 'react-i18next';
 
 export default function TopSelling() {
-  const { toggleWishlist, isAddedtoWishlist } = useContextElement();
-  const { setQuickViewItem } = useContextElement();
-  const { addProductToCart, isAddedToCartProducts } = useContextElement();
-
   const [products, setProducts] = useState([]);
+  const { t } = useTranslation();
 
   const swiperOptions = {
     autoplay: {
@@ -89,13 +86,13 @@ export default function TopSelling() {
 
   return (
     <section className="product-carousel container">
-      <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-        <h2 className="section-title fw-normal">Top Selling Products</h2>
+      <div className="category-header d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
+        <h2 className="section-title fw-normal">{t('top_selling_products')}</h2>
         <Link
           className="btn-link btn-link_md default-underline text-uppercase fw-medium"
           to="/shop-5"
         >
-          See All Products
+          {t('see_all_products')}
         </Link>
       </div>
 
@@ -126,68 +123,6 @@ export default function TopSelling() {
                       />
                     </Link>
                   </div>
-                  <div className="anim_appear-bottom position-absolute w-100 text-center">
-                    <button
-                      className="btn btn-round btn-hover-red border-0 text-uppercase me-2 js-add-cart js-open-aside"
-                      onClick={() => addProductToCart(product.productId)}
-                      title={
-                        isAddedToCartProducts(product.productId)
-                          ? "Already Added"
-                          : "Add to Cart"
-                      }
-                    >
-                      <svg
-                        className="d-inline-block"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use
-                          href={`${
-                            isAddedToCartProducts(product.productId)
-                              ? "#icon_cart_added"
-                              : "#icon_cart"
-                          }`}
-                        />
-                      </svg>
-                    </button>
-                    <button
-                      className="btn btn-round btn-hover-red border-0 text-uppercase me-2 js-quick-view"
-                      data-bs-toggle="modal"
-                      data-bs-target="#quickView"
-                      onClick={() => setQuickViewItem(product)}
-                      title="Quick view"
-                    >
-                      <svg
-                        className="d-inline-block"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 18 18"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use href="#icon_view" />
-                      </svg>
-                    </button>
-                    <button
-                      className={`btn btn-round btn-hover-red border-0 text-uppercase js-add-wishlist ${
-                        isAddedtoWishlist(product.productId) ? "active" : ""
-                      }`}
-                      onClick={() => toggleWishlist(product.productId)}
-                      title="Add To Wishlist"
-                    >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use href="#icon_heart" />
-                      </svg>
-                    </button>
-                  </div>
                 </div>
 
                 <div className="pc__info position-relative">
@@ -205,7 +140,7 @@ export default function TopSelling() {
                   <div className="product-card__price d-flex flex-column">
                     {unitPrice ? (
                       <span className="unit-price text-muted fs-6">
-                        1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
+                        1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currency_won')}
                       </span>
                     ) : (
                       <br/>
@@ -213,15 +148,15 @@ export default function TopSelling() {
                     {discountedPrice ? (
                       <span>
                         <span className="money price fs-5 text-muted text-decoration-line-through">
-                          {formatPrice(product.productPrice)}원
+                          {formatPrice(product.productPrice)}{t('currency_won')}
                         </span>
                         <span className="money price fs-5 ms-2">
-                          {formatPrice(discountedPrice.toFixed(0))}원
+                          {formatPrice(discountedPrice.toFixed(0))}{t('currency_won')}
                         </span>
                       </span>
                     ) : (
                       <span className="money price fs-5">
-                        {formatPrice(product.productPrice)}원
+                        {formatPrice(product.productPrice)}{t('currency_won')}
                       </span>
                     )}
                   </div>

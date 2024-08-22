@@ -5,17 +5,15 @@ export default function ScrollTop() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 250) {
+      if (window.scrollY > 2000) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
       }
     };
 
-    // Add scroll event listener
     window.addEventListener("scroll", handleScroll);
 
-    // Cleanup: remove event listener when component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -27,7 +25,6 @@ export default function ScrollTop() {
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       className={`end-0 ${isVisible ? "" : "visually-hidden"}`}
     >
-      {/* Your scroll to top content */}
     </div>
   );
 }

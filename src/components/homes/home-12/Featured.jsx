@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Star from "@/components/common/Star";
-import { useContextElement } from "@/context/Context";
 import { Link } from "react-router-dom";
 import BASE_URL from "@/utils/globalBaseUrl";
-
-const filterCategories = ["All", "Dog", "Cat"];
-const productsPerPage = 10;
+import { useTranslation } from 'react-i18next';
 
 export default function Featured() {
-  const { toggleWishlist, isAddedtoWishlist } = useContextElement();
-  const { setQuickViewItem } = useContextElement();
-  const { addProductToCart, isAddedToCartProducts } = useContextElement();
-
+  const { t } = useTranslation();
+  const filterCategories = [t("category_pet_A"), t("category_pet_D"), t("category_pet_C"), t("category_pet_Z")];
   const [currentCategory, setCurrentCategory] = useState(filterCategories[0]);
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const productsPerPage = 10;
+
+  useEffect(()=>{
+    setCurrentCategory(filterCategories[0]);
+  }, [t]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,9 +24,8 @@ export default function Featured() {
         const response = await axios.get(`${BASE_URL}/bisang/home/featured`);
         setProducts(response.data);
         setLoading(false);
-      } catch (err) {
-        setError(err);
-        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
     };
 
@@ -37,30 +35,46 @@ export default function Featured() {
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
     let filteredProducts = [];
-
-    if (currentCategory === "All") {
+  
+    const categoryMap = {
+      "D": t("category_pet_D"), 
+      "C": t("category_pet_C"),
+      "Z": t("category_pet_Z") 
+    };
+  
+    if (currentCategory === t("category_pet_A")) {
       filteredProducts = products;
-    } else {
-      filteredProducts = products.filter(product => product.productCode === currentCategory);
-    }
 
+    } else {
+      filteredProducts = products.filter(product => {
+        const productFirstChar = product.productCode.charAt(0);
+  
+        const selectedCategoryKey = Object.keys(categoryMap).find(
+          key => categoryMap[key] === currentCategory
+        );
+        
+        return productFirstChar === selectedCategoryKey;
+      });
+
+    }
+  
     filteredProducts = filteredProducts.map(product => {
       const { discountId, discountRate, startDate, endDate } = product;
       let discountedPrice = null;
-
+  
       if (discountId >= 2 && startDate <= today && endDate >= today) {
         discountedPrice = product.productPrice * (1 - discountRate);
       }
-
+  
       const unitPrice = calculateUnitPrice(product);
-
+  
       return {
         ...product,
         discountedPrice,
         unitPrice
       };
     });
-
+  
     setFiltered(filteredProducts.slice(0, productsPerPage));
   }, [currentCategory, products]);
 
@@ -76,14 +90,13 @@ export default function Featured() {
     return null;
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error fetching data: {error.message}</p>;
+  if (loading) return <p></p>;
 
   return (
     <section className="products-grid">
       <div className="container">
         <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-          <h2 className="section-title fw-normal">Featured Products</h2>
+          <h2 className="section-title fw-normal">{t('featured_products')}</h2>
 
           <ul className="nav nav-tabs justify-content-center" id="collections-1-tab" role="tablist">
             {filterCategories.map((category, i) => (
@@ -93,7 +106,8 @@ export default function Featured() {
                 className="nav-item"
                 role="presentation"
               >
-                <a className={`nav-link nav-link_underscore ${currentCategory === category ? "active" : ""}`}>
+                <a className={`nav-link nav-link_underscore ${currentCategory === category ? "active" : ""}`}
+                  style={{ padding: '5px 15px' }}>
                   {category}
                 </a>
               </li>
@@ -120,37 +134,6 @@ export default function Featured() {
                           />
                         </Link>
                       </div>
-                      <div className="anim_appear-bottom position-absolute w-100 text-center">
-                        <button
-                          className="btn btn-round btn-hover-red border-0 text-uppercase me-2 js-add-cart js-open-aside"
-                          onClick={() => addProductToCart(product.productId)}
-                          title={isAddedToCartProducts(product.productId) ? "Already Added" : "Add to Cart"}
-                        >
-                          <svg className="d-inline-block" width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <use href={isAddedToCartProducts(product.productId) ? "#icon_cart_added" : "#icon_cart"} />
-                          </svg>
-                        </button>
-                        <button
-                          className="btn btn-round btn-hover-red border-0 text-uppercase me-2 js-quick-view"
-                          data-bs-toggle="modal"
-                          data-bs-target="#quickView"
-                          onClick={() => setQuickViewItem(product)}
-                          title="Quick view"
-                        >
-                          <svg className="d-inline-block" width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_view" />
-                          </svg>
-                        </button>
-                        <button
-                          className={`btn btn-round btn-hover-red border-0 text-uppercase js-add-wishlist ${isAddedtoWishlist(product.productId) ? "active" : ""}`}
-                          onClick={() => toggleWishlist(product.productId)}
-                          title="Add To Wishlist"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
-                      </div>
                     </div>
 
                     <div className="pc__info position-relative">
@@ -170,7 +153,7 @@ export default function Featured() {
                       <div className="product-card__price d-flex flex-column">
                         {product.unitPrice ? (
                           <span className="unit-price text-muted fs-6">
-                            1{product.unit}당 {formatPrice(product.unitPrice.toFixed(0))}원
+                            1{product.unit} {t('per')} {formatPrice(product.unitPrice.toFixed(0))}{t('currency_won')}
                           </span>
                         ) : (
                           <br />
@@ -178,15 +161,15 @@ export default function Featured() {
                         {product.discountedPrice ? (
                           <span>
                             <span className="money price fs-5 text-muted text-decoration-line-through">
-                              {formatPrice(product.productPrice)}원
+                              {formatPrice(product.productPrice)}{t('currency_won')}
                             </span>
                             <span className="money price fs-5 ms-2">
-                              {formatPrice(product.discountedPrice.toFixed(0))}원
+                              {formatPrice(product.discountedPrice.toFixed(0))}{t('currency_won')}
                             </span>
                           </span>
                         ) : (
                           <span className="money price fs-5">
-                            {formatPrice(product.productPrice)}원
+                            {formatPrice(product.productPrice)}{t('currency_won')}
                           </span>
                         )}
                       </div>

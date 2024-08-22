@@ -1,0 +1,49 @@
+{
+  "language": "Langue",
+  "address": "4e étage, Centum Leaders Mark, 17 APEC-ro, Haeundae-gu, Busan, Corée du Sud, Spa Ross Academy",
+  "news_prompt": "Recevez les dernières nouvelles de Peter Pet dès que possible !",
+  "subscribe": "S'abonner",
+  "enter_email": "Veuillez entrer votre adresse e-mail",
+  "send": "Envoyer",
+  "subscription_thank_you": "Merci de vous être abonné! Nous vous tiendrons informé des bonnes nouvelles🤭",
+  "email_required": "Veuillez entrer votre adresse email.",
+
+  "service_issue": "Un problème avec le service?",
+  "customer_service": "Service Client",
+  "phone_number": "000-1234-5678",
+
+  "subtitle1": "Des jours heureux avec vos animaux",
+  "subtitle2": "Produits pour vos animaux",
+  "subtitle3": "Enregistrez vos animaux",
+  "everyday": "Tous les jours",
+
+  "features_cart_title": "Ajoutez au Panier et Payez Immédiatement",
+  "features_cart_content": "Scannez simplement le QR code à côté de l'étiquette de prix en ajoutant au panier, pas besoin de rescanner à la caisse.",
+  "features_payment_title": "Service de Paiement Rapide",
+  "features_payment_content": "Évitez la caisse et payez rapidement avec votre téléphone.",
+  "features_shipping_title": "Livraison d'Objets Lourds",
+  "features_shipping_content": "Scannez le QR code du produit, ajoutez-le à votre panier et faites-le livrer à l'heure de votre choix.",
+  "features_pet_title": "Services Personnalisés pour Animaux",
+  "features_pet_content": "Enregistrez votre animal sur Peter Pet et profitez de divers services personnalisés.",
+
+  "category_pet_A": "Tout",
+  "category_pet_D": "Chien",
+  "category_pet_C": "Chat",
+  "category_pet_Z": "Univ",
+  "featured_products": "Produits en vedette",
+
+  "category_item_A": "Tous",
+  "category_item_1": "Nourriture",
+  "category_item_2": "Friandises",
+  "category_item_3": "Accessoires",
+  "shop_by_category": "Achetez par catégorie",
+  "shop_all_categories": "Voir toutes les catégories",
+  "category_item_count": "articles",
+
+  "top_selling_products": "Produits les plus vendus",
+  "see_all_products": "Voir tous les produits",
+  "currency_won": " KRW",
+  "per": "pour",
+
+  "discount_title": "Promotion"
+}
