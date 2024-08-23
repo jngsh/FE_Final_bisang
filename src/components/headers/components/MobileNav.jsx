@@ -7,13 +7,16 @@ import {
   shopDetails,
   shopList,
 } from "@/data/menu";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 
 // 모바일 사이즈에서 Navbar!
 export default function MobileNav() {
 
-  const { cartId } = useContextElement();
+  const userId = localStorage.getItem("userId");
+  const { setLogined, setCartId, setCartProducts, setOrderDetails} = useContextElement();
+  const navigate = useNavigate();
+  // const { cartId } = useContextElement();
   const { pathname } = useLocation();
   const isMenuActive = (menu) => {
     return menu.split("/")[1] == pathname.split("/")[1];
@@ -155,6 +158,22 @@ export default function MobileNav() {
     removeMenu();
   }, [pathname]);
 
+  const handleLogout = (event) => {
+    event.preventDefault();
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    setLogined(false);
+    setCartId(null);
+    setCartProducts([]);
+    setOrderDetails([]);
+    localStorage.setItem("logined", JSON.stringify(false));
+    localStorage.setItem("cartId", null);
+    localStorage.setItem("cartProducts", JSON.stringify([]));
+    localStorage.setItem("orderDetails", JSON.stringify([]));
+    
+    navigate("/login_register");
+  }
+
   return (
     <>
       {/* <li className="navigation__item">
@@ -262,13 +281,21 @@ export default function MobileNav() {
 
       {/* 모바일 화면 메뉴 - 회원가입 / 로그인 메뉴 */}
       <li className="navigation__item">
-        <Link
-          to="/login_register"
-          className={`navigation__link ${pathname == "/login_register" ? "menu-active" : ""
-            }`}
-        >
-          Register & Login
-        </Link>
+        {userId ? (
+          <Link
+            to="#"
+            onClick={handleLogout}
+            className={`navigation__link ${pathname === "#" ? "menu-active" : ""}`}>
+              Logout
+            </Link>
+        ) : (<Link
+            to="/login_register"
+            className={`navigation__link ${pathname == "/login_register" ? "menu-active" : ""
+              }`}
+          >
+            Register & Login
+          </Link>
+        )}
       </li>
 
       {/* 모바일 화면 메뉴 - 마이페이지 메뉴
