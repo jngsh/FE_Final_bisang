@@ -1,0 +1,53 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: ./dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+
+    steps:
+      - name: Download artifact
+        # Download the artifact which was uploaded in the Build Archive's job
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact
+          path: ./dist
+      # Deploy the artifact into AWS S3
+      - name: Deploy to s3
+        uses: jakejarvis/s3-sync-action@v1.0.0
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }} # This is referred from Github Secrets
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # This is referred from Github Secrets
+          aws_s3_bucket: peterpet.store
+          aws_region: ap-northeast-1
+          source_dir: ./dist
