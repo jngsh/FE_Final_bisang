@@ -16,8 +16,6 @@ jobs:
         
       - name: Setup Node
         uses: actions/setup-node@v4
-        with:
-            node-version: node-version-file
 
       - name: Cache node modules
         uses: actions/cache@v1
