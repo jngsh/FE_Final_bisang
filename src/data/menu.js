@@ -193,7 +193,7 @@ export const dashboardMenuItems = [
   },
   {
     id: 3,
-    href: "/account_edit_address/:userId",
+    href: "/account_edit_address",
     title: "Addresses",
   },
   {
@@ -203,8 +203,8 @@ export const dashboardMenuItems = [
   },
   {
     id: 5,
-    href: "/account_wishlist/:userId",
-    title: "Wishlist",
+    href: "/account_wishlist",
+    title: "Review",
   },
   {
     id: 6,

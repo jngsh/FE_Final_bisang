@@ -64,8 +64,14 @@ import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
 import QrHome from "./pages/homes/QrReader";
 import QrReader from "./pages/homes/QrReader/QrReader";
+import "./locales/i18n";
+
+import ReviewPage from "./pages/dashboard/reivew";
+
 // import OrderDetails from "./components/otherPages/OrderDetails.jsx";
 import OrderDetailsPage from "./pages/dashboard/account_orderDetails";
+import './App.css';
+
 
 function App() {
   useEffect(() => {
@@ -136,12 +142,13 @@ function App() {
             <Route path="account_edit/:userId" element={<AccountEditPage />} />
             <Route path="account_wishlist" element={<AccountWishlistPage />} />
             <Route path="reset_password" element={<ResetPasswordPage />} />
-
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
 
             <Route path="8" element={<NotFound />} />
             <Route path="bisang/admin/*" element={<AdminPage />} />
+
+            <Route path="review-form" element={<ReviewPage/>}/>
           </Route>
         </Routes>
 

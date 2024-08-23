@@ -59,24 +59,24 @@ export default function MyOrders() {
 
 
   return (
-    <div className="col-lg-9">
-      <div className="page-content my-account__orders-list">
+    <div className="div1">
+      <div className="div2">
         <table className="orders-table">
           <thead className="orders-header">
             <tr>
-              <th>no.</th>
-              <th>주문일자</th>
-              <th>결제금액</th>
-              <th>🎁</th>
+            <th className="orderNo">no.</th>
+        <th className="orderDate">주문일자</th>
+        <th className="orderPrice">결제금액</th>
+        <th className="orderDetails">🎁</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((items, i)=>(
-            <tr key={i}>
+              <tr key={i}>
               <td className="orderNo">{items.orderId}</td>
               <td className="orderDate">{formatDate(items.orderDate)}<br/>{formatTime(items.orderDate)}</td>
-              <td>{formatCurrency(items.totalPrice)}</td>
-              <td>
+              <td className="orderPrice">{formatCurrency(items.totalPrice)}</td>
+              <td className="orderDetails">
                 <Link to={`/order-details/${items.orderId}`} className="order-details">상세보기</Link>
               </td>
             </tr>

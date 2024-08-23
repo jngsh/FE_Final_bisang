@@ -36,7 +36,7 @@ function Chat() {
             adapter={langServeAdapter}
             personaOptions={personas}
             composerOptions={{
-              placeholder: "How can I help you today?",
+              placeholder: "무엇을 도와드릴까요?",
             }}
           />
         )}
