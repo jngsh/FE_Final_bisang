@@ -14,13 +14,16 @@ export default function AccountOrderPage() {
       <MetaComponent meta={metadata} />
       <Header1 />
       <main className="page-wrapper">
+      <div className="content-container">
         <div className="mb-4 pb-4"></div>
-        <section className="my-account container">
-          <h2 className="page-title">주문 내역</h2>
+        {/* <section className="my-account container"> */}
+          <h2 className="page-title2">주문 내역</h2>
           <div>
             <MyOrders />
           </div>
-        </section>
+        {/* </section> */}
+        </div>
+
       </main>
 
       <div className="mb-5 pb-xl-5"></div>

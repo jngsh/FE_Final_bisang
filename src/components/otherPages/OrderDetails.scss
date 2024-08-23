@@ -1,151 +1,168 @@
-.div1{
+.div1 {
   width: 100%;
-  margin:60px 15px 0px 15px;
+  margin: 60px 15px 0 15px;
 
-  @media (max-width:500px) {
-    width: 90%; 
-    margin:0 auto;   
+  @media (max-width: 500px) {
+    width: 90%;
+    margin: 0 auto;
   }
 }
 
 .div2 {
   width: 80%;
-  margin:0 auto;   
+  margin: 0 auto;
   align-content: center;
-  
-  @media (max-width:500px) {
-    width: 100%; 
-    margin:0 auto;   
-  }
-}
 
-.div3{
-  //abovetable
-    border-radius: 10px;
-  overflow: hidden;
-  /* 둥근 모서리 효과 */
-  border: 1px solid dee2e6;
-  /* 테두리 색상 */
-  width: 70%;
-  margin:0 auto;   
-  align-content: center;
-  
-  @media (max-width:500px) {
+  @media (max-width: 500px) {
     width: 100%;
-    
-    
   }
-
 }
 
-.div4{
+.div3 {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+  width: 80%;
+  margin: 0 auto;
+  align-content: center;
+
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+}
+
+.div4 {
   padding-top: 10px;
-  @media (max-width:500px) {
+  margin: 0 auto;
+
+  @media (max-width: 400px) {
     width: 100%;
   }
 }
 
 .orders-table {
-  border: 1px solid dee2e6;
+  border: 1px solid #dee2e6;
   width: 100%;
-  word-break: keep-all;
-
+  border-collapse: collapse;
   margin: 0 auto;
+  position: relative;
   
-  .orders-table img {
-    width: 50px;  /* 이미지의 폭을 고정 */
-    height: auto; /* 이미지 비율을 유지 */
-}
 
-  .orders-table th,
-  .orders-table td {
-    background-color: dee2e6;
-    padding: 0.1rem;
-    // text-transform: uppercase;
+  img {
+    width: 40px;
+    height: auto;
+  }
+
+  th, td {
     font-size: 0.875rem;
     text-align: center;
-
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    padding: 0.5rem;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-}
 
-tbody {
-  td {
-    border-top: 1px solid dee2e6;
-    padding: 0.1%;
-    text-align: center;
+  thead{
+    background-color:#dee2e6;
+  }
+  
+
+  td:nth-child(3) {
+    // width: 50%;
+    // text-align: left;
+    padding: 0.2rem;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+
+    @media (max-width: 500px) {
+      width: 30%;
+    }
+  }
 
 
+  td:last-child, th:last-child {
+    width: 10%;
+    padding: 0.2rem;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+
+    @media (max-width: 500px) {
+      width: 30%;
+    }
+  }
+
+  @media (max-width: 500px) {
+    font-size: 0.75rem;
+
+    td {
+      white-space: nowrap;
+      padding: 0.2rem;
+    }
+
+    tr {
+      display: table-row;
+      width: 100%;
+      padding: 0.2em;
+    }
+
+    td {
+      display: table-cell;
+    }
   }
 }
-.orders-table td:nth-child(3) {
-  width: 50%;  /* 상품명이 들어가는 열의 폭을 넓게 */
+
+// .orders-table th:first-child,
+// .orders-table td:first-child {
+//   // font-weight: bold;
+// }
+@media (max-width: 768px) {
+  .orders-table th:first-child {
+    width: 5px; /* 작은 화면에서 폭 조정 */
+    //  background-color: #90ee90;
+  }
+  
+  .orders-table th,
+  .orders-table td {
+    padding: 0.2rem; /* 모바일에서 패딩 조정 */
+  }
 }
 
 
 
-
-
-
-// .table-wrapper {
-//   border-radius: 10px;
-//   overflow: hidden;
-//   /* 둥근 모서리 효과 */
-//   border: 1px solid dee2e6;
-//   /* 테두리 색상 */
-// }
 
 .aboveTable {
   width: 100%;
-  /* 테이블이 부모 컨테이너의 너비를 모두 차지 */
   border-collapse: collapse;
-  /* 테두리 간격 제거 */
-  word-wrap: break-word;
-  padding: 2px ;
-  /* 긴 텍스트를 줄바꿈 */
-  text-align: center;
-  /* 텍스트 가운데 정렬 */
-  // table-layout: fixed;
-  /* 열 너비가 고르게 분배 */
-  
-}
+  margin: 0 auto;
 
-/* order-summary-table 셀 스타일 */
-.aboveTable td,
-.aboveTable th {
-  border: 1px solid #ddd;
-}
-
-.aboveTable thead{
-  font-size: small;
-}
-.aboveTable tbody{
-  font-size: smaller;
-}
-
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .aboveTable {
-    font-size: 0.875rem !important;
-    /* 작은 화면에서는 글자 크기 줄임 */
+  thead {
+    font-size: small;
   }
 
-  .aboveTable td,
-  .aboveTable th {
-    padding: 5px !important;
-    /* 작은 화면에서는 셀 여백을 줄임 */
+  tbody {
+    font-size: smaller;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.875rem;
+
+    th, td {
+      padding: 0.5rem;
+    }
   }
 }
 
-
-
-$green :#90ee90;
+$green: #90ee90;
 
 .button {
-  display: flex ;
+  display: flex;
   color: white;
   font-weight: 700;
   outline: none;
@@ -153,21 +170,13 @@ $green :#90ee90;
   border: none;
   cursor: pointer;
   margin: auto;
-  padding: 0%;
-
-  width: auto;
-  min-width: 50px; /* 버튼의 최소 폭 설정 */
-  padding: 5px 10px; /* 패딩 조정 */
+  padding: 5px 10px;
 
   font-size: 0.8rem;
   text-align: center;
   background: $green;
 
   white-space: pre-line;
-  /* 줄바꿈 문자를 기준으로 텍스트를 줄바꿈 */
   word-break: keep-all;
-  /* 단어가 중간에 잘리지 않도록 */
   overflow-wrap: break-word;
-  /* 단어가 너무 길 경우 줄바꿈 */
-  
 }
