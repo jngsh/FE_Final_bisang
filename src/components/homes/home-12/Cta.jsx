@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import '@/i18n';
 
 export default function Cta() {
   const { t } = useTranslation();

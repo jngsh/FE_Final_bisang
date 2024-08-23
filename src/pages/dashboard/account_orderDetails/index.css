@@ -1,0 +1,11 @@
+.context-container{
+  padding: 0px 15px !important;
+}
+
+.page-title2 {
+  display: flex;
+  margin: 0 5% 10px;
+  font-size: 2.1875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}

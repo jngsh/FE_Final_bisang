@@ -38,7 +38,7 @@ export default function ResetPassword() {
       <h2 className="section-title text-center fs-3 mb-xl-5">
         비밀번호 찾기
       </h2>
-      <p>회원가입할 때 이메일로 새 비밀번호를 보내드립니다.</p>
+      <p className="passwordP">회원가입할 때 이메일로 새 비밀번호를 보내드립니다.</p>
       <div className="reset-form">
         <form onSubmit={handleSubmit} className="needs-validation">
           <div className="reset-email-form">
@@ -73,14 +73,15 @@ export default function ResetPassword() {
             className="btn btn-primary w-100 text-uppercase"
             type="submit"
           >
-            Submit
+            제출하기
           </button>
 
           <div className="customer-option mt-4 text-center">
-            <span className="text-secondary">Back to</span>
+            
             <Link to="/login_register" className="btn-text js-show-register">
-              Login
+              로그인
             </Link>
+            <span className="text-secondary">으로 돌아가기</span>
           </div>
         </form>
       </div>
