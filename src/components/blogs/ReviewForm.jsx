@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
@@ -16,7 +16,26 @@ export default function ReviewForm({ productId, orderDetailId }) {
   });
 
   const [hoverRating, setHoverRating] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [productInfo, setProductInfo] = useState({ name:'', productImage:''});
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+    try{
+      const response = await axios.get(`${BASE_URL}/bisang/review/productDetail/${productId}`);
+      console.log("ProductInfo:",response.data);
+      setProductInfo({
+        name: response.data.productName,
+        productImage: response.data.productImage
+      });
+    }catch (error) {
+      console.error('Error fetching product details:', error);
+    }
+    };
+    fetchProductDetails();
   
+  },[productId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,6 +75,12 @@ export default function ReviewForm({ productId, orderDetailId }) {
         <p>
           Your email address will not be published. Required fields are marked *
         </p> */}
+        <div className="product-info">
+          {productInfo.productImage && 
+          <img src={productInfo.productImage} alt={productInfo.name}/>}
+          <h5>{productInfo.name}</h5>
+        </div>
+        <hr className="line"/>
         <label>상품에 만족하셨나요?</label>
         <div className="select-star-rating">
           <span className="star-rating">
@@ -78,6 +103,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
           </span>
           <input type="hidden" name="rating" value="{reviewData.rating}" />
         </div>
+        <hr className="slem-line"/>
         <div className="mb-4">
           <textarea
             className="form-control form-control_gray"

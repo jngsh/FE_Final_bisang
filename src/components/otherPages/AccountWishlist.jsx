@@ -103,7 +103,7 @@ const toggleWishlist = (productId) => {
                     >
                       {[detailDTO.productImage, detailDTO.productImage].map((imgSrc, idx) => (
                         <SwiperSlide key={idx} className="swiper-slide"> */}
-                          <Link to={`/product1_simple/${detailDTO.productId}`}>
+                          <Link to={`/bisang/products/${detailDTO.productId}`}>
                             <img
                               loading="lazy"
                               src={detailDTO.productImage}
