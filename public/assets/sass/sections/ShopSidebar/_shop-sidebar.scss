@@ -16,10 +16,6 @@ $sidebar-space: 3.75rem;
 
 .shop-list {
   max-width: 100%;
-
-  @include media-breakpoint-up(lg) {
-    max-width: calc(100% - #{$sidebar-width + $sidebar-space});
-  }
 }
 
 .side-sticky {
@@ -43,22 +39,5 @@ $sidebar-space: 3.75rem;
   .accordion {
     padding-left: calc(calc($aside-padding-x / 2));
     padding-right: calc(calc($aside-padding-x / 2));
-  }
-
-  @include media-breakpoint-up(lg) {
-    position: sticky;
-    top: 0;
-    right: auto;
-    left: 0;
-    width: $sidebar-width;
-    height: 100%;
-    padding: 0.375rem 0 0;
-    margin-right: $sidebar-space;
-    z-index: 1;
-
-    .accordion {
-      padding-left: 0;
-      padding-right: 0;
-    }
   }
 }
