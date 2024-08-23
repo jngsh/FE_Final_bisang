@@ -1,6 +1,12 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import '@/i18n';
+
 export default function Cta() {
+  const { t } = useTranslation();
+
   return (
-    <section className="theme-bg-color">
+    <section className="theme-bg-color-cta">
       <div className="container">
         <div className="mb-3 mb-xl-4 pb-4"></div>
 
@@ -19,13 +25,12 @@ export default function Cta() {
               />
             </svg>
             <h3 className="mb-0 text-white fw-normal">
-              서비스에 문제가 있나요?
+              {t('service_issue')}
             </h3>
           </div>
           <h3 className="mb-0 text-white fw-normal">
-            <span>고객센터 </span>
-            <a href="tel:000-1234-5678">000-1234-5678</a>
-            {/* <span className="theme-color-secondary">+82 000-1234-5678</span> */}
+            <span>{t('customer_service')} </span>
+            <a href="tel:000-1234-5678">{t('phone_number')}</a>
           </h3>
         </div>
 
