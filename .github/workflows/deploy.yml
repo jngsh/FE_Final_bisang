@@ -16,6 +16,15 @@ jobs:
         
       - name: Setup Node
         uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Clean npm cache and reinstall dependencies
+        run: |
+          rm -rf node_modules
+          rm package-lock.json
+          npm cache clean --force
+          npm install
 
       - name: Cache node modules
         uses: actions/cache@v3
