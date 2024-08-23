@@ -83,7 +83,7 @@ export default function SingleProduct10({ productId }) {
   // 카트에 담을 수량 설정
   const setQuantityCartItem = (id, quantity) => {
     if (isIncludeCard()) {
-      if (quantity >= 1) {
+      if (quantity < 1) return;
         const item = cartProducts.filter((elm) => elm.id == id)[0];
         const items = [...cartProducts];
         const itemIndex = items.indexOf(item);
@@ -92,8 +92,8 @@ export default function SingleProduct10({ productId }) {
         // setCartProducts(items);
         setCartProducts((pre) => [...pre, items]);
       }
-    } else {
-      setQuantity(quantity - 1 ? quantity : 1);
+      else {
+        setQuantity(quantity < 1 ? 1 : quantity);
     }
   };
 
@@ -317,9 +317,9 @@ export default function SingleProduct10({ productId }) {
                   type="number"
                   name="quantity"
                   value={isIncludeCard() ? isIncludeCard().quantity : quantity}
-                  min="1"
+                  min={1}
                   onChange={(e) =>
-                    setQuantityCartItem(productId, e.target.value)
+                    setQuantityCartItem(productId, parseInt(e.target.value, 10))
                   }
                   className="qty-control__number text-center"
                 />
