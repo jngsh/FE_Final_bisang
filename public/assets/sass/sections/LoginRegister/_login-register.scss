@@ -16,6 +16,7 @@
     font-size: 0.875rem;
     height: 3.75rem;
     font-weight: 500;
+    border-radius: 0.375rem;
   }
 
   p {
@@ -58,21 +59,18 @@
     align-items: center;
     gap: 0.5rem; // 입력 필드와 버튼 사이의 간격
     width: 100%; // 컨테이너가 화면의 전체 너비를 차지하도록 설정
+    // height: 60px;
   }
   
 
-  .id-container .form-floating {
+  .id-container .id {
     flex-grow: 1; // 입력 필드가 가능한 공간을 차지하도록 조정
     position: relative;
+    border-radius: 0.375rem;
+    width: 100%;
   }
 
-  .id-container .form-control {
-    border-radius: 0.375rem; // Bootstrap의 기본 border-radius
-    width: 100%; // 입력 필드가 부모 컨테이너의 전체 너비를 차지하도록 설정
-    padding: 0.5rem 0.75rem; // 입력 필드의 패딩 설정
-  }
-
-  .id-container .form-floating label {
+  .id-container label {
     position: absolute;
     top: 0.75rem;
     left: 0.75rem;
@@ -80,19 +78,19 @@
     pointer-events: none;
     color: #6c757d;
     background-color: white;
-    padding: 0 0.2rem;
+    // padding: 0 0.2rem;
     font-size: 0.75rem;
   }
 
-  .id-container .form-control:focus ~ label,
-  .id-container .form-control:not(:placeholder-shown) ~ label {
-    top: -0.75rem; // 레이블이 입력 필드 위로 이동
-    left: 0.75rem; // 레이블의 위치 조정
-    font-size: 0.75rem; // 레이블의 폰트 크기 조정
-    background-color: white; // 레이블의 배경색 조정
-    padding: 0 0.2rem; // 레이블의 패딩 조정
-    color: #6c757d; // 레이블 색상 설정
-  }
+  // .id-container .form-control:focus ~ label,
+  // .id-container .form-control:not(:placeholder-shown) ~ label {
+  //   top: -0.75rem; // 레이블이 입력 필드 위로 이동
+  //   left: 0.75rem; // 레이블의 위치 조정
+  //   font-size: 0.75rem; // 레이블의 폰트 크기 조정
+  //   background-color: white; // 레이블의 배경색 조정
+  //   padding: 0 0.2rem; // 레이블의 패딩 조정
+  //   color: #6c757d; // 레이블 색상 설정
+  // }
 
   .id-container .id-check-btn {
     margin-left: 0.5rem; // 버튼과 입력 필드 사이의 간격 조정
@@ -196,7 +194,6 @@
 
   .form-group .form-control,
   .form-group .btn-secondary {
-    height: 2.5rem; // 필드와 버튼의 높이 통일
     border-radius: 0.375rem;
   }
 
@@ -217,6 +214,10 @@
   .reset-email-form .email-separator {
     padding: 0 0.5rem;
     font-size: 1.25rem;
+  }
+  
+  .passwordP{
+    text-align: center;
   }
 
   
