@@ -184,7 +184,7 @@ export const dashboardMenuItems = [
   {
     id: 1,
     href: "/account_dashboard",
-    title: "Dashboard",
+    title: "Pet",
   },
   {
     id: 2,
