@@ -63,8 +63,8 @@ export default function MobileFooter1() {
 
         {/* SHOP 메뉴 */}
         <div className="col-3">
-          <Link
-            to="/shoplist"
+          <a
+            href="/shoplist"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
           <img
@@ -76,7 +76,7 @@ export default function MobileFooter1() {
             />
               <use href="#icon_hanger" />
             <span>{t('Categories')}</span>
-          </Link>
+          </a>
         </div>
         {/* <!-- /.col-3 --> */}
 
