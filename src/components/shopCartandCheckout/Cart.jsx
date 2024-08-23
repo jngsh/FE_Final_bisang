@@ -678,7 +678,7 @@ useEffect(() => {
           <>
             <div className="fs-20">장바구니가 비어 있습니다</div>
             <button className="btn mt-3 btn-light">
-              <Link to={"/shop-5"}>상품 보러 가기</Link>
+              <Link to={"/shoplist"}>상품 보러 가기</Link>
             </button>
           </>
         )}

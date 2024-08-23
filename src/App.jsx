@@ -98,7 +98,7 @@ function App() {
             <Route path="home-12" element={<HomePage12 />} />
 
             {/* 제품 리스트 화면 루트 */}
-            <Route path="shop-5" element={<ShopPage5 />} />
+            <Route path="shoplist" element={<ShopPage5 />} />
 
 
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}
