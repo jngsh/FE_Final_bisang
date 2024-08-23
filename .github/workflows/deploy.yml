@@ -59,7 +59,7 @@ jobs:
           path: ./dist
       # Deploy the artifact into AWS S3
       - name: Deploy to s3
-        uses: jakejarvis/s3-sync-action@v1.0.0
+        uses: jakejarvis/s3-sync-action@master
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }} # This is referred from Github Secrets
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # This is referred from Github Secrets
