@@ -45,6 +45,11 @@
   "currency_won": "원",
   "per": "당",
 
-  "discount_title": "프로모션"
+  "discount_title": "프로모션",
 
+  "home": "홈",
+  "QR": "QR",
+  "Categories": "카테고리",
+  "login": "로그인",
+  "cart": "쏙바구니"
 }
