@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { useContextElement } from "@/context/Context";
+import Cookies from "js-cookie";
 
 export default function LoginRegister() {
 
@@ -16,6 +17,8 @@ export default function LoginRegister() {
   const [emailDomain, setEmailDomain] = useState("naver.com");
   const [emailCustomDomain, setEmailCustomDomain] = useState("");
   const [isCustomDomain, setIsCustomDomain] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [storedId, setStoredId] = useState('');
   
   const {setLogined, setCartId, cartId, cartProducts, setCartProducts} = useContextElement();
 
@@ -41,6 +44,32 @@ export default function LoginRegister() {
     phone2:"",
     phone3:""
   });
+
+  useEffect(() => {
+    const remembered = Cookies.get('remenmber') == "true";
+    const storedId = Cookies.get('storedId') || "";
+
+    setRemember(remembered);
+    setStoredId(storedId);
+  },[]);
+
+  useEffect(() => {
+    if (storedId) {
+      setLoginData(prevData => ({ ...prevData, id: storedId }));
+    }
+  }, [storedId]);
+
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    setRemember(isChecked);
+    if (isChecked) {
+      Cookies.set('remember', 'true', {expires:7});
+      Cookies.set('storedId', loginData.id, {expires:7});
+    }else{
+      Cookies.remove('remember');
+      Cookies.remove('storedId');
+    }
+  }
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -248,6 +277,12 @@ export default function LoginRegister() {
           setLoginData(prevData => ({ ...prevData, error: '' }));
           navigate('/bisang/admin/*');
         }
+
+        if (remember) {
+          Cookies.set('storedId', loginData.id, { expires: 7 });
+        } else {
+          Cookies.remove('storedId');
+        }
         
         
         // navigate('/'); // Redirect on success
@@ -350,7 +385,7 @@ export default function LoginRegister() {
             aria-selected={activeTab === "login"}
             onClick={() => setActiveTab("login")}
           >
-            Login
+            로그인
           </a>
         </li>
         <li className="nav-item" role="presentation">
@@ -364,7 +399,7 @@ export default function LoginRegister() {
             aria-selected={activeTab === "register"}
             onClick={() => setActiveTab("register")}
           >
-            Register
+            회원가입
           </a>
         </li>
       </ul>
@@ -416,14 +451,15 @@ export default function LoginRegister() {
                     name="remember"
                     className="form-check-input form-check-input_fill"
                     type="checkbox"
-                    defaultValue=""
+                    checked={remember}
+                    onChange={handleCheckboxChange}
                   />
                   <label className="form-check-label text-secondary">
-                    Remember me
+                    아이디 저장하기
                   </label>
                 </div>
                 <Link to="/reset_password" className="btn-text ms-auto">
-                  Lost password?
+                  비밀번호 찾기
                 </Link>
               </div>
 
@@ -710,9 +746,7 @@ export default function LoginRegister() {
 
               <div className="d-flex align-items-center mb-3 pb-2">
                 <p className="m-0">
-                  Your personal data will be used to support your experience
-                  throughout this website, to manage access to your account, and
-                  for other purposes described in our privacy policy.
+                 
                 </p>
               </div>
 

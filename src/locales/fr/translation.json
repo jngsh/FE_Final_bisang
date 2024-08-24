@@ -45,5 +45,11 @@
   "currency_won": " KRW",
   "per": "pour",
 
-  "discount_title": "Promotion"
+  "discount_title": "Promotion",
+
+  "home": "Accueil",
+  "QR": "QR",
+  "Categories": "Catégories",
+  "login": "Connexion",
+  "cart": "쏙Panier"
 }

@@ -406,4 +406,3 @@ export default function ProductList({ petType, typeValue }) {
     </section>
   );
 }
-
