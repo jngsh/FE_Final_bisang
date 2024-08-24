@@ -231,6 +231,15 @@ export default function SearchedProductList({ searchedProducts }) {
                             />
                           </Link>
                         </div>
+                        {new Date(product.createdDate) > new Date().setMonth(new Date().getMonth() - 1) && (
+                          <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
+                            <div className="pc-labels__left">
+                              <span className="pc-label pc-label_new d-block bg-white">
+                                신상품
+                              </span>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       <div className="pc__info position-relative">
@@ -271,15 +280,6 @@ export default function SearchedProductList({ searchedProducts }) {
                             </span>
                           )}
                         </div>
-                        {product.createdDate > '2024-08-01' && (
-                          <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
-                            <div className="pc-labels__left">
-                              <span className="pc-label pc-label_new d-block bg-white">
-                                NEW
-                              </span>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
