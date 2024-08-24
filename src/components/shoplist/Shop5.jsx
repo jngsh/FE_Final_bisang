@@ -15,9 +15,7 @@ export default function Shop5() {
   };
 
   const handleSearchResults = (results) => {
-    console.log('Search 전 Results:', results);
     setSearchResults(results);
-    console.log('Search 후 Results:', results);
   };
 
   return (
