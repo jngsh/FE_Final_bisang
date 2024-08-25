@@ -13,6 +13,7 @@ import ShareComponent from "../common/ShareComponent";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { useContextElement } from "@/context/Context";
+import { IoMdTrophy } from "react-icons/io";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
@@ -30,8 +31,8 @@ export default function SingleProduct10({ productId }) {
   const [loading, setLoading] = useState(true);
   // context에서 cartId 가져오기
   const { cartId } = useContextElement();
-  // localStorage에서 가져오기
-  // const cartId = localStorage.getItem("cartId");
+
+  const [reviewCount, setReviewCount] = useState(0);
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
@@ -60,8 +61,19 @@ export default function SingleProduct10({ productId }) {
       }
     };
 
+    const fetchReviewCount = async () => {
+      try{
+        const response = await axios.get(`${BASE_URL}/bisang/review/review-count/${productId}`);
+        console.log("리뷰수:",response.data);
+        setReviewCount(response.data);
+      } catch (error) {
+        console.error('Error fetching review count:', error);
+      }
+    };
+
     if (productId) {
       fetchProduct();
+      fetchReviewCount();
     } else {
       console.log("productId가 undefined임");
     }
@@ -510,7 +522,7 @@ export default function SingleProduct10({ productId }) {
                   aria-expanded="false"
                   aria-controls="accordion-collapse-3"
                 >
-                  Reviews (3)
+                  Reviews ({reviewCount})
                   <svg className="accordion-button__icon" viewBox="0 0 14 14">
                     <g aria-hidden="true" stroke="none" fillRule="evenodd">
                       <path
@@ -532,7 +544,7 @@ export default function SingleProduct10({ productId }) {
                 data-bs-parent="#product_single_details_accordion"
               >
                 <div className="accordion-body">
-                  <Reviews />
+                  <Reviews productId={productId} reviewCount={reviewCount}/>
                 </div>
               </div>
             </div>
