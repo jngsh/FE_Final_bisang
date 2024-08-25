@@ -19,7 +19,7 @@ const steps = [
   // },
   {
     id: 3,
-    href: "/orderCompleted", //추후 링크 삭제할것
+    // href: "/orderCompleted", //추후 링크 삭제할것
     number: "02",
     title: "주문 확인",
     // description: "Review And Submit Your Order",

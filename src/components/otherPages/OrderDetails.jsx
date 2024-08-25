@@ -36,8 +36,8 @@ const OrderDetails = () => {
 
     const totalAmount = orderDetails.reduce((acc, item) => acc + item.totalPrice, 0);
 
-    const goToReview = (orderDetailId,productId) => {
-        navigate('/review-form',{state:{productId, orderDetailId}});
+    const goToReview = (orderDetailId, productId) => {
+        navigate('/review-form', { state: { productId, orderDetailId } });
 
         console.log("리뷰 작성 버튼 클릭됨");
     };
@@ -61,7 +61,7 @@ const OrderDetails = () => {
                     <table className="orders-table">
                         <thead>
                             <tr>
-                                <th>no.</th>
+                                {/* <th>no.</th> */}
                                 <th colSpan={2}>상품명</th>
                                 <th>단가<br />수량</th>
                                 <th>금액</th>
@@ -71,23 +71,16 @@ const OrderDetails = () => {
                         <tbody>
                             {orderDetails.map((items, i) => (
                                 <tr key={i}>
-                                    <td>{i + 1}</td>
                                     <td><img src={items.productImage} alt="Product" /></td>
                                     <td >{items.productName}</td>
                                     <td>
                                         <div>{formatCurrency(items.productPrice)}원</div>
-                                        <div>           {items.amount}개</div>
-
+                                        <div>{items.amount}개</div>
                                     </td>
-
                                     <td>{formatCurrency(items.totalPrice)}원</td>
-                                    <td><button className="button" onClick={()=>goToReview(items.orderDetailId, items.productId)}>리뷰 작성</button></td>
+                                    <td><button className="reviewbtn" onClick={() => goToReview(items.orderDetailId, items.productId)}>리뷰 작성</button></td>
                                 </tr>
                             ))}
-                            {/* <tr>
-                                <td colSpan={5} style={{ textAlign: 'right' }}>총 결제금액 :</td>
-                                <td colSpan={2} style={{ textAlign: 'left' }}>{formatCurrency(totalAmount)}원</td>
-                            </tr> */}
                         </tbody>
                     </table>
                 </div>
