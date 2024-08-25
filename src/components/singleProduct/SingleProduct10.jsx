@@ -68,8 +68,8 @@ export default function SingleProduct10({ productId }) {
 
   }, [productId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p></p>;
+  if (error) return <p></p>;
 
 
   // 여기는 메서드들
@@ -99,6 +99,8 @@ export default function SingleProduct10({ productId }) {
 
   const addToCart = async () => {
     console.log("cartId: ", cartId); // cartId의 현재 값을 로그로 출력
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     if (cartId === "null") {
         navigate('/login_register');
@@ -156,6 +158,14 @@ export default function SingleProduct10({ productId }) {
                 setCartProducts([...cartData]);
 
                 localStorage.setItem("cartProducts", JSON.stringify(cartData));
+
+                alert("장바구니에 담겼습니다!");
+                // Reset quantity to 1
+                setQuantity(1);
+
+                // 장바구니에 담은 후 장바구니 화면으로 이동
+                // navigate('/shop_cart');
+
             } catch (error) {
                 console.error("Failed to update item in cart : ", error);
             }
@@ -189,6 +199,14 @@ export default function SingleProduct10({ productId }) {
                 setCartProducts([...cartData]);
 
                 localStorage.setItem("cartProducts", JSON.stringify(cartData));
+
+                alert("장바구니에 담겼습니다!");
+                // Reset quantity to 1
+                setQuantity(1);
+
+                // 장바구니에 담은 후 장바구니 화면으로 이동
+                // navigate('/shop_cart');
+
             } catch (error) {
                 console.error("Failed to add item to cart : ", error);
             }
