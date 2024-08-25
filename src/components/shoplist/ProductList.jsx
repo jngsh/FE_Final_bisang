@@ -52,7 +52,7 @@ const calculateUnitPrice = (product) => {
 };
 
 export default function ProductList({ petType, typeValue }) {
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState([0, 50000]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -62,39 +62,54 @@ export default function ProductList({ petType, typeValue }) {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    if (petType && typeValue) {
-      axios.get(`${BASE_URL}/bisang/category/products-list/${petType}/${typeValue}`)
-        .then(response => {
-          setProducts(response.data);
-          setLoading(false);
-        })
-        .catch(error => {
-          console.error("axios error", error);
-          setLoading(false);
-        });
-    }
-    setCurrentPage(1);
-  }, [petType, typeValue]);
-
+    axios.get(`${BASE_URL}/bisang/category/products-list`)
+      .then(response => {
+        setAllProducts(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("axios error", error);
+        setLoading(false);
+      });
+  }, []);
+  
   useEffect(() => {
-    const newFilteredProducts = products.filter(product => {
+    const newFilteredProducts = allProducts.filter(product => {
+      const { productCode } = product;
+
+      if (productCode[0] !== petType) return false;
+
+      if (typeValue === 'all') {
+        return true;
+      } else if ((typeValue !== productCode[1]) && (typeValue !== productCode[2])) return false;
+
+      return true;
+    });
+
+    const priceFilteredProducts = newFilteredProducts.filter(product => {
       const discountedPrice = product.discountRate
         ? product.productPrice * (1 - product.discountRate)
         : product.productPrice;
       return discountedPrice >= priceRange[0] && discountedPrice <= priceRange[1];
     });
 
-    const sortedProducts = sortProducts(newFilteredProducts, sortBy);
+    const sortedProducts = sortProducts(priceFilteredProducts, sortBy);
+
+    setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredProducts(sortedProducts.slice(startIndex, endIndex));
-
-    setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
-  }, [priceRange, products, sortBy, currentPage]);
+    console.log("새로운 카테고리 랜더링" + petType + typeValue + sortedProducts.length);
+  }, [petType, typeValue, allProducts, priceRange, sortBy]);
 
   const handlePriceChange = (value) => {
     setPriceRange(value);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
     setCurrentPage(1);
   };
 
@@ -103,13 +118,8 @@ export default function ProductList({ petType, typeValue }) {
     window.scrollTo(0, 0);
   };
 
-  const handleSortChange = (e) => {
-    setSortBy(e.target.value);
-    setCurrentPage(1);
-  };
-
   if (loading) {
-    return <p></p>;
+    return <p>Loading...</p>;
   }
 
   return (
@@ -179,126 +189,131 @@ export default function ProductList({ petType, typeValue }) {
         </div>
       </div>
       <div className="shop-list flex-grow-1">
-        <div className="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-          <select
-            className="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0"
-            aria-label="Sort Items"
-            name="total-number"
-            onChange={handleSortChange}
-          >
-            {sortingOptions.map((option, index) => (
-              <option key={index} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <div className="shop-filter d-flex align-items-center order-0 order-md-3">
-            <button
-              className="btn-link btn-link_f d-flex align-items-center ps-0 js-open-aside"
-              onClick={openModalShopFilter}
-            >
-              <svg
-                className="d-inline-block align-middle me-2"
-                width="14"
-                height="10"
-                viewBox="0 0 14 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+        {filteredProducts.length === 0 ? (
+          <p>상품 준비 중입니다...</p>
+        ) : (
+          <>
+            <div className="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
+              <select
+                className="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0"
+                aria-label="Sort Items"
+                name="total-number"
+                onChange={handleSortChange}
               >
-                <use href="#icon_filter" />
-              </svg>
-              <span className="text-uppercase fw-medium d-inline-block align-middle">
-                가격 필터
-              </span>
-            </button>
-          </div>
-        </div>
-        {/* <div className="products-grid row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5"> */}
-        <div className="tab-content pt-2" id="collections-2-tab-content">
-          <div className="tab-pane fade show active">
-            <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5">
-              {filteredProducts.slice(0, itemsPerPage).map((product, i) => {
-                const { discountRate, productPrice } = product;
-                const discountedPrice = discountRate
-                  ? productPrice * (1 - discountRate)
-                  : productPrice;
-                const unitPrice = calculateUnitPrice(product);
-                return (
-                  <div key={i} className="product-card-wrapper mb-2">
-                    <div className="product-card product-card_style9 border rounded-3 mb-3 mb-md-4 mb-xxl-5">
-                      <div className="position-relative pb-3">
-                        <div className="pc__img-wrapper">
-                          <Link to={`/bisang/products/${product.productId}`}>
-                            <img
-                              loading="lazy"
-                              src={product.productImage}
-                              width="330"
-                              height="400"
-                              alt={product.productName}
-                              className="pc__img"
-                            />
-                          </Link>
-                        </div>
-                        {new Date(product.createdDate) > new Date().setMonth(new Date().getMonth() - 1) && (
-                          <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
-                            <div className="pc-labels__left">
-                              <span className="pc-label pc-label_new d-block bg-white">
-                                신상품
+                {sortingOptions.map((option, index) => (
+                  <option key={index} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <div className="shop-filter d-flex align-items-center order-0 order-md-3">
+                <button
+                  className="btn-link btn-link_f d-flex align-items-center ps-0 js-open-aside"
+                  onClick={openModalShopFilter}
+                >
+                  <svg
+                    className="d-inline-block align-middle me-2"
+                    width="14"
+                    height="10"
+                    viewBox="0 0 14 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <use href="#icon_filter" />
+                  </svg>
+                  <span className="text-uppercase fw-medium d-inline-block align-middle">
+                    가격 필터
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div className="tab-content pt-2" id="collections-2-tab-content">
+              <div className="tab-pane fade show active">
+                <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xxl-5">
+                  {filteredProducts.map((product, i) => {
+                    const { discountRate, productPrice } = product;
+                    const discountedPrice = discountRate
+                      ? productPrice * (1 - discountRate)
+                      : productPrice;
+                    const unitPrice = calculateUnitPrice(product);
+                    return (
+                      <div key={i} className="product-card-wrapper mb-2">
+                        <div className="product-card product-card_style9 border rounded-3 mb-3 mb-md-4 mb-xxl-5">
+                          <div className="position-relative pb-3">
+                            <div className="pc__img-wrapper">
+                              <Link to={`/bisang/products/${product.productId}`}>
+                                <img
+                                  loading="lazy"
+                                  src={product.productImage}
+                                  width="330"
+                                  height="400"
+                                  alt={product.productName}
+                                  className="pc__img"
+                                />
+                              </Link>
+                            </div>
+                            {new Date(product.createdDate) > new Date().setMonth(new Date().getMonth() - 1) && (
+                              <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
+                                <div className="pc-labels__left">
+                                  <span className="pc-label pc-label_new d-block bg-white">
+                                    신상품
+                                  </span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="pc__info position-relative">
+                            <h6 className="pc__title">
+                              <Link to={`/bisang/products/${product.productId}`}>
+                                {product.productName}
+                              </Link>
+                            </h6>
+                            <div className="product-card__review d-flex align-items-center">
+                              <div className="reviews-group d-flex">
+                                <Star stars={product.rating} />
+                              </div>
+                              <span className="reviews-note text-lowercase text-secondary ms-1">
+                                {product.reviews || "no reviews"}
                               </span>
                             </div>
-                          </div>
-                        )}
-                      </div>
 
-                      <div className="pc__info position-relative">
-                        <h6 className="pc__title">
-                          <Link to={`/bisang/products/${product.productId}`}>
-                            {product.productName}
-                          </Link>
-                        </h6>
-                        <div className="product-card__review d-flex align-items-center">
-                          <div className="reviews-group d-flex">
-                            <Star stars={product.rating} />
+                            <div className="product-card__price d-flex flex-column">
+                              {unitPrice ? (
+                                <span className="unit-price text-muted fs-6">
+                                  1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
+                                </span>
+                              ) : (
+                                <br />
+                              )}
+                              {discountRate > 0 ? (
+                                <span>
+                                  <span className="money price fs-5 text-muted text-decoration-line-through">
+                                    {formatPrice(productPrice)}원
+                                  </span>
+                                  <span className="money price fs-5 ms-2">
+                                    {formatPrice(discountedPrice)}원
+                                  </span>
+                                </span>
+                              ) : (
+                                <span className="money price fs-5">
+                                  {formatPrice(productPrice)}원
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          <span className="reviews-note text-lowercase text-secondary ms-1">
-                            {product.reviews || "no reviews"}
-                          </span>
-                        </div>
-
-                        <div className="product-card__price d-flex flex-column">
-                          {unitPrice ? (
-                            <span className="unit-price text-muted fs-6">
-                              1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
-                            </span>
-                          ) : (
-                            <br />
-                          )}
-                          {discountRate > 0 ? (
-                            <span>
-                              <span className="money price fs-5 text-muted text-decoration-line-through">
-                                {formatPrice(productPrice)}원
-                              </span>
-                              <span className="money price fs-5 ms-2">
-                                {formatPrice(discountedPrice)}원
-                              </span>
-                            </span>
-                          ) : (
-                            <span className="money price fs-5">
-                              {formatPrice(productPrice)}원
-                            </span>
-                          )}
                         </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </div>
+                {totalPages > 1 && (
+                  <Pagination2 totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+                )}
+              </div>
             </div>
-            {totalPages > 1 && (
-              <Pagination2 totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
-            )}
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </section>
   );

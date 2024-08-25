@@ -5,8 +5,8 @@ import ProductSearch from './ProductSearch';
 import SearchedProductList from './SearchedProductList';
 
 export default function Shop5() {
-  const [selectedPetType, setSelectedPetType] = useState('Z');
-  const [selectedTypeValue, setSelectedTypeValue] = useState('j');
+  const [selectedPetType, setSelectedPetType] = useState('D');
+  const [selectedTypeValue, setSelectedTypeValue] = useState('all');
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSelectCategory = (categoryInfo) => {

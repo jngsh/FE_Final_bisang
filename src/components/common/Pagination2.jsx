@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Pagination2({ totalPages, currentPage, onPageChange }) {
   const [pageOffset, setPageOffset] = useState(0);
+
+  useEffect(() => {
+    if (currentPage === 1) {
+      setPageOffset(0);
+    } else {
+      setPageOffset(Math.floor((currentPage - 1) / 4) * 4);
+    }
+  }, [currentPage, totalPages]);
 
   const handlePageClick = (pageNumber) => {
     onPageChange(pageNumber);
@@ -9,14 +17,18 @@ export default function Pagination2({ totalPages, currentPage, onPageChange }) {
 
   const handlePrevClick = () => {
     if (pageOffset > 0) {
-      setPageOffset(pageOffset - 1);
+      const newOffset = pageOffset - 4;
+      setPageOffset(newOffset);
     }
+    window.scrollTo(0, window.scrollY);
   };
 
   const handleNextClick = () => {
     if (pageOffset + 4 < totalPages) {
-      setPageOffset(pageOffset + 1);
+      const newOffset = pageOffset + 4;
+      setPageOffset(newOffset);
     }
+    window.scrollTo(0, window.scrollY);
   };
 
   const pageNumbers = [];
