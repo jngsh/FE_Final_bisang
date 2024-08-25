@@ -51,6 +51,7 @@ import LoginPage from "./pages/otherPages/login_register";
 // import FaqPage from "./pages/otherPages/faq";
 // import TermsPage from "./pages/otherPages/terms";
 import NotFound from "./pages/not-found";
+import PayNotFound from "./pages/not-found2";
 import CommingSoonPage from "./pages/otherPages/coming_soon";
 import AccountOrderPage from "./pages/dashboard/account_orders";
 // import OrderDetails from "./components/otherPages/orderDetails.jsx";
@@ -131,6 +132,7 @@ function App() {
             {/* <Route path="faq" element={<FaqPage />} /> */}
             {/* <Route path="terms" element={<TermsPage />} /> */}
             <Route path="page-not-found" element={<NotFound />} />
+            <Route path="page-not-found/pay-error" element={<PayNotFound />} />
             <Route path="coming_soon" element={<CommingSoonPage />} />
             <Route path="my-orders" element={<AccountOrderPage />} />
             <Route path="order-details/:orderId" element={<OrderDetailsPage />} />

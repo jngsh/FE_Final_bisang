@@ -1,6 +1,6 @@
 import axiosInstance from "@/utils/globalAxios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import './OrderDetails.scss';
 
 const OrderDetails = () => {
@@ -8,6 +8,7 @@ const OrderDetails = () => {
     const [orderDetails, setOrderDetails] = useState([]);
     const [loading, setLoading] = useState(true); // 초기 로딩 상태를 true로 설정
     console.log(orderId);
+    const navigate = useNavigate();
 
     const fetchOrderDetails = async () => {
         try {
@@ -35,9 +36,11 @@ const OrderDetails = () => {
 
     const totalAmount = orderDetails.reduce((acc, item) => acc + item.totalPrice, 0);
 
-    const goToReview = () => {
+    const goToReview = (orderDetailId,productId) => {
+        navigate('/review-form',{state:{productId, orderDetailId}});
+
         console.log("리뷰 작성 버튼 클릭됨");
-    }
+    };
 
     return (
         <div className="div1">
@@ -78,7 +81,7 @@ const OrderDetails = () => {
                                     </td>
 
                                     <td>{formatCurrency(items.totalPrice)}원</td>
-                                    <td><button className="button" onClick={goToReview}>리뷰 작성</button></td>
+                                    <td><button className="button" onClick={()=>goToReview(items.orderDetailId, items.productId)}>리뷰 작성</button></td>
                                 </tr>
                             ))}
                             {/* <tr>
