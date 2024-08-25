@@ -1,6 +1,6 @@
 import { useContextElement } from "@/context/Context";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import { useContext, useEffect, useState } from "react";
 import { allProducts } from "@/data/products";
@@ -15,6 +15,8 @@ export default function AccountWishlist() {
   const [reviewList, setReviewList] = useState([]);
   const { orderDetails } = useContextElement();
   const [reviewedOrderDetailIds, setReviewedOrderDetailIds] = useState([]);
+  const [myReview, setMyReview] = useState([]);
+  const [activeTab, setActiveTab] = useState(new URLSearchParams(location.search).get('tab') || 'review');
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -55,18 +57,27 @@ export default function AccountWishlist() {
     }
   };
   fetchReviewList();
+  fetchMyReviewList();
 },[]);
 
-// useEffect(() => {
-//   const fetchReviewed = async () => {
-//     try{
-//       const response = await axios.get(`${BASE_URL}/bisang/review/reviewed/${userId}/${orderId}`)
-//     }
-//   }
-// });
 
 const handleReview = (productId, orderDetailId) => {
   navigate('/review-form',{state:{productId, orderDetailId}});
+};
+
+const handleTabClick = (tabName) =>{
+  setActiveTab(tabName);
+  navigate(`?tab=${tabName}`);
+};
+
+const fetchMyReviewList = async () => {
+  try{
+  const response = await axios.get(`${BASE_URL}/bisang/review/reviewed/${userId}`);
+  console.log("MyReview:",response.data);
+  setMyReview(response.data);
+  }catch (error) {
+    console.error('Error get myreview:', error);
+  }
 };
 
 const toggleWishlist = (productId) => {
@@ -75,87 +86,104 @@ const toggleWishlist = (productId) => {
 };
 
   return (
-    <div className="col-lg-9">
-      <div className="page-content my-account__wishlist">
-        {reviewList.length ? (
-          <div
-            className="products-grid"
-            id="products-grid"
+    <section className="review container">
+    <ul className="nav nav-tabs mb-5" id="reviews" role="tablist">
+      <li className="nav item" role="presentation">
+        <a
+          className={`nav-link nav-link_underscore ${activeTab === "review" ? "active" : ""}`}
+          id="review-tab"
+          data-bs-toggle="tab"
+          href="#tab-item-review"
+          role="tab"
+          aria-controls="tab-item-review"
+          aria-selected={activeTab === "review"}
+          onClick={() => handleTabClick("review")}
           >
-            {/* {" "} */}
-            {reviewList.flatMap(orderDTO =>
-              orderDTO.orderDetails.map((detailDTO, i) => (
-              <div className="product-card-wrapper" key={i}>
-                <div className="product-card">
-                  <p className="pc__date">{formatDate(orderDTO.orderDate)}</p>
-                  <div className="pc__content">
-                    <div className="pc__img-wrapper">
-                  {/* <div className="pc__img-wrapper"> */}
-                    {/* <Swiper
-                      resizeObserver
-                      className="swiper-container background-img js-swiper-slider"
-                      slidesPerView={1}
-                      modules={[Navigation]}
-                      navigation={{
-                        prevEl: ".prev" + i,
-                        nextEl: ".next" + i,
-                      }}
-                    >
-                      {[detailDTO.productImage, detailDTO.productImage].map((imgSrc, idx) => (
-                        <SwiperSlide key={idx} className="swiper-slide"> */}
-                          <Link to={`/product1_simple/${detailDTO.productId}`}>
-                            <img
-                              loading="lazy"
-                              src={detailDTO.productImage}
-                              // width="330"
-                              // height="400"
-                              alt={detailDTO.productName}
-                              className="pc__img"
-                            />
-                          </Link>
-                          </div>
-                        
+          작성 가능 리뷰
+          </a>
+      </li>
+      <li className="nav item" role="presentation">
+        <a
+          className={`nav-link nav-link_underscore ${activeTab === "reviewList" ? "active" : ""}`}
+          id="reviewList-tab"
+          data-bs-toggle="tab"
+          href="#tab-item-reviewList"
+          role="tab"
+          aria-controls="tab-item-reviewList"
+          aria-selected={activeTab === "reviewList"}
+          onClick={() => handleTabClick("reviewList")}
+          >
+          내가 쓴 리뷰
+          </a>
+      </li>
+    </ul>
 
-                  <div className="pc__info">
-                    
-                    <h6 className="pc__title">{detailDTO.productName}</h6>
-                    {/* <div className="product-card__price d-flex">
-                      <span className="money price">${detailDTO.productPrice}</span>
-                    </div> */}
+    <div className="tab-content pt-2" id="review_reviewList_tab_content">
+      <div 
+        className={`tab-pane fade ${activeTab === "review" ? "show active" : ""}`}
+        id="tab-item-review"
+        role="tabpanel"
+        aria-labelledby="review-tab"
+      >
+        {/* 리뷰작성폼 */}
+        <div className="col-lg-9">
+          <div className="page-content my-account__wishlist">
+            {reviewList.length ? (
+              <div
+                className="products-grid"
+                id="products-grid"
+              >
+                {/* {" "} */}
+                {reviewList.flatMap(orderDTO =>
+                  orderDTO.orderDetails.map((detailDTO, i) => (
+                  <div className="product-card-wrapper" key={i}>
+                    <div className="product-card">
+                      <p className="pc__date">{formatDate(orderDTO.orderDate)}</p>
+                      <div className="pc__content">
+                        <div className="pc__img-wrapper">
+                              <Link to={`/bisang/products/${detailDTO.productId}`}>
+                                <img
+                                  loading="lazy"
+                                  src={detailDTO.productImage}
+                                  // width="330"
+                                  // height="400"
+                                  alt={detailDTO.productName}
+                                  className="pc__img"
+                                />
+                              </Link>
+                              </div>
+                      <div className="pc__info">
+                        <h6 className="pc__title">{detailDTO.productName}</h6>
+                        </div>
+                      </div>
+                      <button 
+                        className="btn-review"
+                        onClick={()=>handleReview(detailDTO.productId, detailDTO.orderDetailId)}
+                      >
+                        리뷰쓰기
+                      </button>
                     </div>
                   </div>
-                  
-                  <button 
-                    className="btn-review"
-                    onClick={()=>handleReview(detailDTO.productId, detailDTO.orderDetailId)}
-                  >
-                    리뷰쓰기
-                  </button>
-                    {/* <button
-                      className="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist active"
-                      title="Remove From Wishlist"
-                      onClick={() => toggleWishlist(detailDTO.productId)}
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <use href="#icon_heart" />
-                      </svg>
-                    </button> */}
-                  
-                </div>
+                )))}
               </div>
-            )))}
+            ) : (
+              <div className="fs-18">리뷰를 남길 상품이 없습니다.</div>
+            )}
+            {/* <!-- /.products-grid row --> */}
           </div>
-        ) : (
-          <div className="fs-18">리뷰를 남길 상품이 없습니다.</div>
-        )}
-        {/* <!-- /.products-grid row --> */}
+        </div>
+      </div>
+      
+      <div 
+        className={`tab-pane fade ${activeTab === "reviewList" ? "show active" : ""}`}
+        id="tab-item-reviewList"
+        role="tabpanel"
+        aria-labelledby="reviewList-tab"
+      >
+        {/* 작성리뷰폼 */}
       </div>
     </div>
+    </section>
+
   );
 }

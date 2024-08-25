@@ -62,7 +62,7 @@ export default function Cart() {
   //   setCheckboxes(savedCheckboxes);
   // }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // 로그인 상태가 true일 때만 카트 데이터를 가져옵니다.
     if (logined) {
       const fetchCartProducts = async () => {
@@ -91,7 +91,7 @@ export default function Cart() {
     }
   }, [logined, token]); // `logined`, `token`이 변경될 때마다 실행
   
-  useLayoutEffect(() => {
+  useEffect(() => {
     const fetchCartItems = async () => {
       if (cartId == "null") {
         setLoading(false);
@@ -144,31 +144,22 @@ const setQuantity = async (cartId, productId, quantity) => {
     product.productId === productId ? { ...product, amount: quantity } : product
   );
 
-  console.log("Updating UI with new quantity:", updatedProducts);
-  setCartProducts(updatedProducts); // UI 업데이트
-
+  
   setIsUpdating(true);
   try {
     await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
+    console.log("Updating UI with new quantity:", updatedProducts);
+    setCartProducts(updatedProducts); // UI 업데이트
+    updateLocalCart(updatedProducts); // 로컬스토리지 업데이트
     console.log("서버에서 수량 변경 성공:", quantity);
 
-    // 서버 응답 후 상태를 다시 확정
-    // 실제로는 필요하지 않지만 상태를 보장하기 위해
-    // setCartProducts((prevProducts) =>
-    //   prevProducts.map((product) =>
-    //     product.productId === productId ? { ...product, amount: quantity } : product
-    //   )
-    // );
   } catch (error) {
     console.error("수량 업데이트 중 오류 발생:", error);
     alert("수량 업데이트에 실패했습니다. 다시 시도해주세요.");
 
-    // 오류 발생 시 원래 상태로 복구
-    setCartProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.productId === productId ? { ...product, amount: prevProducts.find(p => p.productId === productId).amount } : product
-      )
-    );
+    // 서버 오류 시 상태 롤백
+    setCartProducts(cartProducts); // 원래 상태로 복구
+    updateLocalCart(cartProducts); // 원래 상태로 복구
   } finally {
     setIsUpdating(false);
   }
@@ -216,8 +207,8 @@ const updateLocalCart = (updatedProducts) => {
   );
   setTotalPrice(newTotalPrice);
   localStorage.setItem('cartProducts', JSON.stringify(updatedProducts));
+  console.log("updated total price: ", newTotalPrice);
 };
-
 
 // cartProducts 상태 변경 감지
 useEffect(() => {
@@ -690,63 +681,6 @@ useEffect(() => {
               <h3>장바구니 총계</h3>
               <table className="cart-totals">
                 <tbody>
-                  {/* <tr>
-                    <th>소계</th>
-                    <td>{totalPrice}원</td>
-                  </tr> */}
-                  {/* <tr>
-                    <th>배송비</th>
-                    <td>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input form-check-input_fill"
-                          type="checkbox"
-                          id="free_shipping"
-                          checked={checkboxes.free_shipping}
-                          onChange={handleCheckboxChange}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="free_shipping"
-                        >
-                          무료 배송
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input form-check-input_fill"
-                          type="checkbox"
-                          id="flat_rate"
-                          checked={checkboxes.flat_rate}
-                          onChange={handleCheckboxChange}
-                        />
-                        <label className="form-check-label" htmlFor="flat_rate">
-                          고정 요금: $49
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input form-check-input_fill"
-                          type="checkbox"
-                          id="local_pickup"
-                          checked={checkboxes.local_pickup}
-                          onChange={handleCheckboxChange}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="local_pickup"
-                        >
-                          직접 수령: $8
-                        </label>
-                      </div>
-                      <div>배송지: AL.</div>
-                      <div>
-                        <a href="#" className="menu-link menu-link_us-s">
-                          주소 변경
-                        </a>
-                      </div>
-                    </td>
-                  </tr> */}
                   <tr>
                     <th>총계</th>
                     <td>
