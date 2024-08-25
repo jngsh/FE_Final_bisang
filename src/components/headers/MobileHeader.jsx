@@ -63,7 +63,9 @@ export default function MobileHeader() {
               fill="none"
             />
             <use href="#icon_nav" />
-          <span className="btn-close-lg position-absolute top-0 start-0 w-100"></span>
+
+            {/*mobileNav 닫기버튼 없애버림*/}
+          {/* <span className="btn-close-lg position-absolute top-0 start-0 w-100"></span> */}
         </a>
 
         <div className="logo">
