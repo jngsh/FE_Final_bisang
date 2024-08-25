@@ -74,7 +74,7 @@ const fetchMyReviewList = async () => {
   try{
   const response = await axios.get(`${BASE_URL}/bisang/review/reviewed/${userId}`);
   console.log("MyReview:",response.data);
-  setMyReview(response.data);
+  setMyReview(response.data.reverse());
   }catch (error) {
     console.error('Error get myreview:', error);
   }
@@ -156,12 +156,14 @@ const toggleWishlist = (productId) => {
                         <h6 className="pc__title">{detailDTO.productName}</h6>
                         </div>
                       </div>
+                      <div className="btn-container">
                       <button 
                         className="btn-review"
                         onClick={()=>handleReview(detailDTO.productId, detailDTO.orderDetailId)}
                       >
                         리뷰쓰기
                       </button>
+                      </div>
                     </div>
                   </div>
                 )))}
@@ -180,7 +182,63 @@ const toggleWishlist = (productId) => {
         role="tabpanel"
         aria-labelledby="reviewList-tab"
       >
-        {/* 작성리뷰폼 */}
+        {/* 작성된 리뷰폼 */}
+        <div className="col-lg-9">
+          <div className="page-content my-account__review">
+            {myReview.length ? (
+              <div className="products-grid" id="products-grid">
+                {myReview.map((review, i) => (
+                  <div className="product-card-wrapper" key={i}>
+                    <div className="product-card">
+                    <p className="pc__date">{review.reviewDate}</p>
+                      <div className="pc__content">
+                        <div className="pc__image-wrapper">
+                          <img
+                            loading="lazy"
+                            src={review.productImage}
+                            alt={review.productName}
+                            className="pc__img"
+                          />
+                        </div>
+                        <div className="pc__info">
+                          <h6 className="pc__title">{review.productName}</h6>
+                        </div>
+                      </div>
+                      <hr className="line"/>
+                      <div className="reviews">
+                      <div className="pc__rating">
+                      {Array.from({ length: review.rating }).map((_, index) => (
+                        <svg
+                          key={index}
+                          className="review-star"
+                          viewBox="0 0 9 9"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <use href="#icon_star" />
+                        </svg>
+                      ))}
+                      {Array.from({ length: 5 - review.rating }).map((_, index) => (
+                        <svg
+                          key={index + review.rating}
+                          className="review-star-empty"
+                          viewBox="0 0 9 9"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <use href="#icon_star" />
+                        </svg>
+                      ))}
+                          </div>
+                          <p className="pc__review">{review.contents}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="fs-18">작성한 리뷰가 없습니다.</div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
     </section>
