@@ -1,6 +1,6 @@
 .div1{
   width:100%;
-  margin:60px 15px 0px 15px;
+  margin:60px 0px 0px 0px;
 }
 .div2 {
   width: 80%;
@@ -32,6 +32,21 @@
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
+/* 
+.orders-table td:last-child {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-decoration: underline;
+  font-weight: bold;
+  width: 30%; 
+} */
+
+
+.orders-table td.orderDetails {
+  width: 35%; /* '🎁' 열 너비 조정 */
+  text-decoration: underline;
+  font-weight: bold;
+}
 
 .orderNo {
   width: 10%; /* 'no.' 열 너비 조정 */
@@ -49,8 +64,3 @@
   width: 20%; /* '결제금액' 열 너비 조정 */
 }
 
-.orderDetails {
-  width: 40%; /* '🎁' 열 너비 조정 */
-  text-decoration: underline;
-  font-weight: bold;
-}

@@ -69,8 +69,8 @@ export default function RelatedSlider({ productId }) {
     }
   }, [sliderProduct, currentCategoryId, currentProductId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p></p>;
+  if (error) return <p></p>;
 
   // swiper 상세 설정
   const swiperOptions = {

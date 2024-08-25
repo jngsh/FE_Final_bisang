@@ -1,14 +1,14 @@
 {
   "language": "Langue",
-  "address": "4e étage, Centum Leaders Mark, 17 APEC-ro, Haeundae-gu, Busan, Corée du Sud, Spa Ross Academy",
+  "address": "4e étage, Centum Leaders Mark, 17 APEC-ro, Haeundae-gu, Busan, Corée du Sud, Spharos Academy",
   "news_prompt": "Recevez les dernières nouvelles de Peter Pet dès que possible !",
   "subscribe": "S'abonner",
   "enter_email": "Veuillez entrer votre adresse e-mail",
   "send": "Envoyer",
-  "subscription_thank_you": "Merci de vous être abonné! Nous vous tiendrons informé des bonnes nouvelles🤭",
-  "email_required": "Veuillez entrer votre adresse email.",
+  "subscription_thank_you": "Merci de vous être abonné(e)! Nous vous tiendrons informé des bonnes nouvelles🤭",
+  "email_required": "Veuillez entrer votre adresse e-mail.",
 
-  "service_issue": "Un problème avec le service?",
+  "service_issue": "Un problème avec le service ?",
   "customer_service": "Service Client",
   "phone_number": "000-1234-5678",
 
@@ -17,13 +17,13 @@
   "subtitle3": "Enregistrez vos animaux",
   "everyday": "Tous les jours",
 
-  "features_cart_title": "Ajoutez au Panier et Payez Immédiatement",
-  "features_cart_content": "Scannez simplement le QR code à côté de l'étiquette de prix en ajoutant au panier, pas besoin de rescanner à la caisse.",
-  "features_payment_title": "Service de Paiement Rapide",
+  "features_cart_title": "Ajoutez au panier et payez immédiatement",
+  "features_cart_content": "Scannez simplement le QR code à côté de l'étiquette de prix en ajoutant l'article au panier, pas besoin de scanner de nouveau à la caisse.",
+  "features_payment_title": "Service de paiement rapide",
   "features_payment_content": "Évitez la caisse et payez rapidement avec votre téléphone.",
-  "features_shipping_title": "Livraison d'Objets Lourds",
+  "features_shipping_title": "Livraison d'objets lourds",
   "features_shipping_content": "Scannez le QR code du produit, ajoutez-le à votre panier et faites-le livrer à l'heure de votre choix.",
-  "features_pet_title": "Services Personnalisés pour Animaux",
+  "features_pet_title": "Services personnalisés pour animaux",
   "features_pet_content": "Enregistrez votre animal sur Peter Pet et profitez de divers services personnalisés.",
 
   "category_pet_A": "Tout",
@@ -51,5 +51,5 @@
   "QR": "QR",
   "Categories": "Catégories",
   "login": "Connexion",
-  "cart": "쏙Panier"
+  "cart": "Panier"
 }
