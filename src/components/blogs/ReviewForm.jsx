@@ -3,7 +3,6 @@ import { useState } from "react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { aX } from "@fullcalendar/core/internal-common";
 
 export default function ReviewForm({ productId, orderDetailId }) {
   const navigate = useNavigate();
