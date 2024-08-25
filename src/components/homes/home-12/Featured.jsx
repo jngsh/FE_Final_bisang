@@ -12,9 +12,28 @@ export default function Featured() {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
-  const productsPerPage = 10;
+  const [productsPerPage, setProductsPerPage] = useState(12);
 
-  useEffect(()=>{
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      if (width >= 1200) {
+        setProductsPerPage(15);
+      } else {
+        setProductsPerPage(12);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     setCurrentCategory(filterCategories[0]);
   }, [t]);
 
@@ -35,46 +54,46 @@ export default function Featured() {
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
     let filteredProducts = [];
-  
+
     const categoryMap = {
-      "D": t("category_pet_D"), 
+      "D": t("category_pet_D"),
       "C": t("category_pet_C"),
-      "Z": t("category_pet_Z") 
+      "Z": t("category_pet_Z")
     };
-  
+
     if (currentCategory === t("category_pet_A")) {
       filteredProducts = products;
 
     } else {
       filteredProducts = products.filter(product => {
         const productFirstChar = product.productCode.charAt(0);
-  
+
         const selectedCategoryKey = Object.keys(categoryMap).find(
           key => categoryMap[key] === currentCategory
         );
-        
+
         return productFirstChar === selectedCategoryKey;
       });
 
     }
-  
+
     filteredProducts = filteredProducts.map(product => {
       const { discountId, discountRate, startDate, endDate } = product;
       let discountedPrice = null;
-  
+
       if (discountId >= 2 && startDate <= today && endDate >= today) {
         discountedPrice = product.productPrice * (1 - discountRate);
       }
-  
+
       const unitPrice = calculateUnitPrice(product);
-  
+
       return {
         ...product,
         discountedPrice,
         unitPrice
       };
     });
-  
+
     setFiltered(filteredProducts.slice(0, productsPerPage));
   }, [currentCategory, products]);
 
@@ -95,9 +114,8 @@ export default function Featured() {
   return (
     <section className="products-grid">
       <div className="container">
-        <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
+        <div className="category-header d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
           <h2 className="section-title fw-normal">{t('featured_products')}</h2>
-
           <ul className="nav nav-tabs justify-content-center" id="collections-1-tab" role="tablist">
             {filterCategories.map((category, i) => (
               <li
@@ -107,7 +125,7 @@ export default function Featured() {
                 role="presentation"
               >
                 <a className={`nav-link nav-link_underscore ${currentCategory === category ? "active" : ""}`}
-                  style={{ padding: '5px 15px' }}>
+                  style={{ padding: '5px 20px' }}>
                   {category}
                 </a>
               </li>

@@ -5,11 +5,12 @@ import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { MyPageBtn } from "./MyPageBtn";
 import { LoginBtn } from "./LoginBtn";
+import { useTranslation } from 'react-i18next';
 
 export default function MobileFooter1() {
   const [showFooter, setShowFooter] = useState(false);
   const { wishList } = useContextElement();
-
+  const { t } = useTranslation();
   const { logined } = useContextElement();
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function MobileFooter1() {
               fill="none"
             />
             <use href="#icon_home" />
-            <span>Home</span>
+            <span>{t('home')}</span>
           </Link>
         </div>
 
@@ -56,14 +57,14 @@ export default function MobileFooter1() {
               fill="none"
             />
                 <use href="#icon_heart" />
-            <span>QRscan</span>
+            <span>{t('QR')}</span>
           </Link>
         </div>
 
         {/* SHOP 메뉴 */}
         <div className="col-3">
-          <Link
-            to="/shop-5"
+          <a
+            href="/shop-5"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
           <img
@@ -74,8 +75,8 @@ export default function MobileFooter1() {
               fill="none"
             />
               <use href="#icon_hanger" />
-            <span>Categories</span>
-          </Link>
+            <span>{t('Categories')}</span>
+          </a>
         </div>
         {/* <!-- /.col-3 --> */}
 

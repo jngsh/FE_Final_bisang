@@ -9,7 +9,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode> //콘솔 두번 찍히기 금지~
     <BrowserRouter>
       <App />
-      <Chat/>
+{/*       <Chat/> */}
     </BrowserRouter>
   // </React.StrictMode>
 );

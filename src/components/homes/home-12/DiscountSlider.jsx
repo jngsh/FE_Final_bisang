@@ -106,13 +106,15 @@ export default function DiscountSlider() {
   return (
     <section className="discount-carousel container">
       <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-        { discounts && <h2 className="section-title fw-normal">{t('discount_title')}</h2> }
+        {discounts && discounts.length > 0 && (
+          <h2 className="section-title fw-normal">{t('discount_title')}</h2>
+        )}
       </div>
       <div className="row">
         {discounts.map(discount => (
           <div key={discount.discountId}>
             {discount.discountRate > 0 && (
-              <>
+              <div className="row">
                 <div className="col-sm-6 col-md-4 col-lg-3 col-xl-20per">
                   <div className="position-relative w-100 h-sm-100 border-radius-4 overflow-hidden minh-240 mb-4 mb-sm-0">
                     <div
@@ -200,8 +202,9 @@ export default function DiscountSlider() {
                     </Swiper>
                   </div>
                 </div>
-              </>
+              </div>
             )}
+            <br/>
           </div>
         ))}
       </div>
