@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { aX } from "@fullcalendar/core/internal-common";
 
 export default function ReviewForm({ productId, orderDetailId }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const userId = localStorage.getItem("userId");
   // const orderDetailId = localStorage.getItem("orderDetailId");
   
@@ -44,7 +46,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
       const response = await axios.post(`${BASE_URL}/bisang/review/${orderDetailId}/${productId}/${userId}`, reviewData);
       console.log('Review submitted successfully:', response.data);
       alert('리뷰가 등록되었습니다.')
-      navigate('/account_wishlist');
+      navigate('/account_wishlist?tab=reviewList');
     }catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -66,7 +68,6 @@ export default function ReviewForm({ productId, orderDetailId }) {
       rating: rating
     }));
   };
-  
 
   return (
     <div className="blog-single__review-form">
@@ -78,7 +79,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
         <div className="product-info">
           {productInfo.productImage && 
           <img src={productInfo.productImage} alt={productInfo.name}/>}
-          <h5>{productInfo.name}</h5>
+          <h5 style={{lineHeight:'1.8'}}>{productInfo.name}</h5>
         </div>
         <hr className="line"/>
         <label>상품에 만족하셨나요?</label>
