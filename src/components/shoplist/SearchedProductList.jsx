@@ -52,7 +52,7 @@ const calculateUnitPrice = (product) => {
 export default function SearchedProductList({ searchedProducts }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
