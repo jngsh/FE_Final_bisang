@@ -103,7 +103,7 @@ export default function Category() {
           <h2 className="section-title fw-normal">{t('shop_by_category')}</h2>
           <Link
             className="btn-link btn-link_md default-underline text-uppercase fw-medium"
-            to="/shop-5"
+            to="/shoplist"
           >
             {t('shop_all_categories')}
           </Link>
@@ -127,7 +127,7 @@ export default function Category() {
                 <div className="text-center">
                   <Link
                     className="menu-link fw-medium pb-0"
-                    to="/shop-5"
+                    to="/shoplist"
                   >
                     {elm.itemType}
                   </Link>

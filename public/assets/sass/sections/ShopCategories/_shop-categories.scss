@@ -38,15 +38,15 @@
     height: 6.25rem;
   }
 
-  @include media-breakpoint-up(xxl) {
-    width: 7.5rem;
-    height: 7.5rem;
+  // @include media-breakpoint-up(xxl) {
+  //   width: 7.5rem;
+  //   height: 7.5rem;
 
-    .shop-categories__item_sm & {
-      width: 6.25rem;
-      height: 6.25rem;
-    }
-  }
+  //   .shop-categories__item_sm & {
+  //     width: 6.25rem;
+  //     height: 6.25rem;
+  //   }
+  // }
 }
 
 // category

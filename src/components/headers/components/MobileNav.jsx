@@ -260,8 +260,8 @@ export default function MobileNav() {
       {/* 모바일 화면 메뉴 - 카테고리 메뉴 */}
       <li className="navigation__item">
         <Link
-          to="/shop-5"
-          className={`navigation__link ${pathname == "/shop-5" ? "menu-active" : ""
+          to="/shoplist"
+          className={`navigation__link ${pathname == "/shoplist" ? "menu-active" : ""
             }`}
         >
           Category

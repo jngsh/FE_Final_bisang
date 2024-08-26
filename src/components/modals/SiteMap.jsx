@@ -132,8 +132,8 @@ export default function SiteMap() {
                           role="presentation"
                         >
                           <Link
-                            to="/shop-5"
-                            className={`nav-link nav-link_rline ${pathname == "/shop-5" ? "menu-active" : ""}`}
+                            to="/shoplist"
+                            className={`nav-link nav-link_rline ${pathname == "/shoplist" ? "menu-active" : ""}`}
                           >
                             <span className="rline-content">Category</span>
                           </Link>
