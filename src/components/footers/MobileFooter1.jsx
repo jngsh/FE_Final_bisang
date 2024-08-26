@@ -64,7 +64,7 @@ export default function MobileFooter1() {
         {/* SHOP 메뉴 */}
         <div className="col-3">
           <a
-            href="/shop-5"
+            href="/shoplist"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
           <img

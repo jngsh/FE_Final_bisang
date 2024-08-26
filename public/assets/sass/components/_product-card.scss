@@ -225,6 +225,13 @@ $card-image-height: 121.212122%;
   fill: #bdbdbd;
 }
 
+.star-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 3px;
+}
+
 // Product card wishlist button
 .pc__btn-wl {
   display: flex;

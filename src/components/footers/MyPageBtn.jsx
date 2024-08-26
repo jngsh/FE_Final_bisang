@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export const MyPageBtn = () =>{
+  const { t } = useTranslation();
     return (
         <div className="col-3">
           <Link
@@ -15,7 +17,7 @@ export const MyPageBtn = () =>{
               fill="none"
             />
               <use href="#icon_hanger" />
-            <span>MyPage</span>
+            <span>{t('my')}</span>
           </Link>
         </div>
     )
