@@ -294,7 +294,7 @@ export default function SingleProduct10({ productId }) {
           {/* 별점 부분 */}
           <div className="product-single__rating">
             <div className="reviews-group d-flex">
-              <Star stars={5} />
+              <Star productId={product1.productId} />
             </div>
             <span className="reviews-note text-lowercase text-secondary ms-1">
               {/* 8k+ reviews */}

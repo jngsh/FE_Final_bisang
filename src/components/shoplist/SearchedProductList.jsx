@@ -238,7 +238,7 @@ export default function SearchedProductList({ searchedProducts }) {
                     </h6>
                     <div className="product-card__review d-flex align-items-center">
                       <div className="reviews-group d-flex">
-                        <Star stars={product.rating} />
+                        <Star productId={product.productId} />
                       </div>
                       <span className="reviews-note text-lowercase text-secondary ms-1">
                         {product.reviews || "no reviews"}

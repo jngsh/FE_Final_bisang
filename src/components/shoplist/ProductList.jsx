@@ -76,6 +76,7 @@ export default function ProductList({ petType, typeValue }) {
     if (petType && typeValue) {
       axios.get(`${BASE_URL}/bisang/category/products-list/${petType}/${typeValue}`)
         .then(response => {
+          console.log("response",response.data);
           setProducts(response.data);
           setLoading(false);
         })
@@ -254,6 +255,7 @@ export default function ProductList({ petType, typeValue }) {
 
         <div className={`products-grid row row-cols-2 row-cols-md-3  row-cols-lg-${selectedColView}`} id="products-grid">
           {filteredProducts.slice(0, itemsPerPage).map((product, i) => {
+            console.log("filter",product);
             const { discountRate, productPrice } = product;
             const discountedPrice = discountRate
               ? productPrice * (1 - discountRate)
@@ -336,11 +338,12 @@ export default function ProductList({ petType, typeValue }) {
                     </h6>
                       <div className="product-card__review d-flex align-items-center">
                         <div className="reviews-group d-flex">
-                          <Star stars={product.rating} />
+                          {/* <Star stars={product.rating} /> */}
+                          <Star productId={product.productId} />
                         </div>
-                        <span className="reviews-note text-lowercase text-secondary ms-1">
+                        {/* <span className="reviews-note text-lowercase text-secondary ms-1">
                           {product.reviews || "no reviews"}
-                        </span>
+                        </span> */}
                       </div>
 
                     <button
