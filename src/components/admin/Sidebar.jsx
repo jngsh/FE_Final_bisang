@@ -35,6 +35,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 </li>
                 <li>
                     <NavLink
+                        to="sales-trends"
+                        className={({ isActive }) => (isActive ? "active" : undefined)}
+                    >
+                        매출 추이
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
                         to="stats"
                         className={({ isActive }) => (isActive ? "active" : undefined)}
                     >
