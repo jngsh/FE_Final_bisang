@@ -839,9 +839,7 @@ export default function Cart() {
                   <button
                     className="btn btn-primary btn btn-checkout pay"
                     onClick={handlePageChange}>
-                    <img
-                    src="/assets/images/payment_icon_yellow_small.png" 
-                    />
+                    <img src="/assets/images/payment_icon_yellow_small.png"/>
                     &nbsp;로 결제하기
                   </button>
                   <div className="errorMessage">
@@ -854,10 +852,11 @@ export default function Cart() {
             {!shippingStatus && (
               <div className="mobile_fixed-btn_wrapper">
                 <div className="kakaobtn-wrapper">
-                  {/* <button className="kakaobtn" onClick={Checkout}> */}
-                  <button className="btn btn-primary btn btn-checkout pay" onClick={Checkout}>
-                    KAKAOPAY로 결제하기
-
+                  <button
+                    className="btn btn-primary btn btn-checkout pay"
+                    onClick={Checkout}>
+                    <img src="/assets/images/payment_icon_yellow_small.png"/>
+                    &nbsp;로 결제하기
                   </button>
                 </div>
               </div>
