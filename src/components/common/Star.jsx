@@ -3,7 +3,6 @@ import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 
 export default function Star({productId}) {
-  console.log("starPI:",productId);
   const [reviewStats, setReviewStats] = useState({reviewsCount:0, avgRating:0});
   const {reviewsCount, avgRating} = reviewStats;
   const stars = 1;
@@ -16,7 +15,6 @@ export default function Star({productId}) {
     const fetchReviewStats = async () => {
       try{
         const response = await axios.get(`${BASE_URL}/bisang/review/main-product-review/${productId}`);
-        console.log("ReviewStats : ",response.data);
         setReviewStats(response.data);
       } catch (error) {
         console.error('Error fetching review stats:', error);
