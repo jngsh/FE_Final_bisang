@@ -100,7 +100,7 @@ export default function MobileHeader() {
       </div>
 
       <nav className="header-mobile__navigation navigation d-flex flex-column w-100 position-absolute top-100 bg-body overflow-auto">
-        <div className="container">
+        {/* <div className="container">
           <form
             onSubmit={(e) => e.preventDefault()}
             className="search-field position-relative mt-4 mb-3"
@@ -137,7 +137,7 @@ export default function MobileHeader() {
               <div className="search-result"></div>
             </div>
           </form>
-        </div>
+        </div> */}
 
         {/* 모바일 사이즈에서 Navbar 부분 */}
         <div className="container">

@@ -32,6 +32,7 @@
   max-height: 0;
   transition: max-height .35s, height .35s;
   z-index: $mobile-header-z-index;
+  padding-top: 10px;
 
   .search-field__input {
     padding: 0.625rem 0.875rem 0.375rem;
