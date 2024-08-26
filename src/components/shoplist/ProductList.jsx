@@ -1,7 +1,7 @@
 import Star from "@/components/common/Star";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
-import { sortingOptions } from "@/components/shoplist/data/sorting.js";
+import { sortingOptions } from "@/components/shoplist/filter/sorting.js";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';

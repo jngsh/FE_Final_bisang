@@ -1,7 +1,7 @@
 import Star from "@/components/common/Star";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
-import { sortingOptions } from "@/components/shoplist/data/sorting.js";
+import { sortingOptions } from "@/components/shoplist/filter/sorting.js";
 import { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
 import { closeModalShopFilter } from "@/utils/aside";
