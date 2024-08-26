@@ -16,7 +16,7 @@ const generateBackgroundColor = (id) => {
 
 const calculateUnitPrice = (product) => {
   const { unit, value, productPrice } = product;
-  if (unit === 'g' || unit === 'ml') {
+  if (unit === 'g' || unit === 'ml' || (unit === '개' && value !== 1)) {
     return productPrice / value;
   }
   return null;
