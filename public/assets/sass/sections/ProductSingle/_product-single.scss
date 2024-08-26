@@ -626,10 +626,13 @@
         }
 
         .customer-review {
+          width: 100%;
+
           .customer-name {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding-bottom: 5px;
 
             > h6 {
               margin: 0;
@@ -637,15 +640,20 @@
               font-weight: 400;
               line-height: 1.5rem;
             }
-          }
-
-          .review-date {
+            
+            .review-date {
             font-size: 0.875rem;
             font-weight: 400;
             line-height: 1.5rem;
             color: $secondary;
-            margin-bottom: 1.25rem;
+            // margin-bottom: 1.25rem;
           }
+          }
+
+          .reviews-group {
+            padding-bottom: 5px;
+          }
+          
 
           .review-text {
             font-size: 0.875rem;

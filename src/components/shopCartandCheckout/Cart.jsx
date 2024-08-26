@@ -8,6 +8,7 @@ import './Cart.css'
 
 //카카오페이
 import axiosInstance from '../../utils/globalAxios.js';
+import { Button } from "bootstrap";
 
 export default function Cart() {
   const context = useContextElement();
@@ -683,11 +684,16 @@ export default function Cart() {
               <table className="cart-totals">
                 <tbody>
                   <tr>
+                    <th>배송비</th>
+                    <td>(배송비 무료✨)0원</td>
+                  </tr>
+                  <tr>
                     <th>총계</th>
                     <td>
                       {formatCurrency(totalPrice)}원
                     </td>
                   </tr>
+
                 </tbody>
               </table>
             </div>
@@ -826,22 +832,15 @@ export default function Cart() {
                     </div>
                   </div>
                   <button
-                    className="btn btn-primary btn-checkout"
+                    className="btn btn-primary btn-checkout modify"
                     onClick={updateDelivery}>
                     변경하기
                   </button>
                   <button
-                    className="btn btn-checkout"
+                    className="btn btn-primary btn btn-checkout pay"
                     onClick={handlePageChange}>
-                    <img
-                      style={{ height: "fit-content" }}
-                      className="h-auto"
-                      loading="lazy"
-                      src="/assets/images/카카오페이로결제하기버튼.png"
-                      width="375"
-                      height="80"
-                      alt="image"
-                    />
+                    <img src="/assets/images/payment_icon_yellow_small.png"/>
+                    &nbsp;로 결제하기
                   </button>
                   <div className="errorMessage">
                     {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -852,17 +851,12 @@ export default function Cart() {
 
             {!shippingStatus && (
               <div className="mobile_fixed-btn_wrapper">
-                <div>
-                  <button className="kakaobtn" onClick={Checkout}>
-                    <img
-                      style={{ height: "fit-content" }}
-                      className="h-auto"
-                      loading="lazy"
-                      src="/assets/images/카카오페이로결제하기버튼.png"
-                      width="375"
-                      height="80"
-                      alt="image"
-                    />
+                <div className="kakaobtn-wrapper">
+                  <button
+                    className="btn btn-primary btn btn-checkout pay"
+                    onClick={Checkout}>
+                    <img src="/assets/images/payment_icon_yellow_small.png"/>
+                    &nbsp;로 결제하기
                   </button>
                 </div>
               </div>
