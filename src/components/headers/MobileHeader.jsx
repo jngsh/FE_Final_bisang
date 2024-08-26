@@ -8,6 +8,8 @@ import { openCart } from "@/utils/openCart";
 import MobileNav from "./components/MobileNav";
 import { Link, useNavigate } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
+import { MyPageBtn } from "../footers/MyPageBtn";
+import { LoginBtn } from "../footers/LoginBtn";
 
 // 모바일 사이즈일 때의 header 파일
 
@@ -15,6 +17,7 @@ export default function MobileHeader() {
   const { cartId } = useContextElement();
   const [scrollDirection, setScrollDirection] = useState("down");
   const navigate = useNavigate();
+  const { logined } = useContextElement();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,7 +81,8 @@ export default function MobileHeader() {
           </Link>
         </div>
 
-        <a
+        {logined ? <MyPageBtn /> : <LoginBtn />}
+        {/* <a
           // onClick={() => openCart()}
           onClick={() => navigate(`/shop_cart`)}
           className="header-tools__item header-tools__cart js-open-aside"
@@ -94,7 +98,7 @@ export default function MobileHeader() {
           <span className="cart-amount d-block position-absolute js-cart-items-count">
             <CartLength />
           </span>
-        </a>
+        </a> */}
       </div>
 
       <nav className="header-mobile__navigation navigation d-flex flex-column w-100 position-absolute top-100 bg-body overflow-auto">
