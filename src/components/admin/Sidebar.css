@@ -78,3 +78,9 @@
 .Sidebar.closed .toggle-btn:hover {
     background-color: #0056b3;
 }
+
+.logout-container {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
