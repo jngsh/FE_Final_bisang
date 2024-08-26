@@ -25,7 +25,8 @@ export default function Reviews({productId, reviewCount}) {
         const transformReviews = response.data.map((review) => ({
           name: maskName(review.id),
           text: review.contents,
-          rating: review.rating
+          rating: review.rating,
+          reviewDate: review.reviewDate
         }));
         setReviews(transformReviews);
         // return response.data;
@@ -58,7 +59,9 @@ export default function Reviews({productId, reviewCount}) {
             <div className="customer-review">
               <div className="customer-name">
                 <h6>{elm.name}</h6>
-                <div className="reviews-group d-flex">
+                <div className="review-date">{elm.reviewDate}</div>
+              </div>
+              <div className="reviews-group d-flex">
                   {Array.from({ length: elm.rating }).map((_, index) => (
                     <svg
                       key={index}
@@ -70,8 +73,6 @@ export default function Reviews({productId, reviewCount}) {
                     </svg>
                   ))}
                 </div>
-              </div>
-              <div className="review-date">{elm.date}</div>
               <div className="review-text">
                 <p>{elm.text}</p>
               </div>
