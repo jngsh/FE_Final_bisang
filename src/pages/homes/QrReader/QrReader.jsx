@@ -29,13 +29,13 @@ const QrReader = () => {
 
     // Success
     const onScanSuccess = async (result) => {
-        console.log("result>>>>>>>>>", result); // Object 형식이라네요,,
+        console.log("result>>>", result); // Object 형식이라네요,,
         // console.log(typeof(result));
 
         const qrData = result.data; // data만 qrData에 넣어준다
         setScannedResult(qrData); // ScannedResult에 스캔한 result.data를 넣어준다
-        console.log("qrData>>>>>>>>>", qrData); // 얘를 DB에 저장해보자!
-        console.log("{qrData}>>>>>>>>>", { qrData });
+        console.log("qrData>>>", qrData); // 얘를 DB에 저장해보자!
+        console.log("{qrData}>>>", { qrData });
 
         navigate(`/bisang/products/${qrData}`);
         console.log("스캔 후 자동으로 이동할 링크 : ", `/bisang/products/${qrData}`);
@@ -100,10 +100,12 @@ const QrReader = () => {
 
     // 브라우저에서 카메라 기능 허용하지 않았으면 alert 띄우기
     useEffect(() => {
-        if (!qrOn)
+        if (!qrOn) {
             alert(
-                "Camera is blocked or not accessible. Please allow camera in your browser permissions and Reload."
+                "카메라 사용 권한이 허용되어 있지 않습니다. 설정에서 권한 허용 후 다시 이용해주세요."
             );
+            window.location.href = '/';
+        }
     }, [qrOn]);
 
     return (

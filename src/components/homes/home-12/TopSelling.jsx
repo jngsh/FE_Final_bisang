@@ -131,11 +131,11 @@ export default function TopSelling() {
                   </h6>
                   <div className="product-card__review d-sm-flex align-items-center">
                     <div className="reviews-group d-flex">
-                      <Star stars={product.stars} />
+                      <Star productId={product.productId} />
                     </div>
-                    <span className="reviews-note text-lowercase text-secondary ms-sm-1">
+                    {/* <span className="reviews-note text-lowercase text-secondary ms-sm-1">
                       {product.reviews || "No Reviews"}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="product-card__price d-flex flex-column">
                     {unitPrice ? (

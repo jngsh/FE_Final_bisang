@@ -13,6 +13,7 @@ import ShareComponent from "../common/ShareComponent";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { useContextElement } from "@/context/Context";
+import { IoMdTrophy } from "react-icons/io";
 
 // 우리가 쓰는 제품 상세 페이지 !!
 // 현아가 페이지 !!!!!!!
@@ -30,8 +31,8 @@ export default function SingleProduct10({ productId }) {
   const [loading, setLoading] = useState(true);
   // context에서 cartId 가져오기
   const { cartId } = useContextElement();
-  // localStorage에서 가져오기
-  // const cartId = localStorage.getItem("cartId");
+
+  const [reviewCount, setReviewCount] = useState(0);
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
   useEffect(() => {
@@ -60,22 +61,33 @@ export default function SingleProduct10({ productId }) {
       }
     };
 
+    const fetchReviewCount = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/bisang/review/review-count/${productId}`);
+        console.log("리뷰수:", response.data);
+        setReviewCount(response.data);
+      } catch (error) {
+        console.error('Error fetching review count:', error);
+      }
+    };
+
     if (productId) {
       fetchProduct();
+      fetchReviewCount();
     } else {
       console.log("productId가 undefined임");
     }
 
   }, [productId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p></p>;
+  if (error) return <p></p>;
 
 
   // 여기는 메서드들
   const isIncludeCard = () => {
-    console.log("cartProducts>>>>>>>>",cartProducts);
-    console.log("productId>>>>>>>>",productId);
+    console.log("cartProducts>>>>>>>>", cartProducts);
+    console.log("productId>>>>>>>>", productId);
     const item = cartProducts.filter((elm) => elm.id == productId)[0];
     console.log("item>>>>>>>>", item);
     return item;
@@ -100,101 +112,119 @@ export default function SingleProduct10({ productId }) {
   const addToCart = async () => {
     console.log("cartId: ", cartId); // cartId의 현재 값을 로그로 출력
 
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     if (cartId === "null") {
-        navigate('/login_register');
-        return; // 함수 종료
+      navigate('/login_register');
+      return; // 함수 종료
     }
 
     // cartId가 null이 아닐 때만 실행
     console.log(">>>>>>> cartId: ", cartId);
 
     if (!isIncludeCard()) {
-        const cartIdFromStorage = localStorage.getItem("cartId");
-        const productIdAsNumber = Number(productId);
-        const quantityAsNumber = Number(quantity);
+      const cartIdFromStorage = localStorage.getItem("cartId");
+      const productIdAsNumber = Number(productId);
+      const quantityAsNumber = Number(quantity);
 
-        console.log("ProductId as number: ", productIdAsNumber);
-        console.log("Quantity as number: ", quantityAsNumber);
+      console.log("ProductId as number: ", productIdAsNumber);
+      console.log("Quantity as number: ", quantityAsNumber);
 
-        if (isNaN(productIdAsNumber) || isNaN(quantityAsNumber)) {
-            console.error("Invalid productId or quantity: Not a number");
-            return;
-        }
+      if (isNaN(productIdAsNumber) || isNaN(quantityAsNumber)) {
+        console.error("Invalid productId or quantity: Not a number");
+        return;
+      }
 
-        const cartData = JSON.parse(localStorage.getItem("cartProducts")) || [];
+      const cartData = JSON.parse(localStorage.getItem("cartProducts")) || [];
 
-        const existingItemIndex = cartData.findIndex(
-            (item) => item.productId === productIdAsNumber
-        );
+      const existingItemIndex = cartData.findIndex(
+        (item) => item.productId === productIdAsNumber
+      );
 
-        if (existingItemIndex !== -1) {
-            const existingItem = cartData[existingItemIndex];
-            const updatedAmount = existingItem.amount + quantityAsNumber;
+      if (existingItemIndex !== -1) {
+        const existingItem = cartData[existingItemIndex];
+        const updatedAmount = existingItem.amount + quantityAsNumber;
 
-            console.log("Existing item amount: ", existingItem.amount);
-            console.log("Updated amount: ", updatedAmount);
+        console.log("Existing item amount: ", existingItem.amount);
+        console.log("Updated amount: ", updatedAmount);
 
-            try {
-                const response = await axios.put(
-                    `${BASE_URL}/bisang/carts/items`,
-                    {
-                        cartId: cartIdFromStorage,
-                        productId: productIdAsNumber,
-                        amount: updatedAmount,
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "ngrok-skip-browser-warning": true,
-                        },
-                    }
-                );
-                
-                console.log("addToCart: Response >>>>>>> ", response);
-
-                existingItem.amount = updatedAmount;
-                setCartProducts([...cartData]);
-
-                localStorage.setItem("cartProducts", JSON.stringify(cartData));
-            } catch (error) {
-                console.error("Failed to update item in cart : ", error);
+        try {
+          const response = await axios.put(
+            `${BASE_URL}/bisang/carts/items`,
+            {
+              cartId: cartIdFromStorage,
+              productId: productIdAsNumber,
+              amount: updatedAmount,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": true,
+              },
             }
-        } else {
-            const newItem = {
-                productId: productIdAsNumber,
-                amount: quantityAsNumber,
-            };
-            cartData.push(newItem);
+          );
 
-            console.log("Updated cart after adding new item: ", cartData);
+          console.log("addToCart: Response >>>>>>> ", response);
 
-            try {
-                const response = await axios.post(
-                    `${BASE_URL}/bisang/carts/items`,
-                    {
-                        cartId: cartIdFromStorage,
-                        productId: productIdAsNumber,
-                        amount: quantityAsNumber,
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "ngrok-skip-browser-warning": true,
-                        },
-                    }
-                );
-                
-                console.log("addToCart: Response >>>>>>> ", response);
+          existingItem.amount = updatedAmount;
+          setCartProducts([...cartData]);
 
-                setCartProducts([...cartData]);
+          localStorage.setItem("cartProducts", JSON.stringify(cartData));
 
-                localStorage.setItem("cartProducts", JSON.stringify(cartData));
-            } catch (error) {
-                console.error("Failed to add item to cart : ", error);
-            }
+          alert("장바구니에 담겼습니다!");
+          // Reset quantity to 1
+          setQuantity(1);
+
+          // 장바구니에 담은 후 장바구니 화면으로 이동
+          // navigate('/shop_cart');
+
+        } catch (error) {
+          console.error("Failed to update item in cart : ", error);
         }
+      } else {
+        const newItem = {
+          productId: productIdAsNumber,
+          amount: quantityAsNumber,
+        };
+        cartData.push(newItem);
+
+        console.log("Updated cart after adding new item: ", cartData);
+
+        try {
+          const response = await axios.post(
+            `${BASE_URL}/bisang/carts/items`,
+            {
+              cartId: cartIdFromStorage,
+              productId: productIdAsNumber,
+              amount: quantityAsNumber,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": true,
+              },
+            }
+          );
+
+          console.log("addToCart: Response >>>>>>> ", response);
+
+          setCartProducts([...cartData]);
+
+          localStorage.setItem("cartProducts", JSON.stringify(cartData));
+
+          alert("장바구니에 담겼습니다!");
+          // Reset quantity to 1
+          setQuantity(1);
+
+          // 장바구니에 담은 후 장바구니 화면으로 이동
+          // navigate('/shop_cart');
+
+        } catch (error) {
+          console.error("Failed to add item to cart : ", error);
+        }
+      }
     }
-};
+  };
 
 
 
@@ -220,7 +250,7 @@ export default function SingleProduct10({ productId }) {
             alt="image"
           />
         </div>
-        <div className="col-lg-5">
+        <div className="col-lg-5" style={{paddingRight:'30px'}}>
           {/* 이 부분은 왜 필요한지 모르겠넴ㅋ */}
           <div className="d-flex justify-content-between mb-4 pb-md-2">
             <div className="breadcrumb mb-0 d-none d-md-block flex-grow-1">
@@ -264,7 +294,7 @@ export default function SingleProduct10({ productId }) {
           {/* 별점 부분 */}
           <div className="product-single__rating">
             <div className="reviews-group d-flex">
-              <Star stars={5} />
+              <Star productId={product1.productId} />
             </div>
             <span className="reviews-note text-lowercase text-secondary ms-1">
               {/* 8k+ reviews */}
@@ -352,7 +382,7 @@ export default function SingleProduct10({ productId }) {
                 className="btn btn-primary btn-addtocart js-open-aside"
                 onClick={() => addToCart()}
               >
-                {isIncludeCard() ? "장바구니에 담겼습니다!" : "장바구니에 담기 Add to Cart"}
+                {isIncludeCard() ? "장바구니에 담겼습니다!" : "장바구니에 담기"}
               </button>
             </div>
           </form>
@@ -385,143 +415,144 @@ export default function SingleProduct10({ productId }) {
               <span>{product1.categoryId} </span>
             </div>
             <div className="meta-item">
-              <label>Tags:</label>
+              {/* <label>Tags:</label> */}
               {/* <span>biker, black, bomber, leather</span> */}
             </div>
           </div>
+
           {/* 아코디언란 */}
-          <div
-            id="product_single_details_accordion"
-            className="product-single__details-accordion accordion"
-          >
-            {/* DESCRIPTION 부분 */}
-            <div className="accordion-item">
-              <h5 className="accordion-header" id="accordion-heading-11">
-                {/* DESCRIPTION 디폴트 닫아져있게 하는 법
+            <div
+              id="product_single_details_accordion"
+              className="product-single__details-accordion accordion"
+            >
+              {/* DESCRIPTION 부분 */}
+              <div className="accordion-item">
+                <h5 className="accordion-header" id="accordion-heading-11">
+                  {/* DESCRIPTION 디폴트 닫아져있게 하는 법
                     1. className="accordion-button !!collapsed!!" 로 변경
                     2. aria-expanded="!!false!!" 로 변경
                     3. 밑에 className="accordion-collapse !!collapse!!" 로 변경
                 */}
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-collapse-1"
-                  aria-expanded="false"
-                  aria-controls="accordion-collapse-1"
+                  <button
+                    className="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-collapse-1"
+                    aria-expanded="false"
+                    aria-controls="accordion-collapse-1"
+                  >
+                    Description
+                    {/* 여기 svg는 +,- 아이콘 */}
+                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                        <path
+                          className="svg-path-vertical"
+                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                        ></path>
+                        <path
+                          className="svg-path-horizontal"
+                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                        ></path>
+                      </g>
+                    </svg>
+                  </button>
+                </h5>
+                <div
+                  id="accordion-collapse-1"
+                  className="accordion-collapse collapse"
+                  aria-labelledby="accordion-heading-11"
+                  data-bs-parent="#product_single_details_accordion"
                 >
-                  Description
-                  {/* 여기 svg는 +,- 아이콘 */}
-                  <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                    <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                      <path
-                        className="svg-path-vertical"
-                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                      ></path>
-                      <path
-                        className="svg-path-horizontal"
-                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                      ></path>
-                    </g>
-                  </svg>
-                </button>
-              </h5>
-              <div
-                id="accordion-collapse-1"
-                className="accordion-collapse collapse"
-                aria-labelledby="accordion-heading-11"
-                data-bs-parent="#product_single_details_accordion"
-              >
-                <div className="accordion-body">
-                  {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
-                  {/* {product1 && <Description product1={product1} />} */}
-                  {product1.productDescription} <br></br>
-                  {product1.productDetailedDescription}
+                  <div className="accordion-body">
+                    {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
+                    {/* {product1 && <Description product1={product1} />} */}
+                    {product1.productDescription} <br></br>
+                    {product1.productDetailedDescription}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* ADDITIONAL INFORMATION 부분 */}
-            <div className="accordion-item">
-              <h5 className="accordion-header" id="accordion-heading-2">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-collapse-2"
-                  aria-expanded="false"
-                  aria-controls="accordion-collapse-2"
+              {/* ADDITIONAL INFORMATION 부분 */}
+              <div className="accordion-item">
+                <h5 className="accordion-header" id="accordion-heading-2">
+                  <button
+                    className="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-collapse-2"
+                    aria-expanded="false"
+                    aria-controls="accordion-collapse-2"
+                  >
+                    Additional Information
+                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                        <path
+                          className="svg-path-vertical"
+                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                        ></path>
+                        <path
+                          className="svg-path-horizontal"
+                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                        ></path>
+                      </g>
+                    </svg>
+                  </button>
+                </h5>
+                <div
+                  id="accordion-collapse-2"
+                  className="accordion-collapse collapse"
+                  aria-labelledby="accordion-heading-2"
+                  data-bs-parent="#product_single_details_accordion"
                 >
-                  Additional Information
-                  <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                    <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                      <path
-                        className="svg-path-vertical"
-                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                      ></path>
-                      <path
-                        className="svg-path-horizontal"
-                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                      ></path>
-                    </g>
-                  </svg>
-                </button>
-              </h5>
-              <div
-                id="accordion-collapse-2"
-                className="accordion-collapse collapse"
-                aria-labelledby="accordion-heading-2"
-                data-bs-parent="#product_single_details_accordion"
-              >
-                <div className="accordion-body">
-                  {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
-                  <AdditionalInfo />
-                  {product1.productAdditionalInfo}
+                  <div className="accordion-body">
+                    {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
+                    <AdditionalInfo />
+                    {product1.productAdditionalInfo}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* REVIEWS 부분 */}
-            <div className="accordion-item">
-              <h5 className="accordion-header" id="accordion-heading-3">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#accordion-collapse-3"
-                  aria-expanded="false"
-                  aria-controls="accordion-collapse-3"
+              {/* REVIEWS 부분 */}
+              <div className="accordion-item">
+                <h5 className="accordion-header" id="accordion-heading-3">
+                  <button
+                    className="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordion-collapse-3"
+                    aria-expanded="false"
+                    aria-controls="accordion-collapse-3"
+                  >
+                    Reviews ({reviewCount})
+                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                        <path
+                          className="svg-path-vertical"
+                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                        ></path>
+                        <path
+                          className="svg-path-horizontal"
+                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                        ></path>
+                      </g>
+                    </svg>
+                  </button>
+                </h5>
+                <div
+                  id="accordion-collapse-3"
+                  className="accordion-collapse collapse"
+                  aria-labelledby="accordion-heading-3"
+                  data-bs-parent="#product_single_details_accordion"
                 >
-                  Reviews (3)
-                  <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                    <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                      <path
-                        className="svg-path-vertical"
-                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                      ></path>
-                      <path
-                        className="svg-path-horizontal"
-                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                      ></path>
-                    </g>
-                  </svg>
-                </button>
-              </h5>
-              <div
-                id="accordion-collapse-3"
-                className="accordion-collapse collapse"
-                aria-labelledby="accordion-heading-3"
-                data-bs-parent="#product_single_details_accordion"
-              >
-                <div className="accordion-body">
-                  <Reviews />
+                  <div className="accordion-body">
+                    <Reviews productId={productId} reviewCount={reviewCount} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
       </div>
       {/* <RelatedSlider productId={productId} product1={product1}/> */}
-    </section>
+    </section >
   );
 }

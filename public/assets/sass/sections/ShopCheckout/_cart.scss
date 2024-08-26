@@ -1,7 +1,7 @@
 .shopping-cart {
   display: flex;
   flex-direction: column;
-  gap: 3.625rem;
+  gap: 0.625rem;
 
   @include media-breakpoint-up(xl) {
     flex-direction: row;
@@ -10,56 +10,62 @@
   .cart-table__wrapper {
     padding-top: 3.125rem;
     flex-grow: 1;
+    // height: 50px;
   }
-
+/////////////////////////
   &__totals-wrapper {
     .sticky-content {
-      padding-top: 3.125rem;
+      // padding-top: 2rem;
+      margin: 0 auto;
+    
     }
     
-    .mobile_fixed-btn_wrapper {
-      .button-wrapper:not(.fixed-btn) {
-        padding: 0;
-      }
-
-      .fixed-btn {
-        position: fixed;
-        left: var(--bs-gutter-x, 0.9375rem);
-        right: var(--bs-gutter-x, 0.9375rem);
-        bottom: 4rem;
-        width: auto;
-
-        @include media-breakpoint-up(md) {
-          bottom: 1rem;
-        }
-
-        @include media-breakpoint-up(lg) {
-          position: static;
-        }
-      }
-    }
 
     .btn-checkout {
       width: 100%;
       height: 3.75rem;
       font-size: 0.875rem;
-    }
-  }
+      margin: 3% 10% 3% 0 ;
+      // border-radius: 10px;
+      background-color: black;
+      border:none;
 
+    }
+
+    .btn-checkout.modify{
+      // font-size: larger;
+      height: 40px;
+      background-color: #646464;
+    }
+
+    .btn-checkout.pay{
+      // color: yellow;
+      font-weight: bolder;
+      font-size: larger;
+    }
+   
+   
+  }
   &__totals {
     border: 1px solid #222;
+    margin-top: 2.5rem;
     margin-bottom: 1.25rem;
-    padding: 2.5rem 2.5rem 0.5rem;
+    padding: 1.5rem 3.5rem;
     max-width: 100%;
+
 
     @include media-breakpoint-up(xl) {
       width: 26.25rem;
     }
 
     > h3 {
-      font-size: 1rem;
+      font-size: 1.2rem;
       text-transform: uppercase;
       margin-bottom: 1.25rem;
+      font-weight: 300;
+      padding: 0.5rem 0;
+      text-align: center;
+
     }
 
     table {
@@ -67,7 +73,7 @@
 
       th, td {
         border-bottom: 1px solid $border-color;
-        padding: 0.875rem 0;
+        padding: 0.5rem 0;
         font-size: 0.875rem;
         font-weight: 500;
       }
@@ -75,6 +81,20 @@
       th {
         text-transform: uppercase;
         vertical-align: baseline;
+      }
+      
+      tr:first-child{
+        td{
+          text-align: right;
+        }
+        
+      }
+
+
+      tr:last-child {
+        td {
+          text-align: right;
+        }
       }
 
       tr:last-child {

@@ -1,31 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import BASE_URL from "@/utils/globalBaseUrl";
+import axios from "axios";
+
 
 // 상세페이지에 보이는 리뷰 부분 !!
-const reviews = [
-  {
-    name: "Janice Miller",
-    date: "April 06, 2023",
-    text: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est…",
-    rating: 5,
-    avatar: "/assets/images/avatar.jpg",
-  },
-  {
-    name: "Benjam Porter",
-    date: "April 06, 2023",
-    text: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est…",
-    rating: 5,
-    avatar: "/assets/images/avatar.jpg",
-  },
-];
-export default function Reviews() {
+
+function maskName(name){
+  if(name.length <= 4){
+    return '****';
+  }
+  return name.slice(0, -4) + '****';
+}
+
+
+export default function Reviews({productId, reviewCount}) {
   const [ratingLength, setratingLength] = useState(0);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect (() =>{
+    const fetchReviews = async () =>{
+      try{
+        const response = await axios.get(`${BASE_URL}/bisang/review/product-review/${productId}`);
+        console.log("productReview:",response.data);
+        const transformReviews = response.data.map((review) => ({
+          name: maskName(review.id),
+          text: review.contents,
+          rating: review.rating,
+          reviewDate: review.reviewDate
+        }));
+        setReviews(transformReviews);
+        // return response.data;
+      }catch(error){
+        console.error(`Error fetching reviews:`,error);
+        throw error;
+      }
+    };
+
+    if(productId){
+      fetchReviews();
+    }
+
+  }, [productId]);
   return (
     <>
-      <h2 className="product-single__reviews-title">Reviews</h2>
+      <h2 className="product-single__reviews-title">Reviews ({reviewCount})</h2>
       <div className="product-single__reviews-list">
         {reviews.map((elm, i) => (
           <div key={i} className="product-single__reviews-item">
-            <div className="customer-avatar">
+            {/* <div className="customer-avatar">
               <img
                 loading="lazy"
                 width={80}
@@ -33,11 +55,13 @@ export default function Reviews() {
                 src={elm.avatar}
                 alt="image"
               />
-            </div>
+            </div> */}
             <div className="customer-review">
               <div className="customer-name">
                 <h6>{elm.name}</h6>
-                <div className="reviews-group d-flex">
+                <div className="review-date">{elm.reviewDate}</div>
+              </div>
+              <div className="reviews-group d-flex">
                   {Array.from({ length: elm.rating }).map((_, index) => (
                     <svg
                       key={index}
@@ -49,8 +73,6 @@ export default function Reviews() {
                     </svg>
                   ))}
                 </div>
-              </div>
-              <div className="review-date">{elm.date}</div>
               <div className="review-text">
                 <p>{elm.text}</p>
               </div>
@@ -58,7 +80,7 @@ export default function Reviews() {
           </div>
         ))}
       </div>
-      <div className="product-single__review-form">
+      {/* <div className="product-single__review-form">
         <form onSubmit={(e) => e.preventDefault()}>
           <h5>Be the first to review “Message Cotton T-Shirt”</h5>
           <p>
@@ -131,7 +153,7 @@ export default function Reviews() {
             </button>
           </div>
         </form>
-      </div>
+      </div> */}
     </>
   );
 }

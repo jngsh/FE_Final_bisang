@@ -1,6 +1,6 @@
 .div1 {
   width: 100%;
-  margin: 60px 15px 0 15px;
+  margin: 60px 0px 0 0px;
 
   @media (max-width: 500px) {
     width: 90%;
@@ -49,8 +49,10 @@
   
 
   img {
-    width: 40px;
-    height: auto;
+  max-width: 50px; /* 최대 너비를 설정 (원하는 크기로 조정 가능) */
+  height: auto; /* 비율을 유지하면서 높이 자동 조절 */
+  display: block; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
   }
 
   th, td {
@@ -66,19 +68,24 @@
     background-color:#dee2e6;
   }
   
-
-  td:nth-child(3) {
-    // width: 50%;
-    // text-align: left;
-    padding: 0.2rem;
-    white-space: normal;
-    word-break: break-word;
-    overflow-wrap: break-word;
-
-    @media (max-width: 500px) {
-      width: 30%;
-    }
+  td:nth-child(2) {
+    white-space: normal; /* 상품명 열에서 줄넘김 허용 */
+    word-break: break-word; /* 단어가 길어질 때 줄넘김 */
+    overflow-wrap: break-word; /* 긴 단어가 줄넘김되도록 설정 */
   }
+
+  // td:nth-child(3) {
+  //   // width: 50%;
+  //   // text-align: left;
+  //   padding: 0.2rem;
+  //   white-space: normal;
+  //   word-break: break-word;
+  //   overflow-wrap: break-word;
+
+  //   @media (max-width: 500px) {
+  //     width: 30%;
+  //   }
+  // }
 
 
   td:last-child, th:last-child {
@@ -89,7 +96,8 @@
     overflow-wrap: break-word;
 
     @media (max-width: 500px) {
-      width: 30%;
+      width: 20%;
+
     }
   }
 
@@ -113,10 +121,7 @@
   }
 }
 
-// .orders-table th:first-child,
-// .orders-table td:first-child {
-//   // font-weight: bold;
-// }
+
 @media (max-width: 768px) {
   .orders-table th:first-child {
     width: 5px; /* 작은 화면에서 폭 조정 */
@@ -161,7 +166,7 @@
 
 $green: #90ee90;
 
-.button {
+.reviewbtn {
   display: flex;
   color: white;
   font-weight: 700;
