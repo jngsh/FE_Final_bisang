@@ -6,10 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { useTranslation } from 'react-i18next';
 
-import itemType1 from './images/itemType1.jpeg';
-import itemType2 from './images/itemType2.jpeg';
-import itemType3 from './images/itemType3.jpeg';
-
 export default function Category() {
   const [categories, setCategories] = useState([]);
   const { t } = useTranslation();
@@ -17,15 +13,15 @@ export default function Category() {
   const categoryMapping = {
     '1': {
       type: t("category_item_1"),
-      image: itemType1
+      image: "/assets/images/homeimages/category/itemType1.jpeg"
     },
     '2': {
       type: t("category_item_2"),
-      image: itemType2
+      image: "/assets/images/homeimages/category/itemType2.jpeg"
     },
     '3': {
       type: t("category_item_3"),
-      image: itemType3
+      image: "/assets/images/homeimages/category/itemType3.jpeg"
     }
   };
 
@@ -38,7 +34,7 @@ export default function Category() {
         const totalItemCount = fetchedCategories.reduce((acc, category) => acc + category.itemCount, 0);
 
         const allCategories = fetchedCategories.map(category => {
-          const itemTypeMapping = categoryMapping[category.itemType] || { type: category.itemType, image: itemType1 };
+          const itemTypeMapping = categoryMapping[category.itemType] || { type: category.itemType, image: "/assets/images/homeimages/category/itemTypeAll.jpg" };
           return {
             itemType: itemTypeMapping.type,
             itemCount: category.itemCount,
@@ -47,7 +43,7 @@ export default function Category() {
         });
 
         const finalCategories = [
-          { itemType: t("category_item_A"), itemCount: totalItemCount, image: itemType1 },
+          { itemType: t("category_item_A"), itemCount: totalItemCount, image: "/assets/images/homeimages/category/itemTypeAll.jpg" },
           ...allCategories
         ];
 
