@@ -1,11 +1,11 @@
 import Star from "@/components/common/Star";
-import Pagination2 from "../common/Pagination2";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
 import { sortingOptions } from "@/components/shoplist/data/sorting.js";
 import { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
 import { closeModalShopFilter } from "@/utils/aside";
+import Pagination from "../common/Pagination";
 
 const sortProducts = (products, sortBy) => {
   switch (sortBy) {
@@ -283,7 +283,7 @@ export default function SearchedProductList({ searchedProducts }) {
           })}
         </div>
         {totalPages > 1 && (
-          <Pagination2 totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+          <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
         )}
       </div>
     </section>

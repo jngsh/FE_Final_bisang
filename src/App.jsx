@@ -30,7 +30,7 @@ import HomePage2 from "./pages/homes/home-2"; // 다른 QR Scanner인데 혹시 
 import HomePage3 from "./pages/homes/QrReader"; // QR 일단 여기에 넣어놓음 
 import HomePage12 from "./pages/homes/home-12"; // !! 우리가 쓰는 메인 홈페이지 !!
 
-import ShopPage5 from "./pages/shoplist/shop-5";
+import ShopPage from "./pages/shoplist/index";
 
 
 import ProductDetailsPage15 from "./pages/shopSingle/product15_v10/[id]";
@@ -98,7 +98,7 @@ function App() {
             <Route path="home-12" element={<HomePage12 />} />
 
             {/* 제품 리스트 화면 루트 */}
-            <Route path="shoplist" element={<ShopPage5 />} />
+            <Route path="shoplist" element={<ShopPage />} />
 
 
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}

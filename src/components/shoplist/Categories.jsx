@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
+import { Link } from 'react-router-dom';
 
 export default function Categories({ onSelectCategory }) {
   const [categories, setCategories] = useState([]);
@@ -17,6 +18,7 @@ export default function Categories({ onSelectCategory }) {
         ];
         setCategories(updatedCategories);
         setFilteredCategories(updatedCategories);
+        setSelectedSecondType('');
         console.log("Categories 받아오는 값: ", selectedPetType, updatedCategories);
       })
       .catch(error => {
@@ -82,9 +84,9 @@ export default function Categories({ onSelectCategory }) {
 
         <div className="shop-categories__list d-flex align-items-center flex-wrap justify-content-center">
         {Array.isArray(filteredCategories) && filteredCategories.map((elm, i)  => (
-            <a
+            <Link
               key={i}
-              href="#" // Todo: URL 개선
+              to="/shoplist"
               className={`shop-categories__item mb-3 ${selectedSecondType === elm.typeValue ? 'active' : ''}`}
               onClick={() => handleCategoryClick(elm)}
             >
@@ -99,7 +101,7 @@ export default function Categories({ onSelectCategory }) {
               <h6 className={`pt-1 mt-3 mt-xl-4 mb-0 text-center shop-categories__item-text ${selectedSecondType === elm.typeValue ? 'active' : ''}`}>
                 {getCategoryText(elm.typeValue)}
               </h6>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

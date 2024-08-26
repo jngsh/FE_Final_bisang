@@ -1,5 +1,4 @@
 import Star from "@/components/common/Star";
-import Pagination2 from "../common/Pagination2";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
 import { sortingOptions } from "@/components/shoplist/data/sorting.js";
@@ -8,6 +7,7 @@ import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 import Slider from 'rc-slider';
 import { closeModalShopFilter } from "@/utils/aside";
+import Pagination from "../common/Pagination";
 
 const sortProducts = (products, sortBy) => {
   switch (sortBy) {
@@ -42,7 +42,7 @@ const formatPrice = (price) => {
 
 const calculateUnitPrice = (product) => {
   const { unit, value, productPrice, discountRate } = product;
-  if (unit === 'g' || unit === 'ml' || unit === '개') {
+  if (unit === 'g' || unit === 'ml' || (unit === '개' && value !== 1)) {
     const discountedPrice = discountRate
       ? productPrice * (1 - discountRate)
       : productPrice;
@@ -54,7 +54,7 @@ const calculateUnitPrice = (product) => {
 export default function ProductList({ petType, typeValue }) {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,37 +72,41 @@ export default function ProductList({ petType, typeValue }) {
         setLoading(false);
       });
   }, []);
-  
+
   useEffect(() => {
     const newFilteredProducts = allProducts.filter(product => {
       const { productCode } = product;
-
+  
       if (productCode[0] !== petType) return false;
-
+  
       if (typeValue === 'all') {
         return true;
       } else if ((typeValue !== productCode[1]) && (typeValue !== productCode[2])) return false;
-
+  
       return true;
     });
-
+  
     const priceFilteredProducts = newFilteredProducts.filter(product => {
       const discountedPrice = product.discountRate
         ? product.productPrice * (1 - product.discountRate)
         : product.productPrice;
       return discountedPrice >= priceRange[0] && discountedPrice <= priceRange[1];
     });
-
+  
     const sortedProducts = sortProducts(priceFilteredProducts, sortBy);
-
+  
     setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
-
+  
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredProducts(sortedProducts.slice(startIndex, endIndex));
     console.log("새로운 카테고리 랜더링" + petType + typeValue + sortedProducts.length);
-  }, [petType, typeValue, allProducts, priceRange, sortBy]);
+  }, [petType, typeValue, allProducts, priceRange, sortBy, currentPage]);
 
+  useEffect(()=>{
+    setCurrentPage(1);
+  }, [petType, typeValue]);
+  
   const handlePriceChange = (value) => {
     setPriceRange(value);
     setCurrentPage(1);
@@ -119,7 +123,7 @@ export default function ProductList({ petType, typeValue }) {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
 
   return (
@@ -308,7 +312,7 @@ export default function ProductList({ petType, typeValue }) {
                   })}
                 </div>
                 {totalPages > 1 && (
-                  <Pagination2 totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+                  <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
                 )}
               </div>
             </div>
