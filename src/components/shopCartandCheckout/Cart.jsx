@@ -95,9 +95,9 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      if (!cartId) {
-        console.warn("No cartId found.");
+      if (cartId == "null") {
         setLoading(false);
+        navigate(`/login_register`);
         return;
       }
 
@@ -671,7 +671,7 @@ export default function Cart() {
           <div className="empty">
             <div className="emptyCart">아직 장바구니가 비어 있네요🛒</div>
             <button className="goCategory">
-              <Link className="goCategory2" to={"/shop-5"}>상품 보러 가기🛍️</Link>
+              <Link className="goCategory2" to={"/shoplist"}>상품 보러 가기🛍️</Link>
             </button>
           </div>
         )}

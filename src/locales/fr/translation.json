@@ -15,7 +15,7 @@
   "subtitle1": "Des jours heureux avec vos animaux",
   "subtitle2": "Produits pour vos animaux",
   "subtitle3": "Enregistrez vos animaux",
-  "everyday": "Tous les jours",
+  "peterpet": "Peter Pet",
 
   "features_cart_title": "Ajoutez au panier et payez immédiatement",
   "features_cart_content": "Scannez simplement le QR code à côté de l'étiquette de prix en ajoutant l'article au panier, pas besoin de scanner de nouveau à la caisse.",
@@ -52,6 +52,6 @@
   "Categories": "Catégories",
   "login": "Connexion",
   "cart": "쏙Panier",
-  "my": "Ma",
+  "my": "Mon",
   "search": "Recherche"
 }

@@ -12,6 +12,17 @@ function maskName(name){
   return name.slice(0, -4) + '****';
 }
 
+function sortReivewsByDate(reviews) {
+  return reviews
+    .map((review) => ({
+      name: maskName(review.id),
+      text:review.contents,
+      rating:review.rating,
+      reviewDate: new Date(review.reviewDate)
+    }))
+    .sort((a,b) => b.reviewDate - a.reviewDate);
+}
+
 
 export default function Reviews({productId, reviewCount}) {
   const [ratingLength, setratingLength] = useState(0);
@@ -26,8 +37,9 @@ export default function Reviews({productId, reviewCount}) {
           name: maskName(review.id),
           text: review.contents,
           rating: review.rating,
-          reviewDate: review.reviewDate
-        }));
+          reviewDate: new Date(review.reviewDate)
+        })).sort((a,b) => b.reviewDate - a.reviewDate);
+        // const sortedReviews = transformAndSortReviews(response.data);
         setReviews(transformReviews);
         // return response.data;
       }catch(error){
@@ -43,7 +55,7 @@ export default function Reviews({productId, reviewCount}) {
   }, [productId]);
   return (
     <>
-      <h2 className="product-single__reviews-title">Reviews ({reviewCount})</h2>
+      <h2 className="product-single__reviews-title">리뷰 ({reviewCount})</h2>
       <div className="product-single__reviews-list">
         {reviews.map((elm, i) => (
           <div key={i} className="product-single__reviews-item">
@@ -59,7 +71,7 @@ export default function Reviews({productId, reviewCount}) {
             <div className="customer-review">
               <div className="customer-name">
                 <h6>{elm.name}</h6>
-                <div className="review-date">{elm.reviewDate}</div>
+                <div className="review-date">{elm.reviewDate.toLocaleDateString()}</div>
               </div>
               <div className="reviews-group d-flex">
                   {Array.from({ length: elm.rating }).map((_, index) => (

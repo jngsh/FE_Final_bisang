@@ -1,11 +1,11 @@
 import Star from "@/components/common/Star";
-import Pagination2 from "../common/Pagination2";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
-import { sortingOptions } from "@/components/shoplist/data/sorting.js";
+import { sortingOptions } from "@/components/shoplist/filter/sorting.js";
 import { useEffect, useState } from 'react';
 import Slider from 'rc-slider';
 import { closeModalShopFilter } from "@/utils/aside";
+import Pagination from "../common/Pagination";
 
 const sortProducts = (products, sortBy) => {
   switch (sortBy) {
@@ -40,7 +40,7 @@ const formatPrice = (price) => {
 
 const calculateUnitPrice = (product) => {
   const { unit, value, productPrice, discountRate } = product;
-  if (unit === 'g' || unit === 'ml' || unit === '개') {
+  if (unit === 'g' || unit === 'ml' || (unit === '개' && value !== 1)) {
     const discountedPrice = discountRate
               ? productPrice * (1 - discountRate)
               : productPrice;
@@ -52,7 +52,7 @@ const calculateUnitPrice = (product) => {
 export default function SearchedProductList({ searchedProducts }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [sortBy, setSortBy] = useState('newest');
   const [currentPage, setCurrentPage] = useState(1);
@@ -150,7 +150,7 @@ export default function SearchedProductList({ searchedProducts }) {
               >
                 <Slider
                   range
-                  max={100000}
+                  max={1000000}
                   min={0}
                   defaultValue={priceRange}
                   onChange={(value) => handlePriceChange(value)}
@@ -279,15 +279,15 @@ export default function SearchedProductList({ searchedProducts }) {
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-            {totalPages > 1 && (
-              <Pagination2 totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
-            )}
-          </div>
+                </div>
+            );
+          })}
         </div>
+        {totalPages > 1 && (
+          <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
+        )}
+      </div>
+      </div>
       </div>
     </section>
   );

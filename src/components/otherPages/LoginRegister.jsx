@@ -275,7 +275,7 @@ export default function LoginRegister() {
           navigate('/');
         } else {
           setLoginData(prevData => ({ ...prevData, error: '' }));
-          navigate('/bisang/admin/*');
+          navigate('/bisang/admin/sales');
         }
 
         if (remember) {
@@ -316,11 +316,13 @@ export default function LoginRegister() {
       const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
       console.log("Registration successful:", response.data);
       // 회원가입 성공 후의 처리 (예: 리다이렉트, 상태 업데이트 등)
-      if (response.data.cartId){
-        setCartId(response.data.cartId);
+      if (response.data){
+        // setCartId(response.data.cartId);
+        setLogined(false);
+        setActiveTab("login");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      setActiveTab("login");
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
     } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
       // 회원가입 실패 후의 처리 (예: 에러 메시지 표시 등)
@@ -609,7 +611,7 @@ export default function LoginRegister() {
                       }}
                     >
                       <option value="naver.com">naver.com</option>
-                      <option value="google.com">google.com</option>
+                      <option value="google.com">gmail.com</option>
                       <option value="custom">직접 입력</option>
                     </select>
                   )}

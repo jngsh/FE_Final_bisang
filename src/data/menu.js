@@ -47,7 +47,7 @@ export const shopList = [
   // },
   {
     id: 5,
-    href: "/shop-5",
+    href: "/shoplist",
     title: "카테고리 화면",
   },
   // {
@@ -183,32 +183,32 @@ export const othersMenuItems = [
 export const dashboardMenuItems = [
   {
     id: 1,
-    href: "/account_dashboard",
-    title: "Dashboard",
+    href: "/account_edit/:userId",
+    title: "마이페이지",
   },
   {
     id: 2,
-    href: "/my-orders",
-    title: "Orders",
+    href: "/account_dashboard",
+    title: "마이펫",
   },
+  // {
+  //   id: 3,
+  //   href: "/account_edit_address",
+  //   title: "Addresses",
+  // },
   {
     id: 3,
-    href: "/account_edit_address",
-    title: "Addresses",
+    href: "/my-orders",
+    title: "주문정보",
   },
   {
     id: 4,
-    href: "/account_edit/:userId",
-    title: "Account Details",
+    href: "/account_wishlist",
+    title: "리뷰",
   },
   {
     id: 5,
-    href: "/account_wishlist",
-    title: "Review",
-  },
-  {
-    id: 6,
     href: "/login_register",
-    title: "Logout",
+    title: "로그아웃",
   },
 ];
