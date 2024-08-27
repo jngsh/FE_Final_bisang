@@ -199,7 +199,7 @@ export const dashboardMenuItems = [
   {
     id: 3,
     href: "/my-orders",
-    title: "주문정보",
+    title: "주문내역",
   },
   {
     id: 4,
