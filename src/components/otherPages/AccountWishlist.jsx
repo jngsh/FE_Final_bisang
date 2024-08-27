@@ -192,7 +192,7 @@ const toggleWishlist = (productId) => {
                     <div className="product-card">
                     <p className="pc__date">{review.reviewDate}</p>
                       <div className="pc__content">
-                        <div className="pc__image-wrapper">
+                        <div className="pc__img-wrapper">
                           <img
                             loading="lazy"
                             src={review.productImage}

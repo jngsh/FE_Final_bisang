@@ -232,7 +232,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/" ? "menu-active" : ""
             }`}
         >
-          HOME
+          홈
         </Link>
       </li>
 
@@ -243,7 +243,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/QrReader" ? "menu-active" : ""
             }`}
         >
-          QR Scan
+          QR 스캔
         </Link>
       </li>
       {/* 모바일 화면 메뉴 - Cart 메뉴 */}
@@ -253,7 +253,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/shop_cart/null" ? "menu-active" : ""
             }`}
         >
-          Cart
+          쏙바구니
         </Link>
       </li>
 
@@ -264,18 +264,29 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/shoplist" ? "menu-active" : ""
             }`}
         >
-          Category
+          카테고리
         </Link>
       </li>
 
       {/* 모바일 화면 메뉴 - 제품 상세페이지 메뉴 */}
-      <li className="navigation__item">
+      {/* <li className="navigation__item">
         <Link
           to="/bisang/products/95"
           className={`navigation__link ${pathname == "/bisang/products/95" ? "menu-active" : ""
             }`}
         >
           Product detail
+        </Link>
+      </li> */}
+
+      {/* 모바일 화면 메뉴 - about 메뉴 */}
+      <li className="navigation__item">
+        <Link
+          to="/about"
+          className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
+            }`}
+        >
+          피터펫
         </Link>
       </li>
 
@@ -286,14 +297,14 @@ export default function MobileNav() {
             to="#"
             onClick={handleLogout}
             className={`navigation__link ${pathname === "#" ? "menu-active" : ""}`}>
-              Logout
+              로그아웃
             </Link>
         ) : (<Link
             to="/login_register"
             className={`navigation__link ${pathname == "/login_register" ? "menu-active" : ""
               }`}
           >
-            Register & Login
+            회원가입 & 로그인
           </Link>
         )}
       </li>
@@ -309,18 +320,9 @@ export default function MobileNav() {
         </Link>
       </li> */}
       
-      {/* 모바일 화면 메뉴 - about 메뉴 */}
-      <li className="navigation__item">
-        <Link
-          to="/about"
-          className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
-            }`}
-        >
-          About
-        </Link>
-      </li>
+      
 
-      {/* 모바일 화면 메뉴 - CONTACT 메뉴 */}
+      {/* 모바일 화면 메뉴 - CONTACT 메뉴
       <li className="navigation__item">
         <Link
           to="/contact"
@@ -329,7 +331,7 @@ export default function MobileNav() {
         >
           Contact
         </Link>
-      </li>
+      </li> */}
     </>
   );
 }
