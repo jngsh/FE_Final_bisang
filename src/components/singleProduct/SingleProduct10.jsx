@@ -389,7 +389,7 @@ export default function SingleProduct10({ productId }) {
           {/* 여기에서 form 태그 끝!! */}
 
           {/* 여기는 ADD TO WISHLIST 부분 */}
-          <div className="product-single__addtolinks">
+          {/* <div className="product-single__addtolinks">
             <a href="#" className="menu-link menu-link_us-s add-to-wishlist">
               <svg
                 width="16"
@@ -402,8 +402,8 @@ export default function SingleProduct10({ productId }) {
               </svg>
               <span>좋아요 Add to Wishlist</span>
             </a>
-            {/* <ShareComponent title={product.title} /> */}
-          </div>
+            {/* <ShareComponent title={product.title} />
+          </div> */}
           {/* 밑에 작게 있는 제품 정보칸 */}
           <div className="product-single__meta-info">
             <div className="meta-item">
@@ -441,7 +441,7 @@ export default function SingleProduct10({ productId }) {
                     aria-expanded="false"
                     aria-controls="accordion-collapse-1"
                   >
-                    Description
+                    상품상세
                     {/* 여기 svg는 +,- 아이콘 */}
                     <svg className="accordion-button__icon" viewBox="0 0 14 14">
                       <g aria-hidden="true" stroke="none" fillRule="evenodd">
@@ -483,7 +483,7 @@ export default function SingleProduct10({ productId }) {
                     aria-expanded="false"
                     aria-controls="accordion-collapse-2"
                   >
-                    Additional Information
+                    상품정보
                     <svg className="accordion-button__icon" viewBox="0 0 14 14">
                       <g aria-hidden="true" stroke="none" fillRule="evenodd">
                         <path
@@ -523,7 +523,7 @@ export default function SingleProduct10({ productId }) {
                     aria-expanded="false"
                     aria-controls="accordion-collapse-3"
                   >
-                    Reviews ({reviewCount})
+                    리뷰 ({reviewCount})
                     <svg className="accordion-button__icon" viewBox="0 0 14 14">
                       <g aria-hidden="true" stroke="none" fillRule="evenodd">
                         <path
