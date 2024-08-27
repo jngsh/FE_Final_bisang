@@ -182,7 +182,7 @@ export default function RelatedSlider({ productId }) {
                   <span className="money price">₩{elm.productPrice}</span>
                 </div>
 
-                <button
+                {/* <button
                   className={`pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist ${isAddedtoWishlist(elm.id) ? "active" : ""
                     }`}
                   title="Add To Wishlist"
@@ -197,7 +197,7 @@ export default function RelatedSlider({ productId }) {
                   >
                     <use href="#icon_heart" />
                   </svg>
-                </button>
+                </button> */}
               </div>
             </SwiperSlide>
           ))}
