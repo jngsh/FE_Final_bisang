@@ -18,7 +18,7 @@ const StatsTrendPage = () => {
 
     return (
         <div className="stats-container">
-            <div className="chart-section">
+            <div className="sales-trends-section">
                 <div className="stats-controls">
                     <h2>기간별 매출 추이</h2>
                     <label htmlFor="datePicker">날짜 선택:</label>

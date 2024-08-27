@@ -17,10 +17,10 @@ const MonthlySalesLineChart = () => {
                 label: 'Monthly Sales',
                 data: Array(12).fill(0),
                 fill: false,
-                backgroundColor: 'rgba(75,192,192,0.4)',
-                borderColor: 'rgba(75,192,192,1)',
-                pointRadius: 5,
-                pointBackgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0, 0, 128, 1)',
+                backgroundColor: 'rgba(0, 0, 128, 0.2)',
+                pointRadius: 3,
+                pointBackgroundColor: 'rgba(0, 0, 128, 1)',
             }
         ]
     });
@@ -82,10 +82,10 @@ const MonthlySalesLineChart = () => {
                             label: 'Monthly Sales',
                             data: defaultSalesData,
                             fill: false,
-                            borderColor: 'rgba(0, 128, 0, 1)',
-                            backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                            borderColor: 'rgba(0, 0, 128, 1)',
+                            backgroundColor: 'rgba(0, 0, 128, 0.2)',
                             pointRadius: 3,
-                            pointBackgroundColor: 'rgba(0, 128, 0, 1)',
+                            pointBackgroundColor: 'rgba(0, 0, 128, 1)',
                         }
                     ]
                 });

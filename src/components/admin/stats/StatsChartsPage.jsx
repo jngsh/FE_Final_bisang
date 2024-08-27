@@ -15,7 +15,6 @@ const StatsChartsPage = () => {
                         <TopProductsList />
                     </div>
                     <div className="chart-item">
-                        <h4>반려동물 비율</h4>
                         <PetTypeDoughnutChart />
                         <PetAgeTypeDoughnutChart />
                     </div>

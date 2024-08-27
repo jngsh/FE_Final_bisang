@@ -71,10 +71,10 @@ const DailySalesLineChart = () => {
             {
                 label: 'Daily Sales',
                 data: salesData.map(d => d.totalSale),
-                borderColor: 'rgba(0, 128, 0, 1)',
-                backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                borderColor: 'rgba(0, 0, 128, 1)',
+                backgroundColor: 'rgba(0, 0, 128, 0.2)',
                 pointRadius: 3,
-                pointBackgroundColor: 'rgba(0, 128, 0, 1)',
+                pointBackgroundColor: 'rgba(0, 0, 128, 1)',
                 fill: false,
                 tension: 0.1
             }
