@@ -18,14 +18,36 @@ export default function Dashboard() {
       if (userId) {
         try {
           const response = await axios.get(`${BASE_URL}/bisang/pets/user/${userId}`);
+          console.log("Server Response:", response.data);
+  
           if (response.status === 200) {
             const petData = response.data.length > 0 ? response.data[0] : null;
             setRegisteredPet(petData);
+  
             if (petData) {
               setPetName(petData.petName || '');
               setPetBirthdate(petData.petBirthdate || '');
               setPetType(petData.petType || 'D');
-              setImagePreview(petData.petImage ? `${BASE_URL}/bisang/pets/images?petImage=${petData.petImage}` : null);
+  
+              // petImage가 객체인지 확인하고, 올바른 파일명을 추출합니다.
+              if (petData.petImage && typeof petData.petImage === 'object') {
+                const petImageObject = petData.petImage;
+                // 파일명만 추출합니다.
+                const imageFileName = petImageObject.petImage; // 파일명 추출
+                // 파일명이 문자열인지 확인합니다.
+                if (typeof imageFileName === 'string' && imageFileName.trim()) {
+                  const imageUrl = `${BASE_URL}/bisang/pets/images?petImage=${encodeURIComponent(imageFileName)}`;
+                  setImagePreview(imageUrl);
+                  console.log("petImage Object: ", petImageObject);
+                  console.log("imageURL: ", imageUrl);
+                } else {
+                  console.error('Invalid imageFileName:', imageFileName);
+                  setImagePreview(null);
+                }
+              } else {
+                setImagePreview(null);  // 이미지가 없을 경우 null로 설정
+              }
+  
               setIsPetRegistered(true);
             } else {
               resetForm();
@@ -39,16 +61,19 @@ export default function Dashboard() {
         }
       }
     };
-
+  
     fetchPetData();
   }, [userId]);
 
-  // 반려동물 데이터가 변경되면 이미지 미리보기 업데이트
-  useEffect(() => {
-    if (registeredPet && registeredPet.petImage) {
-      setImagePreview(`${BASE_URL}/bisang/pets/images?petImage=${registeredPet.petImage}`);
-    }
-  }, [registeredPet]);
+
+  // // 반려동물 데이터가 변경되면 이미지 미리보기 업데이트
+  // useEffect(() => {
+  //   if (registeredPet && registeredPet.petImage) {
+  //     setImagePreview(`${BASE_URL}/bisang/pets/images?petImage=${registeredPet.petImage}`);
+  //     console.log("registeredPet.petImage", registeredPet.petImage);
+  //     console.log("registeredPet.petImage.petImage", registeredPet.petImage.petImage);
+  //   }
+  // }, [registeredPet]);
 
   // 폼 제출 핸들러
   const handleSubmit = async (event) => {
@@ -85,16 +110,18 @@ export default function Dashboard() {
           petImage: response.data.petImage // 서버에서 반환된 URL
         };
 
+        setRegisteredPet(updatedPetData); // 서버에서 반환된 데이터를 상태에 반영
+
         setPetName('');
         setPetBirthdate('');
         setPetType('D');
         setPetImage(null);
   
-        // 서버에서 반환된 이미지 URL을 통해 이미지 미리보기 상태를 업데이트
-        const updatedImagePreview = response.data.petImage ? `${BASE_URL}/bisang/pets/images?petImage=${response.data.petImage}&timestamp=${new Date().getTime()}` : null;
+      // 서버에서 반환된 이미지 URL을 통해 이미지 미리보기 상태를 업데이트
+      const updatedImagePreview = response.data.petImage ? `${BASE_URL}/bisang/pets/images?petImage=${response.data.petImage}` : null;
+        console.log("updatedImagePreview", updatedImagePreview);
         setImagePreview(updatedImagePreview);
         setIsPetRegistered(true);
-        setRegisteredPet(updatedPetData);
       } else {
         console.log('반려동물 정보 저장에 실패했습니다.');
       }
@@ -107,6 +134,7 @@ export default function Dashboard() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setPetImage(file);
+    console.log("file", file);
     if (file) {
       setImagePreview(URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
     } else {
