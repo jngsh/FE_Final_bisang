@@ -20,7 +20,7 @@ export default function AccountPage() {
         <section className="my-account container">
           <h2 className="page-title">My Account</h2>
           <div className="row">
-            <DashboardSidebar />
+            {/* <DashboardSidebar /> */}
             <Dashboard />
           </div>
         </section>
