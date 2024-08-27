@@ -34,7 +34,7 @@ export default function DashboardSidebar() {
 
           return (
             <li key={i}>
-              {elm.title === "Logout" ? (
+              {elm.title === "로그아웃" ? (
                 <Link
                   to={href}
                   onClick={handleLogout}
