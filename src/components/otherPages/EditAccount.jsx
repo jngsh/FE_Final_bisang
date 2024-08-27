@@ -54,7 +54,6 @@ export default function EditAccount() {
         if (response.data) {
           console.log('User data fetched:', response.data); // 데이터 로드 성공 시 로그
           setFormData(response.data);
-          // setPassword(prev => ({ ...prev, current: response.data.pw }));
         } else {
           console.log('No data found'); // 데이터가 없을 경우 로그
         }
@@ -167,14 +166,6 @@ export default function EditAccount() {
         [id]: value
       }));
     }  
-
-    // if (id === 'pw'){
-    //   setPassword(prev => ({
-    //     ...prev,
-    //     current: value
-    //   }));
-    // }
-
   };
 
   const handlePasswordFieldChange = async (e) => {
@@ -242,7 +233,6 @@ export default function EditAccount() {
             className="needs-validation"
           >
             <div className="row">
-              {/* 사용자이름 */}
               <div className="col-md-6">
                 <div className="form-floating my-3">
                   <input
@@ -267,8 +257,6 @@ export default function EditAccount() {
                     value={formData.post}
                     onChange={handleChange}
                     readOnly
-                    // placeholder="Last Name"
-                    // required
                   />
                   <label htmlFor="post">우편주소</label>
                   
@@ -285,8 +273,6 @@ export default function EditAccount() {
                     id="address1"
                     value={formData.address1}
                     onChange={handleChange}
-                    // placeholder="Last Name"
-                    // required
                   />
                   <label htmlFor="address1">주소</label>
                 </div>
@@ -299,8 +285,6 @@ export default function EditAccount() {
                     id="address2"
                     value={formData.address2}
                     onChange={handleChange}
-                    // placeholder="Last Name"
-                    // required
                   />
                   <label htmlFor="address2">상세주소</label>
                 </div>
@@ -308,7 +292,6 @@ export default function EditAccount() {
               </div>
 
               <div className="email-form">
-              {/* <div className="col-md-12"> */}
                 <div className="form-floating my-3">
                   <input
                     type="text"
@@ -319,11 +302,9 @@ export default function EditAccount() {
                   />
                   <label htmlFor="email1">이메일</label>
                 </div>
-              {/* </div> */}
 
               <span className="email-separator">@</span>
               
-              {/* <div className="col-md-12"> */}
                 <div className="form-floating my-3">
                   <input
                     type="text"
@@ -332,9 +313,7 @@ export default function EditAccount() {
                     value={formData.email2}
                     onChange={handleChange}
                   />
-                  {/* <label htmlFor="email2">이메일 2</label> */}
                 </div>
-              {/* </div> */}
               </div>
 
               <div className="phone-form">
@@ -412,7 +391,6 @@ export default function EditAccount() {
                     placeholder="New password"
                     value={password.new}
                     onChange={handlePasswordFieldChange}
-                    // required
                   />
                   <label htmlFor="new">새 비밀번호</label>
                 </div>
@@ -422,26 +400,19 @@ export default function EditAccount() {
                   <input
                     type="password"
                     className="form-control"
-                    // data-cf-pwd="#account_new_password"
                     id="confirm"
                     placeholder="Confirm new password"
                     value={password.confirm}
                     onChange={handlePasswordFieldChange}
-                    // required
                   />
                   <label htmlFor="confirm">
                     새 비밀번호 확인
                   </label>
                   {pwMatchError && <div className="text-danger">{pwMatchError}</div>}
-                  <div className="invalid-feedback">
-                    Passwords did not match!
-                  </div>
                 </div>
               </div>
-              <div className="col-md-12">
-                <div className="my-3">
+              <div className="btn-container">
                   <button className="btn btn-primary">수정하기</button>
-                </div>
               </div>
             </div>
           </form>
