@@ -45,43 +45,32 @@ export default function Hero() {
                 className="slideshow-bg__img object-fit-cover"
               />
             </div>
+            <div className="position-absolute left-0 right-0 bottom-0 top-0 container">
+              <div className="slideshow-character position-absolute position-right-center mx-xl-5">
+                <img
+                  loading="lazy"
+                  src={elm.imgUrl2}
+                  width="518"
+                  height="329"
+                  alt={elm.alt}
+                  className="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto"
+                />
+              </div>
+            </div>
             <div className="slideshow-text container position-absolute start-50 top-50 translate-middle">
               <h6 className="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3 theme-color">
                 {elm.title}
               </h6>
-              <h2 className="fs-50 fw-bold mb-2 mb-lg-3 animate animate_fade animate_btt animate_delay-5 lh-1 text-shadow-white theme-color-secondary">
+              <h2 className="fs-50 fw-bold mb-2 mb-lg-3 animate animate_fade animate_btt animate_delay-5 lh-1 theme-color-secondary">
                 {elm.subtitle1}
               </h2>
-              <h2 className="fs-50 fw-bold mb-2 mb-lg-4 animate animate_fade animate_btt animate_delay-5 lh-1 text-shadow-white theme-color">
+              <h2 className="fs-50 fw-bold mb-2 mb-lg-4 animate animate_fade animate_btt animate_delay-5 lh-1 theme-color">
                 {elm.subtitle2}
               </h2>
             </div>
           </div>
         </SwiperSlide>
       ))}
-
-      <div className="cursor-pointer slideshow__prev position-absolute top-50 d-flex align-items-center justify-content-center">
-        <svg
-          width="7"
-          height="11"
-          viewBox="0 0 7 11"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <use href="#icon_prev_sm" />
-        </svg>
-      </div>
-
-      <div className="cursor-pointer slideshow__next position-absolute top-50 d-flex align-items-center justify-content-center">
-        <svg
-          width="7"
-          height="11"
-          viewBox="0 0 7 11"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <use href="#icon_next_sm" />
-        </svg>
-      </div>
-
       <div className="container">
         <div className="slideshow-pagination d-flex align-items-center position-absolute bottom-0 mb-5"></div>
       </div>
