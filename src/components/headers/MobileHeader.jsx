@@ -148,7 +148,7 @@ export default function MobileHeader() {
           </div>
         </div>
 
-        <div className="border-top mt-auto pb-2">
+        {/* <div className="border-top mt-auto pb-2">
           <div className="customer-links container mt-4 mb-2 pb-1">
             <svg
               className="d-inline-block align-middle"
@@ -167,7 +167,7 @@ export default function MobileHeader() {
               </span>
             </Link>
           </div>
-        </div>
+        </div> */}
       </nav>
     </div>
   );

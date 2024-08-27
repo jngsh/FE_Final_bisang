@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
 import BASE_URL from '@/utils/globalBaseUrl';
+import './StatsPage.css';
 
 const PetAgeTypeDoughnutChart = () => {
     const [data, setData] = useState({
         labels: [], 
         datasets: [{
             data: [],
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], 
+            backgroundColor: ['#0033A0', '#4CAF50', '#FF6F00'], 
         }]
     });
     const [loading, setLoading] = useState(true); 
@@ -24,7 +25,7 @@ const PetAgeTypeDoughnutChart = () => {
                         labels: result.map(item => item.ageType),
                         datasets: [{
                             data: result.map(item => item.petRatio),
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                            backgroundColor: ['#0033A0', '#4CAF50', '#FF6F00'],
                         }]
                     });
                 } else {
@@ -41,16 +42,26 @@ const PetAgeTypeDoughnutChart = () => {
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <p></p>;
     }
+
+    const options = {
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    boxWidth: 20,
+                },
+            },
+        },
+    };
 
     return (
         <div className="chart-container">
             <h5>반려동물 나이 비율</h5>
-            <Doughnut data={data} />
+            <Doughnut data={data} options={options} />
         </div>
     );
 };
 
 export default PetAgeTypeDoughnutChart;
-

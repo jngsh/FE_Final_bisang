@@ -275,7 +275,7 @@ export default function LoginRegister() {
           navigate('/');
         } else {
           setLoginData(prevData => ({ ...prevData, error: '' }));
-          navigate('/bisang/admin/*');
+          navigate('/bisang/admin/sales');
         }
 
         if (remember) {
