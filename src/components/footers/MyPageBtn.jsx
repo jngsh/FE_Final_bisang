@@ -6,7 +6,7 @@ export const MyPageBtn = () =>{
     return (
         <div className="col-3">
           <Link
-            to="/account_dashboard"
+            to="/account_edit/:userId"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
             <img
