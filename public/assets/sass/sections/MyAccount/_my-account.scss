@@ -63,7 +63,6 @@
 
     .address-btn{
       margin-left: 1rem;
-      // flex-shrink: 0;
       height: 3.75rem;
     }
 
@@ -90,9 +89,9 @@
 
     .phone-form .form-floating {
       float: left;
-      width: 7rem; /* 각 입력 필드의 너비를 설정합니다 */
+      width: 7rem; 
       position: relative;
-      margin-right: 0.5rem; /* 필드 간의 간격을 설정합니다 */
+      margin-right: 0.5rem;
       width: 100%;
     }
     
@@ -214,7 +213,6 @@
 
     .address-btn{
       margin-left: 1rem;
-      // flex-shrink: 0;
       height: 3.75rem;
     }
 
@@ -241,9 +239,9 @@
 
     .phone-form .form-floating {
       float: left;
-      width: 7rem; /* 각 입력 필드의 너비를 설정합니다 */
+      width: 7rem; 
       position: relative;
-      margin-right: 0.5rem; /* 필드 간의 간격을 설정합니다 */
+      margin-right: 0.5rem;
       width: 100%;
     }
     
@@ -251,6 +249,13 @@
 
     .phone-seperator {
       align-items: center;
+    }
+
+    .btn-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
     }
   }
 
