@@ -1,15 +1,14 @@
 import Footer1 from "@/components/footers/Footer1.jsx";
 
 import Header1 from "@/components/headers/Header1";
-import AccountWishlist from "@/components/otherPages/AccountWishlist";
-import DashboardSidebar from "@/components/otherPages/DashboardSidebar";
+import AccountReviews from "@/components/otherPages/AccountReviews";
 
 import MetaComponent from "@/components/common/MetaComponent";
 const metadata = {
-  title: "Dashboard Account Wishlist || :: PETER PET",
+  title: "Dashboard Account Reviewlist || :: PETER PET",
   description: ":: PETER PET",
 };
-export default function AccountWishlistPage() {
+export default function AccountReviewlistPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -19,8 +18,7 @@ export default function AccountWishlistPage() {
         <section className="my-account container">
           <h2 className="page-title">리뷰</h2>
           <div className="row">
-            {/* <DashboardSidebar /> */}
-            <AccountWishlist />
+            <AccountReviews />
           </div>
         </section>
       </main>

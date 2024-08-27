@@ -6,9 +6,8 @@ import Header1 from "@/components/headers/Header1";
 import MetaComponent from "@/components/common/MetaComponent";
 import ReviewForm from "@/components/blogs/ReviewForm";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
 const metadata = {
-  title: "Dashboard Account Wishlist || :: PETER PET",
+  title: "Dashboard Account Reviewlist || :: PETER PET",
   description: ":: PETER PET",
 };
 export default function ReviewPage() {
@@ -25,7 +24,6 @@ export default function ReviewPage() {
         <section className="my-account container">
           <h2 className="page-title">리뷰</h2>
           <div className="row">
-            {/* <DashboardSidebar /> */}
             <ReviewForm productId={productId} orderDetailId={orderDetailId}/>
           </div>
         </section>

@@ -196,10 +196,9 @@ export default function LoginRegister() {
     }
 
     if (token) {
-        fetchDataWithToken(); // 토큰이 있다면 API 요청을 통해 데이터를 가져오거나 사용자의 로그인 상태를 확인합니다.
+        fetchDataWithToken();
     } else {
         console.log("User is not logged in");
-        // 로그인 페이지로 리다이렉트 또는 로그인 상태에 따른 처리를 수행
     }
 }, []);
 
@@ -217,7 +216,6 @@ export default function LoginRegister() {
         });
         console.log("Data fetched successfully:", response.data);
         console.log("UserID:",userId);
-        // navigate('/');
       } catch (error) {
         console.error("Error fetching data:", error.response?.data || error.message);
       }
@@ -228,7 +226,7 @@ export default function LoginRegister() {
 
 
   const handleLoginSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
+    e.preventDefault();
 
     try {
       const response = await axios.post(`${BASE_URL}/bisang/auth/login`, loginData);
@@ -257,9 +255,6 @@ export default function LoginRegister() {
 
           try {
             const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`
-              // headers: {
-              //   Authorization: `Bearer ${token}`
-              // }
             );
             // 카트 아이템을 로컬스토리지에 저장
             console.log("CartItem Response:",cartItemsResponse.data);
@@ -283,25 +278,22 @@ export default function LoginRegister() {
         } else {
           Cookies.remove('storedId');
         }
-        
-        
-        // navigate('/'); // Redirect on success
       } else {
         console.error("Token not found in response");
         setLoginData(prevData => ({ ...prevData, error: '토큰을 받지 못했습니다.' }));
       }
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
-      // 로그인 실패 후의 처리 (예: 에러 메시지 표시 등)
+
       setLoginData(prevData => ({
         ...prevData,
-        error: '비밀번호가 틀렸습니다.' // 로그인 실패 메시지 설정
+        error: '비밀번호가 틀렸습니다.'
       }));
     }
   };
 
   const handleRegisterSubmit = async (e) => {
-    e.preventDefault(); // 폼의 기본 제출 동작을 막습니다.
+    e.preventDefault();
 
     if (registerData.pw !== confirmPw) {
       setPwMatchError("비밀번호가 일치하지 않습니다.");
@@ -315,9 +307,7 @@ export default function LoginRegister() {
     try {
       const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
       console.log("Registration successful:", response.data);
-      // 회원가입 성공 후의 처리 (예: 리다이렉트, 상태 업데이트 등)
       if (response.data){
-        // setCartId(response.data.cartId);
         setLogined(false);
         setActiveTab("login");
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -325,7 +315,6 @@ export default function LoginRegister() {
       
     } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
-      // 회원가입 실패 후의 처리 (예: 에러 메시지 표시 등)
     }
   };
 
@@ -480,9 +469,9 @@ export default function LoginRegister() {
                   href="#register-tab" 
                   className="btn-text js-show-register"
                   onClick={(e) => {
-                    e.preventDefault(); // 링크 기본 동작 방지
-                    setActiveTab("register"); // 탭 상태 변경
-                    window.scrollTo({ top: 0, behavior: 'smooth' }); // 화면 스크롤
+                    e.preventDefault();
+                    setActiveTab("register");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 >
                   회원가입하기
@@ -525,7 +514,6 @@ export default function LoginRegister() {
                     아이디 중복 확인
                   </button>
                 </div>
-                {/* <label htmlFor="id">아이디 **</label> */}
                 {idError && <p className="text-danger">{idError}</p>}
               </div>
 
@@ -644,7 +632,6 @@ export default function LoginRegister() {
               
               <div className="pb-3">
                 <div className="form-group d-flex align-items-center">
-                  {/* <label htmlFor="post">우편번호</label> */}
                   <input
                     type="text"
                     name="post"
@@ -663,7 +650,6 @@ export default function LoginRegister() {
                   </button>
                 </div>
                 <div className="form-group">
-                  {/* <label htmlFor="address1">주소1</label> */}
                   <input
                     type="text"
                     name="address1"
@@ -676,7 +662,6 @@ export default function LoginRegister() {
                   />
                 </div>
                 <div className="form-group">
-                  {/* <label htmlFor="address2">주소2</label> */}
                   <input
                     type="text"
                     name="address2"
@@ -723,7 +708,6 @@ export default function LoginRegister() {
                   onChange={handleRegisterChange}
                   pattern="[0-9]*"
                 />
-                {/* <label htmlFor="phone1">전화번호2</label> */}
               </div>
 
               <span className="phone-separator mx-2">-</span>
@@ -740,7 +724,6 @@ export default function LoginRegister() {
                   onChange={handleRegisterChange}
                   pattern="[0-9]*"
                 />
-                {/* <label htmlFor="phone3">전화번호3</label> */}
               </div>
               </div>
               </div>

@@ -203,7 +203,7 @@ export const dashboardMenuItems = [
   },
   {
     id: 4,
-    href: "/account_wishlist",
+    href: "/account_reviewlist",
     title: "리뷰",
   },
   {
