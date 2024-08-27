@@ -57,13 +57,37 @@ const About = () => {
   return (
     <section className="about-us container">
       <div className="mw-930">
-        <h2 className="page-title">KakaoPay</h2>
+              </div>
+      <div className="about-us__content pb-5 mb-5">
+        <p className="mb-5">
+        </p>
+        <div className="mw-930">
+            <h3 className="mb-4"></h3>
+            <p className="fs-6 fw-medium mb-4">
+            <img 
+          src="/assets/images/aboutpeterpet.png"/>
+            </p>
+           </div>
+        <div className="mw-930 d-lg-flex align-items-lg-center">
+{/*           
+          <div className="content-wrapper col-lg-6 px-lg-4">
+              <h5 className="mb-3"></h5>
+              
+              
+              <p>
+              </p>
+          </div> */}
+        </div>
+      </div>
+
+      {/* <div className="mw-930">
+        <h2 className="page-title"></h2>
       </div>
       <div className="about-us__content pb-5 mb-5">
         <p className="mb-5">
           {/*   */}
-        </p>
-        {/* <div className="mw-930">
+       {/* </p>
+        <div className="mw-930">
             <h3 className="mb-4">OUR STORY</h3>
             <p className="fs-6 fw-medium mb-4">f
               서토리
@@ -85,7 +109,7 @@ const About = () => {
                 </p>
               </div>
             </div>
-          </div> */}
+          </div>
         <div className="mw-930 d-lg-flex align-items-lg-center">
           <button className="image-wrapper col-lg-6" onClick={handleButtonClick}>
             <img
@@ -98,17 +122,20 @@ const About = () => {
               alt="image"
             />
           </button>
-          {/* <div className="content-wrapper col-lg-6 px-lg-4">
+          <div className="content-wrapper col-lg-6 px-lg-4">
               <h5 className="mb-3">💕고양이를 클리쿠!💕</h5>
               
               
               <p>
                 고양이의 이름은 이도
-              </p> */}
-          {/* </div> */}
+              </p>
+          </div>
         </div>
-      </div>
+      </div> */}
     </section>
+
+
+
   );
 };
 
