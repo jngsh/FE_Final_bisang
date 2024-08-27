@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
 import BASE_URL from '@/utils/globalBaseUrl';
+import './StatsPage.css';
 
 const PetTypeDoughnutChart = () => {
     const [data, setData] = useState({
         labels: [], 
         datasets: [{
             data: [], 
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], 
+            backgroundColor: ['#FF6384', '#36A2EB', '#B0BEC5'], 
         }]
     });
     const [loading, setLoading] = useState(true); 
@@ -24,7 +25,7 @@ const PetTypeDoughnutChart = () => {
                         labels: result.map(item => item.petType),
                         datasets: [{
                             data: result.map(item => item.petRatio),
-                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                            backgroundColor: ['#FF6384', '#36A2EB', '#B0BEC5'],
                         }]
                     });
                 } else {
@@ -41,13 +42,31 @@ const PetTypeDoughnutChart = () => {
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <p></p>;
     }
+
+    const options = {
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    boxWidth: 20,
+                },
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                    }
+                }
+            }
+        }
+    };
 
     return (
         <div className="chart-container">
             <h5>반려동물 종 비율</h5>
-            <Doughnut data={data} />
+            <Doughnut data={data} options={options} />
         </div>
     );
 };

@@ -58,11 +58,35 @@
     width: 100%;
 }
 
-.chart-item {
-    flex: 1 1 400px;
+.sales-trends-section {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 1200px;
+
+    border: 2px solid #d3d3d3;
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
     max-width: 100%;
+}
+
+.chart-item {
+    flex: 1 1 auto;
     min-width: 300px;
     margin-bottom: 20px;
+
+    border: 2px solid #d3d3d3;
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.chart-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -74,4 +98,8 @@
     .chart-item {
         width: 100%;
     }
+}
+
+.chart-container {
+    width: 200px;
 }

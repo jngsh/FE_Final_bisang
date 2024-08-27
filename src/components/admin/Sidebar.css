@@ -78,3 +78,27 @@
 .Sidebar.closed .toggle-btn:hover {
     background-color: #0056b3;
 }
+
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    opacity: 1;
+}
+
+.Sidebar.closed .logout-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.logout-container .navigation__link {
+    color: #000000;
+    font-weight: bold;
+}
+
+.Sidebar.open .logout-container:hover .navigation__link,
+.Sidebar.open .logout-container .navigation__link:hover {
+    color: #007bff;
+}
