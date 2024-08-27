@@ -2,13 +2,13 @@ import Footer1 from "@/components/footers/Footer1.jsx" ;
 
 // import Header12 from "@/components/headers/Header12";
 // import Blogs from "@/components/homes/home-12/Blogs";
-import Category from "@/components/homes/home-12/Category";
-import Cta from "@/components/homes/home-12/Cta";
-import DiscountSlider from "@/components/homes/home-12/DiscountSlider";
-import Featured from "@/components/homes/home-12/Featured";
-import Features from "@/components/homes/home-12/Features";
-import Hero from "@/components/homes/home-12/Hero";
-import TopSelling from "@/components/homes/home-12/TopSelling";
+import Category from "@/components/homes/Category";
+import Cta from "@/components/homes/Cta";
+import DiscountSlider from "@/components/homes/DiscountSlider";
+import Featured from "@/components/homes/Featured";
+import Features from "@/components/homes/Features";
+import Hero from "@/components/homes/Hero";
+import TopSelling from "@/components/homes/TopSelling";
 
 import MetaComponent from "@/components/common/MetaComponent";
 import Header1 from "@/components/headers/Header1";
@@ -19,7 +19,7 @@ const metadata = {
   title: "피터펫 :: PETER PET",
   // description: ":: PETER PET",
 };
-export default function HomePage12() {
+export default function HomePage() {
 
   return (
     <>

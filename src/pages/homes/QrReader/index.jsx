@@ -1,11 +1,11 @@
 
 // import Header3 from "@/components/headers/Header3";
-import Categories from "@/components/homes/home-3/Categories";
-import CategoryBanner from "@/components/homes/home-3/CategoryBanner";
-import FeaturesProducts from "@/components/homes/home-3/FeaturesProducts";
-import Hero from "@/components/homes/home-3/Hero";
-import HotDeals from "@/components/homes/home-3/HotDeals";
-import Instagram from "@/components/homes/home-3/Instagram";
+// import Categories from "@/components/homes/home-3/Categories";
+// import CategoryBanner from "@/components/homes/home-3/CategoryBanner";
+// import FeaturesProducts from "@/components/homes/home-3/FeaturesProducts";
+// import Hero from "@/components/homes/home-3/Hero";
+// import HotDeals from "@/components/homes/home-3/HotDeals";
+// import Instagram from "@/components/homes/home-3/Instagram";
 import QrReader from "./QrReader";
 import { useState } from "react";
 import Header1 from "@/components/headers/Header1";
