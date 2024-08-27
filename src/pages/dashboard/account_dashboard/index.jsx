@@ -18,9 +18,9 @@ export default function AccountPage() {
       <main className="page-wrapper">
         <div className="mb-4 pb-4"></div>
         <section className="my-account container">
-          <h2 className="page-title">My Account</h2>
+          <h2 className="page-title">마이펫</h2>
           <div className="row">
-            <DashboardSidebar />
+            {/* <DashboardSidebar /> */}
             <Dashboard />
           </div>
         </section>

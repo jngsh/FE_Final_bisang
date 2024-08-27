@@ -25,10 +25,10 @@ import MobileFooter1 from "@/components/footers/MobileFooter1";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import HomePage1 from "./pages/homes/home-1"; // 얘도 메인 홈페이지인데 혹시 몰라 살려놓음
-import HomePage2 from "./pages/homes/home-2"; // 다른 QR Scanner인데 혹시 몰라 살려놓음
-import HomePage3 from "./pages/homes/QrReader"; // QR 일단 여기에 넣어놓음 
-import HomePage12 from "./pages/homes/home-12"; // !! 우리가 쓰는 메인 홈페이지 !!
+// import HomePage1 from "./pages/homes/home-1"; // 얘도 메인 홈페이지인데 혹시 몰라 살려놓음
+// import HomePage2 from "./pages/homes/home-2"; // 다른 QR Scanner인데 혹시 몰라 살려놓음
+// import HomePage3 from "./pages/homes/QrReader"; // QR 일단 여기에 넣어놓음 
+// import HomePage12 from "./pages/homes/home"; // !! 우리가 쓰는 메인 홈페이지 !!
 
 import ShopPage from "./pages/shoplist/index";
 
@@ -55,9 +55,9 @@ import PayNotFound from "./pages/not-found2";
 import CommingSoonPage from "./pages/otherPages/coming_soon";
 import AccountOrderPage from "./pages/dashboard/account_orders";
 // import OrderDetails from "./components/otherPages/orderDetails.jsx";
-import AccountEditAddressPage from "./pages/dashboard/account_edit_address";
+// import AccountEditAddressPage from "./pages/dashboard/account_edit_address";
 import AccountEditPage from "./pages/dashboard/account_edit";
-import AccountWishlistPage from "./pages/dashboard/account_wishlist";
+import AccountReviewlistPage from "./pages/dashboard/account_reviewlist";
 import ResetPasswordPage from "./pages/otherPages/reset_password";
 import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
@@ -72,6 +72,7 @@ import ReviewPage from "./pages/dashboard/reivew";
 // import OrderDetails from "./components/otherPages/OrderDetails.jsx";
 import OrderDetailsPage from "./pages/dashboard/account_orderDetails";
 import './App.css';
+import HomePage from "./pages/homes/home";
 
 
 function App() {
@@ -91,12 +92,12 @@ function App() {
         <Routes>
           <Route path="/">
             {/* 홈페이지 루트들 */}
-            <Route index element={<HomePage12 />} />
-            <Route path="home-1" element={<HomePage1 />} />
-            <Route path="home-2" element={<HomePage2 />} />
+            <Route index element={<HomePage />} />
+            {/* <Route path="home-1" element={<HomePage1 />} /> */}
+            {/* <Route path="home-2" element={<HomePage2 />} /> */}
             <Route path="QrReader" element={<QrReader />} />
             {/* 우리 쓰는 메인 페이지 !!! */}
-            <Route path="home-12" element={<HomePage12 />} />
+            <Route path="home" element={<HomePage />} />
 
             {/* 제품 리스트 화면 루트 */}
             <Route path="shoplist" element={<ShopPage />} />
@@ -137,15 +138,15 @@ function App() {
             <Route path="my-orders" element={<AccountOrderPage />} />
             <Route path="order-details/:orderId" element={<OrderDetailsPage />} />
 
-            <Route
+            {/* <Route
               path="account_edit_address"
               element={<AccountEditAddressPage />}
-            />
+            /> */}
             <Route path="account_edit/:userId" element={<AccountEditPage />} />
-            <Route path="account_wishlist" element={<AccountWishlistPage />} />
+            <Route path="account_reviewlist" element={<AccountReviewlistPage />} />
             <Route path="reset_password" element={<ResetPasswordPage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path="contact" element={<ContactPage />} />
+            {/* <Route path="contact" element={<ContactPage />} /> */}
 
             <Route path="8" element={<NotFound />} />
             <Route path="bisang/admin/*" element={<AdminPage />} />

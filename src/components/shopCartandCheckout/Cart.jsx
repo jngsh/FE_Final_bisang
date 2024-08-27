@@ -95,9 +95,9 @@ export default function Cart() {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      if (!cartId) {
-        console.warn("No cartId found.");
+      if (cartId == "null") {
         setLoading(false);
+        navigate(`/login_register`);
         return;
       }
 

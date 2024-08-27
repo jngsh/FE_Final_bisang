@@ -40,6 +40,64 @@
     .unerline-link {
       text-decoration: underline;
     }
+
+    .btn-primary {
+      width: 18.75rem;
+      height: 3.75rem;
+      max-width: 100%;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+    }
+
+    .address-form{
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .address-row{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .address-btn{
+      margin-left: 1rem;
+      height: 3.75rem;
+    }
+
+    .email-form{
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+    }
+
+    .email-form .form-floating {
+      width: 100%;
+    }
+
+    .email-separator {
+      padding: 0 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .phone-form {
+      display: flex;
+      align-items: center;
+      gap:0.5rem ;
+    }
+
+    .phone-form .form-floating {
+      float: left;
+      width: 7rem; 
+      position: relative;
+      margin-right: 0.5rem;
+      width: 100%;
+    }
+    
+    .phone-seperator {
+      align-items: center;
+    }
   }
 
   &__orders-list {
@@ -155,7 +213,6 @@
 
     .address-btn{
       margin-left: 1rem;
-      // flex-shrink: 0;
       height: 3.75rem;
     }
 
@@ -182,9 +239,9 @@
 
     .phone-form .form-floating {
       float: left;
-      width: 7rem; /* 각 입력 필드의 너비를 설정합니다 */
+      width: 7rem; 
       position: relative;
-      margin-right: 0.5rem; /* 필드 간의 간격을 설정합니다 */
+      margin-right: 0.5rem;
       width: 100%;
     }
     
@@ -192,6 +249,13 @@
 
     .phone-seperator {
       align-items: center;
+    }
+
+    .btn-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
     }
   }
 
@@ -279,15 +343,16 @@
 
   &__review {
     .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      display: flex;
+      // grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      flex-direction: column;
       gap:20px;
     }
 
     .product-card-wrapper {
       display: flex;
       flex-direction: column;
-      // gap: 10px;
+      gap: 10px;
       background-color: rgb(231, 231, 231);
       padding: 10px;
       border-radius: 8px;
@@ -297,7 +362,7 @@
     .product-card {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      // gap: 10px;
     }
     .pc__date{
       font-size: 20px;
@@ -311,21 +376,26 @@
       gap: 10px;
       align-items: center;
       padding: 10px 20px;
+      width: 100%;
+      max-height: 200px;
     }
 
-    .pc__image-wrapper {
+    .pc__img-wrapper {
       flex: 0 0 40%;
       display: flex;
       // flex-direction: row;
       justify-content: center;
       align-items: center;
-      margin: 1rem;
+      // margin: 1rem;
+      max-width: 100%;
     }
 
     .pc__img {
-      position: static;
+      // position: static;
       width: 100%;
       height: 100%;
+
+      object-fit: contain;
       // object-fit: cover;
       // object-fit: contain;
     }

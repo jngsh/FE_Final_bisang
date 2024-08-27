@@ -58,12 +58,10 @@ export default function ResetPassword() {
               name="email2"
               type="text"
               className="form-control form-control_gray"
-              // placeholder="Email address *"
               value={email2}
               onChange={(e) => setEmail2(e.target.value)}
               required
             />
-            {/* <label>Email address *</label> */}
           </div>
           </div>
 

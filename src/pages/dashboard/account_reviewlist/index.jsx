@@ -1,20 +1,14 @@
 import Footer1 from "@/components/footers/Footer1.jsx";
 
 import Header1 from "@/components/headers/Header1";
-
+import AccountReviews from "@/components/otherPages/AccountReviews";
 
 import MetaComponent from "@/components/common/MetaComponent";
-import ReviewForm from "@/components/blogs/ReviewForm";
-import { useLocation } from "react-router-dom";
 const metadata = {
   title: "Dashboard Account Reviewlist || :: PETER PET",
   description: ":: PETER PET",
 };
-export default function ReviewPage() {
-  const location = useLocation();
-  const productId = location.state?.productId;
-  const orderDetailId = location.state?.orderDetailId;
-  
+export default function AccountReviewlistPage() {
   return (
     <>
       <MetaComponent meta={metadata} />
@@ -24,7 +18,7 @@ export default function ReviewPage() {
         <section className="my-account container">
           <h2 className="page-title">리뷰</h2>
           <div className="row">
-            <ReviewForm productId={productId} orderDetailId={orderDetailId}/>
+            <AccountReviews />
           </div>
         </section>
       </main>
