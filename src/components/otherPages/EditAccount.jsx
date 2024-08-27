@@ -98,6 +98,23 @@ export default function EditAccount() {
     }
   };
 
+  useEffect(() => {
+    const validateCurrentPw = async()=>{
+      if(password.current){
+        const isValid = await checkCurrentPassword();
+  
+        if (!isValid) {
+          setError('현재 비밀번호가 올바르지 않습니다.');
+          setIsCurrentPasswordValid(false);
+        } else {
+          setError('');
+          setIsCurrentPasswordValid(true);
+        }
+      }
+    };
+    validateCurrentPw();
+  }, [password.current]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -107,8 +124,6 @@ export default function EditAccount() {
     }else{
       setPwMatchError('');
     }
-
-    console.log('Current password valid:', isCurrentPasswordValid);
     
     if (password.new && !isCurrentPasswordValid) {
         setError('현재 비밀번호가 올바르지 않습니다.');
@@ -164,25 +179,12 @@ export default function EditAccount() {
 
   const handlePasswordFieldChange = async (e) => {
     const { id, value } = e.target;
-    console.log(`Password field changed: ${id} = ${value}`);
 
     setPassword(prev => ({
       ...prev,
       [id]: value
     }));
 
-    if(id=='current'){
-      const isValid = await checkCurrentPassword();
-      console.log('Is current password valid:', isValid);
-
-      if (!isValid) {
-        setError('현재 비밀번호가 올바르지 않습니다.');
-        setIsCurrentPasswordValid(false);
-      } else {
-        setError('');
-        setIsCurrentPasswordValid(true);
-      }
-    }
   };
 
   useEffect(() => {
@@ -315,7 +317,7 @@ export default function EditAccount() {
                     value={formData.email1}
                     onChange={handleChange}
                   />
-                  <label htmlFor="email1">이메일 1</label>
+                  <label htmlFor="email1">이메일</label>
                 </div>
               {/* </div> */}
 
