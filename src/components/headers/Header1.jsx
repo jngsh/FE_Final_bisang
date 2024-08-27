@@ -14,7 +14,8 @@ export default function Header1() {
   const navigate = useNavigate();
   const [scrollDirection, setScrollDirection] = useState("down");
   const { cartId } = useContextElement();
-  const { logined } = useContextElement();
+  const logined= localStorage.getItem("logined");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,7 +78,7 @@ export default function Header1() {
 
               <a
                 // href="/shop-5"
-                onClick={() => navigate(`/shop-5`)}
+                onClick={() => navigate(`/shoplist`)}
                 className="header-tools__item header-tools__cart js-open-aside"
               >
                 <img
@@ -91,7 +92,7 @@ export default function Header1() {
 
             {/* 마이페이지 아이콘 */}
             <a
-              onClick={() => navigate(`/login_register`)}
+              onClick={() => {(logined === "true" && logined)? navigate(`/account_edit/${userId}`) : navigate(`/login_register`)}}
               className="header-tools__item header-tools__cart js-open-aside"
               style={{marginRight: '16px'}}
             >

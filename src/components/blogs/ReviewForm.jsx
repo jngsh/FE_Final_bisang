@@ -8,7 +8,6 @@ export default function ReviewForm({ productId, orderDetailId }) {
   const navigate = useNavigate();
   const location = useLocation();
   const userId = localStorage.getItem("userId");
-  // const orderDetailId = localStorage.getItem("orderDetailId");
   
   const [ reviewData, setReviewData ] = useState({
     contents:'',
@@ -45,7 +44,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
       const response = await axios.post(`${BASE_URL}/bisang/review/${orderDetailId}/${productId}/${userId}`, reviewData);
       console.log('Review submitted successfully:', response.data);
       alert('리뷰가 등록되었습니다.')
-      navigate('/account_wishlist?tab=reviewList');
+      navigate('/account_reviews?tab=reviewList');
     }catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -71,10 +70,6 @@ export default function ReviewForm({ productId, orderDetailId }) {
   return (
     <div className="blog-single__review-form">
       <form onSubmit={handleSubmit} className="needs-validation">
-        {/* <h5>Be the first to review “Message Cotton T-Shirt”</h5>
-        <p>
-          Your email address will not be published. Required fields are marked *
-        </p> */}
         <div className="product-info">
           {productInfo.productImage && 
           <img src={productInfo.productImage} alt={productInfo.name}/>}
@@ -88,8 +83,6 @@ export default function ReviewForm({ productId, orderDetailId }) {
               <svg
                 key={star}
                 className={`star-rating__star-icon ${hoverRating >= star || reviewData.rating >= star ? 'is-selected' : ''}`}
-                // width="50"
-                // height="50"
                 fill={hoverRating >= star || reviewData.rating >= star ? "#f39c12" : "#ccc"}
                 viewBox="0 0 12 12"
                 xmlns="http://www.w3.org/2000/svg"

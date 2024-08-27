@@ -76,7 +76,7 @@ export default function Nav() {
       {/* 카테고리 */}
       <li className="navigation__item">
         <Link
-          to="/shop-5"
+          to="/shoplist"
           className={`navigation__link ${pathname === "/contact" ? "menu-active" : ""}`}
         >
           카테고리
@@ -88,7 +88,7 @@ export default function Nav() {
           to="/about"
           className={`navigation__link ${pathname === "/about" ? "menu-active" : ""}`}
         >
-          피터펫이란
+          피터펫
         </Link>
       </li>
     </>

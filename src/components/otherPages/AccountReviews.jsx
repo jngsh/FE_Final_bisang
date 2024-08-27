@@ -1,27 +1,22 @@
 import { useContextElement } from "@/context/Context";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Navigation } from "swiper/modules";
-import { useContext, useEffect, useState } from "react";
-import { allProducts } from "@/data/products";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 
-export default function AccountWishlist() {
+export default function AccountReviews() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  // const {userId} = useContextElement();
   const userId = localStorage.getItem("userId");
   const [reviewList, setReviewList] = useState([]);
   const { orderDetails } = useContextElement();
-  const [reviewedOrderDetailIds, setReviewedOrderDetailIds] = useState([]);
   const [myReview, setMyReview] = useState([]);
   const [activeTab, setActiveTab] = useState(new URLSearchParams(location.search).get('tab') || 'review');
 
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
@@ -32,9 +27,6 @@ export default function AccountWishlist() {
       console.log('token??',token);
       try {
       const response = await axios.get(`${BASE_URL}/bisang/review/${userId}`, {
-          // headers: {
-          //   Authorization: token ? `Bearer ${token}` : ''
-          // } 
       });
 
       if(response.data){
@@ -78,11 +70,6 @@ const fetchMyReviewList = async () => {
   }catch (error) {
     console.error('Error get myreview:', error);
   }
-};
-
-const toggleWishlist = (productId) => {
-  // Wishlist 토글 로직 구현
-  console.log("Toggling wishlist for product:", productId);
 };
 
   return (
@@ -133,7 +120,6 @@ const toggleWishlist = (productId) => {
                 className="products-grid"
                 id="products-grid"
               >
-                {/* {" "} */}
                 {reviewList.flatMap(orderDTO =>
                   orderDTO.orderDetails.map((detailDTO, i) => (
                   <div className="product-card-wrapper" key={i}>
@@ -145,8 +131,6 @@ const toggleWishlist = (productId) => {
                                 <img
                                   loading="lazy"
                                   src={detailDTO.productImage}
-                                  // width="330"
-                                  // height="400"
                                   alt={detailDTO.productName}
                                   className="pc__img"
                                 />
@@ -171,7 +155,6 @@ const toggleWishlist = (productId) => {
             ) : (
               <div className="fs-18">리뷰를 남길 상품이 없습니다.</div>
             )}
-            {/* <!-- /.products-grid row --> */}
           </div>
         </div>
       </div>

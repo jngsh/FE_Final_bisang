@@ -55,9 +55,9 @@ import PayNotFound from "./pages/not-found2";
 import CommingSoonPage from "./pages/otherPages/coming_soon";
 import AccountOrderPage from "./pages/dashboard/account_orders";
 // import OrderDetails from "./components/otherPages/orderDetails.jsx";
-import AccountEditAddressPage from "./pages/dashboard/account_edit_address";
+// import AccountEditAddressPage from "./pages/dashboard/account_edit_address";
 import AccountEditPage from "./pages/dashboard/account_edit";
-import AccountWishlistPage from "./pages/dashboard/account_wishlist";
+import AccountReviewlistPage from "./pages/dashboard/account_reviewlist";
 import ResetPasswordPage from "./pages/otherPages/reset_password";
 import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
@@ -138,15 +138,15 @@ function App() {
             <Route path="my-orders" element={<AccountOrderPage />} />
             <Route path="order-details/:orderId" element={<OrderDetailsPage />} />
 
-            <Route
+            {/* <Route
               path="account_edit_address"
               element={<AccountEditAddressPage />}
-            />
+            /> */}
             <Route path="account_edit/:userId" element={<AccountEditPage />} />
-            <Route path="account_wishlist" element={<AccountWishlistPage />} />
+            <Route path="account_reviewlist" element={<AccountReviewlistPage />} />
             <Route path="reset_password" element={<ResetPasswordPage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path="contact" element={<ContactPage />} />
+            {/* <Route path="contact" element={<ContactPage />} /> */}
 
             <Route path="8" element={<NotFound />} />
             <Route path="bisang/admin/*" element={<AdminPage />} />
