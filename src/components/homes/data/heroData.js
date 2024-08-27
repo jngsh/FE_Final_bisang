@@ -7,33 +7,33 @@ export function HeroData() {
   return [
     {
       id: 1,
-      backgroundColor: "#b0d49b",
+      backgroundColor: "#ffffff",
       imageUrl: pattern,
-      imgUrl2: "/assets/images/homeimages/hero/dogandcat1.png",
+      imgUrl2: "/assets/images/homeimages/hero/dogandcat1.jpg",
       alt: "Pattern",
       title: "PETER PET",
       subtitle1: t('subtitle1'),
-      subtitle2: t('everyday'),
+      subtitle2: t('peterpet'),
     },
     {
       id: 2,
-      backgroundColor: "#ffc0cb",
+      backgroundColor: "#fdcba6",
       imageUrl: pattern,
-      imgUrl2: "/assets/images/homeimages/hero/dogandcat2.png",
+      imgUrl2: "/assets/images/homeimages/hero/dogandcat2.jpg",
       alt: "Pattern",
       title: "PETER PET",
       subtitle1: t('subtitle2'),
-      subtitle2: t('everyday'),
+      subtitle2: t('peterpet'),
     },
     {
       id: 3,
-      backgroundColor: "#add8e6",
+      backgroundColor: "#a1e2d9",
       imageUrl: pattern,
       imgUrl2: "/assets/images/homeimages/hero/dogandcat3.png",
       alt: "Pattern",
       title: "PETER PET",
       subtitle1: t('subtitle3'),
-      subtitle2: t('everyday'),
+      subtitle2: t('peterpet'),
     }
   ];
 }

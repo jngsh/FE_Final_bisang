@@ -3,7 +3,7 @@ import { openModalUserlogin } from "@/utils/aside";
 export default function User() {
   return (
     <svg
-      onClick={openModalUserlogin}
+      onClick={() => navigate(`/login_register`)}
       className="d-block"
       width="20"
       height="20"
