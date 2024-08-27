@@ -18,9 +18,7 @@ export default function MyOrders() {
       try {
         const response = await axiosInstance.get(`/bisang/orders/${userId}`);
         console.log("response?:",response.data);
-
         setOrders(response.data);
-        // const orders = localStorage.setItem("orders", ordersData);
       } catch (error) {
         console.log('Error fetching orders:', error);
       } finally {
@@ -61,6 +59,12 @@ export default function MyOrders() {
   return (
     <div className="div1">
       <div className="div2">
+      {orders.length===0?( <div className="empty">
+            <div className="emptyOrder">주문 정보가 없습니다🥲</div>
+            <button className="goCategory">
+              <Link className="goCategory2" to={"/shoplist"}>상품 보러 가기🛍️</Link>
+            </button>
+          </div>):(
         <table className="orders-table">
           <thead className="orders-header">
             <tr>
@@ -82,7 +86,7 @@ export default function MyOrders() {
             </tr>
             ))}
           </tbody>
-        </table>
+        </table>)}
       </div>
     </div>
   );

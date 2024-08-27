@@ -16,7 +16,6 @@ const OrderDetails = () => {
     const fetchOrderDetails = async () => {
         try {
             const response = await axiosInstance.get(`/bisang/orders/details/${orderId}`);
-            console.log("response:", response.data);
             const orderDetailsData = response.data;
             setOrderDetails(response.data);
 
