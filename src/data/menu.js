@@ -47,7 +47,7 @@ export const shopList = [
   // },
   {
     id: 5,
-    href: "/shop-5",
+    href: "/shoplist",
     title: "카테고리 화면",
   },
   // {

@@ -90,7 +90,7 @@ export default function TopSelling() {
         <h2 className="section-title fw-normal">{t('top_selling_products')}</h2>
         <Link
           className="btn-link btn-link_md default-underline text-uppercase fw-medium"
-          to="/shop-5"
+          to="/shoplist"
         >
           {t('see_all_products')}
         </Link>
@@ -133,9 +133,9 @@ export default function TopSelling() {
                     <div className="reviews-group d-flex">
                       <Star productId={product.productId} />
                     </div>
-                    <span className="reviews-note text-lowercase text-secondary ms-sm-1">
+                    {/* <span className="reviews-note text-lowercase text-secondary ms-sm-1">
                       {product.reviews || "No Reviews"}
-                    </span>
+                    </span> */}
                   </div>
                   <div className="product-card__price d-flex flex-column">
                     {unitPrice ? (

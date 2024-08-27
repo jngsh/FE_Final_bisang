@@ -61,7 +61,7 @@ export default function MobileFooter1() {
           </Link>
         </div>
 
-        {/* SHOP 메뉴 */}
+        {/* 카테고리 메뉴 */}
         <div className="col-3">
           <a
             href="/shoplist"
@@ -78,12 +78,9 @@ export default function MobileFooter1() {
             <span>{t('Categories')}</span>
           </a>
         </div>
-        {/* <!-- /.col-3 --> */}
 
-
+        {/* 로그인 & 마이페이지 메뉴 */}
         {logined ? <MyPageBtn /> : <LoginBtn />}
-
-        {/* <!-- /.col-3 --> */}
 
       </div>
     </footer>
