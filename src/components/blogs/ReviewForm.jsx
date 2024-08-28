@@ -47,7 +47,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
     try {
       const response = await axios.post(`${BASE_URL}/bisang/review/${orderDetailId}/${productId}/${userId}`, reviewData);
       alert('리뷰가 등록되었습니다.')
-      navigate('/account_reviews?tab=reviewList');
+      navigate('/account_reviewlist?tab=reviewList');
     }catch (error) {
       console.error('Error submitting review:', error);
     }
