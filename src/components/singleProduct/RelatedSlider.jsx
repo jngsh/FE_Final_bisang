@@ -7,6 +7,7 @@ import BASE_URL from "@/utils/globalBaseUrl";
 
 // productId를 가져온다
 export default function RelatedSlider({ productId }) {
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState([]);
