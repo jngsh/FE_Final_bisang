@@ -31,31 +31,26 @@ export default function EditAccount() {
 
 
   
-
+  // 마이페이지 조회
   useEffect(()=>{
   
     if (!userId) {
       console.error("userId is not defined");
-      console.log('userIderror:', userId);
       return;
     }
     
     else{
-      console.log('token:', token);
-      console.log('userId2:', userId);
     const fetchUserData = async () => {
       try{
-        console.log('Fetching user data...'); // 데이터 로드 시작 시 로그
         const response = await axios.get(`${BASE_URL}/bisang/mypage/${userId}`, {
           headers: {
             Authorization: token ? `Bearer ${token}` : ''
           } 
         });
         if (response.data) {
-          console.log('User data fetched:', response.data); // 데이터 로드 성공 시 로그
           setFormData(response.data);
         } else {
-          console.log('No data found'); // 데이터가 없을 경우 로그
+          console.log('No data found');
         }
       }catch(error){
         console.error('Error fetching user data:', error);
@@ -67,6 +62,7 @@ export default function EditAccount() {
   }
   }, [userId, token]);
 
+  // 현재 비밀번호 유효성 확인
   const checkCurrentPassword = async () => {
     try {
       const response = await axios.post(`${BASE_URL}/bisang/mypage/pwCheck`, {
@@ -78,7 +74,7 @@ export default function EditAccount() {
         }
       });
       console.log('Password check response:', response.data);
-      return response.data == true; // true 또는 false 반환
+      return response.data == true;
     } catch (error) {
       console.error('Error checking password:', error);
       if (error.response) {
@@ -136,8 +132,8 @@ export default function EditAccount() {
     if (password.new) {
             updatePayload.pw = password.new;
     }
-    console.log('Update payload:', updatePayload);
 
+    // 수정 정보 업데이트
     try {
       const response = await axios.put(`${BASE_URL}/bisang/mypage/${userId}/profile`, updatePayload, {
         headers: {

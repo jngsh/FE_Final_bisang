@@ -21,16 +21,14 @@ export default function AccountReviews() {
     return `${year}-${month}-${day}`;
   }
   
-  
+  // 작성 가능한 리뷰 조회
   useEffect(()=>{
     const fetchReviewList = async () => {
-      console.log('token??',token);
       try {
       const response = await axios.get(`${BASE_URL}/bisang/review/${userId}`, {
       });
 
       if(response.data){
-        console.log('Orders data:',response.data);
         const processedData = response.data.map(orderDTO => ({
           orderId:orderDTO.orderId,
           orderDate: orderDTO.orderDate,
@@ -62,10 +60,10 @@ const handleTabClick = (tabName) =>{
   navigate(`?tab=${tabName}`);
 };
 
+// 작성한 리뷰 조회
 const fetchMyReviewList = async () => {
   try{
   const response = await axios.get(`${BASE_URL}/bisang/review/reviewed/${userId}`);
-  console.log("MyReview:",response.data);
   setMyReview(response.data.reverse());
   }catch (error) {
     console.error('Error get myreview:', error);
