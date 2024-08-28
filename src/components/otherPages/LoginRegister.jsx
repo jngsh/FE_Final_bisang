@@ -45,6 +45,7 @@ export default function LoginRegister() {
     phone3:""
   });
 
+  //아이디 저장 쿠키로 불러오기
   useEffect(() => {
     const remembered = Cookies.get('remenmber') == "true";
     const storedId = Cookies.get('storedId') || "";
@@ -72,6 +73,7 @@ export default function LoginRegister() {
     }
   }
 
+  //로그인,회원가입 화면 이동탭
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const tab = queryParams.get("tab");
@@ -203,11 +205,11 @@ export default function LoginRegister() {
     } else {
         console.log("User is not logged in");
     }
-}, []);
+  }, []);
 
+  //토큰 있을 때 데이터 불러오기
   const fetchDataWithToken = async () => {
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
 
     if (token) {
       try {
@@ -310,6 +312,7 @@ export default function LoginRegister() {
     }
   };
 
+  //이메일 직접 입력
   const handleEmailDomainChange = (e) => {
     const selectedDomain = e.target.value;
     setEmailDomain(selectedDomain);
@@ -380,6 +383,7 @@ export default function LoginRegister() {
           </a>
         </li>
       </ul>
+      {/* 로그인 탭 */}
       <div className="tab-content pt-2" id="login_register_tab_content">
         <div
           className={`tab-pane fade ${activeTab === "login" ? "show active" : ""}`}
@@ -467,8 +471,7 @@ export default function LoginRegister() {
           </div>
         </div>
 
-
-
+        {/* 회원가입 탭 */}
         <div
           className={`tab-pane fade ${activeTab === "register" ? "show active" : ""}`}
           id="tab-item-register"
@@ -593,10 +596,6 @@ export default function LoginRegister() {
                 </div>
                 </div>
               </div>
-
-
-
-              
 
               <div className="pb-3"></div>
 

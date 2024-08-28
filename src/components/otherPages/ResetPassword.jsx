@@ -13,7 +13,7 @@ export default function ResetPassword() {
     e.preventDefault();
 
     if (!email1 || !email2){
-      setError('이메일을 입력해수세요.');
+      setError('이메일을 입력해주세요.');
       return ;
     }
     try {
