@@ -1,31 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import ProductSlider1 from "./sliders/ProductSlider1";
-import BreadCumb from "./BreadCumb";
 import Star from "../common/Star";
-import Size from "./Size";
-import Colors from "./Colors";
-import Description from "./Description";
 import AdditionalInfo from "./AdditionalInfo";
 import Reviews from "./Reviews";
-import { Link } from "react-router-dom";
-import ShareComponent from "../common/ShareComponent";
 import axios from "axios";
 import BASE_URL from "@/utils/globalBaseUrl";
 import { useContextElement } from "@/context/Context";
-import { IoMdTrophy } from "react-icons/io";
 
-// 우리가 쓰는 제품 상세 페이지 !!
-// 현아가 페이지 !!!!!!!
-
-export default function SingleProduct10({ productId }) {
+export default function SingleProduct({ productId }) {
 
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
-
   const navigate = useNavigate();
-
-  // 현아 부분
   const [product1, setProduct1] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +28,6 @@ export default function SingleProduct10({ productId }) {
     // 제품 정보 가져오기
     const fetchProduct = async () => {
       try {
-        console.log("productId를 사용하여 데이터 가져오기 시작 >>>", productId);
         const response = await axios.get(`${BASE_URL}/bisang/products/${productId}`,
           {
             headers: {
@@ -51,11 +36,9 @@ export default function SingleProduct10({ productId }) {
           }
         );
         setProduct1(response.data); // Product1에 axios로 가져온 data를 넣어줌
-        console.log("fetchProduct: Response >>>", response);
-        // console.log(`${BASE_URL}/bisang/products/${productId}`);  
       } catch (error) {
         setError('Failed to fetch product');
-        console.error("error>>>", error);
+        console.error("error>>", error);
       } finally {
         setLoading(false);
       }
@@ -64,7 +47,6 @@ export default function SingleProduct10({ productId }) {
     const fetchReviewCount = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/bisang/review/review-count/${productId}`);
-        console.log("리뷰수:", response.data);
         setReviewCount(response.data);
       } catch (error) {
         console.error('Error fetching review count:', error);
@@ -83,8 +65,6 @@ export default function SingleProduct10({ productId }) {
   if (loading) return <p></p>;
   if (error) return <p></p>;
 
-
-  // 여기는 메서드들
   const isIncludeCard = () => {
     console.log("cartProducts>>>>>>>>", cartProducts);
     console.log("productId>>>>>>>>", productId);
@@ -101,7 +81,6 @@ export default function SingleProduct10({ productId }) {
         const itemIndex = items.indexOf(item);
         item.quantity = quantity;
         items[itemIndex] = item;
-        // setCartProducts(items);
         setCartProducts((pre) => [...pre, items]);
       }
       else {
@@ -110,8 +89,6 @@ export default function SingleProduct10({ productId }) {
   };
 
   const addToCart = async () => {
-    console.log("cartId: ", cartId); // cartId의 현재 값을 로그로 출력
-
     window.scrollTo({ top: 0, behavior: "smooth" });
 
     if (cartId === "null") {
@@ -119,16 +96,10 @@ export default function SingleProduct10({ productId }) {
       return; // 함수 종료
     }
 
-    // cartId가 null이 아닐 때만 실행
-    console.log(">>>>>>> cartId: ", cartId);
-
     if (!isIncludeCard()) {
       const cartIdFromStorage = localStorage.getItem("cartId");
       const productIdAsNumber = Number(productId);
       const quantityAsNumber = Number(quantity);
-
-      console.log("ProductId as number: ", productIdAsNumber);
-      console.log("Quantity as number: ", quantityAsNumber);
 
       if (isNaN(productIdAsNumber) || isNaN(quantityAsNumber)) {
         console.error("Invalid productId or quantity: Not a number");
@@ -144,9 +115,6 @@ export default function SingleProduct10({ productId }) {
       if (existingItemIndex !== -1) {
         const existingItem = cartData[existingItemIndex];
         const updatedAmount = existingItem.amount + quantityAsNumber;
-
-        console.log("Existing item amount: ", existingItem.amount);
-        console.log("Updated amount: ", updatedAmount);
 
         try {
           const response = await axios.put(
@@ -164,8 +132,6 @@ export default function SingleProduct10({ productId }) {
             }
           );
 
-          console.log("addToCart: Response >>>>>>> ", response);
-
           existingItem.amount = updatedAmount;
           setCartProducts([...cartData]);
 
@@ -174,7 +140,6 @@ export default function SingleProduct10({ productId }) {
           alert("장바구니에 담겼습니다!");
           // Reset quantity to 1
           setQuantity(1);
-
           // 장바구니에 담은 후 장바구니 화면으로 이동
           // navigate('/shop_cart');
 
@@ -206,8 +171,6 @@ export default function SingleProduct10({ productId }) {
             }
           );
 
-          console.log("addToCart: Response >>>>>>> ", response);
-
           setCartProducts([...cartData]);
 
           localStorage.setItem("cartProducts", JSON.stringify(cartData));
@@ -215,7 +178,6 @@ export default function SingleProduct10({ productId }) {
           alert("장바구니에 담겼습니다!");
           // Reset quantity to 1
           setQuantity(1);
-
           // 장바구니에 담은 후 장바구니 화면으로 이동
           // navigate('/shop_cart');
 
@@ -225,9 +187,6 @@ export default function SingleProduct10({ productId }) {
       }
     }
   };
-
-
-
 
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('ko-KR', {
@@ -239,9 +198,8 @@ export default function SingleProduct10({ productId }) {
   return (
     <section className="product-single container product-single__type-9">
       <div className="row">
-        {/* 제품 사진 슬라이더 부분 */}
         <div className="col-lg-7">
-          {/* <ProductSlider1 /> */}
+
           <img
             className="h-auto w-100"
             src={product1.productImage}
@@ -251,96 +209,28 @@ export default function SingleProduct10({ productId }) {
           />
         </div>
         <div className="col-lg-5" style={{paddingRight:'30px'}}>
-          {/* 이 부분은 왜 필요한지 모르겠넴ㅋ */}
-          <div className="d-flex justify-content-between mb-4 pb-md-2">
-            <div className="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-              <BreadCumb />
-            </div>
+          <div className="d-flex justify-content-between mb-4 pb-md-2"></div>
 
-            <div className="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-              <a className="text-uppercase fw-medium">
-                {/* 이 svg 부분은 < 이 화살표 아이콘 */}
-                <svg
-                  className="mb-1px"
-                  width="10"
-                  height="10"
-                  viewBox="0 0 25 25"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <use href="#icon_prev_md" />
-                </svg>
-                <span className="menu-link menu-link_us-s">Prev</span>
-              </a>
-              <a className="text-uppercase fw-medium">
-                <span className="menu-link menu-link_us-s">Next</span>
-                {/* 이 svg 부분은 > 이 화살표 아이콘 */}
-                <svg
-                  className="mb-1px"
-                  width="10"
-                  height="10"
-                  viewBox="0 0 25 25"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <use href="#icon_next_md" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* 제품명 부분 */}
-          {/* <h1 className="product-single__name">{product.title}</h1> */}
           <h1 className="product-single__name">{product1.productName}</h1>
 
-          {/* 별점 부분 */}
           <div className="product-single__rating">
             <div className="reviews-group d-flex">
               <Star productId={product1.productId} />
             </div>
-            <span className="reviews-note text-lowercase text-secondary ms-1">
-              {/* 8k+ reviews */}
-            </span>
           </div>
 
-          {/* 제품 가격 부분 */}
           <div className="product-single__price">
             {/* <span className="current-price">${product.price}</span> */}
             <span className="current-price">₩{formatCurrency(product1.productPrice)}</span>
           </div>
 
-          {/* 짧은 제품 상세 설명란 */}
           <div className="product-single__short-desc">
             <p>
               {product1.productDescription}
             </p>
           </div>
 
-          {/* form 태그로 주문 정보들 다 넘기는군 */}
           <form onSubmit={(e) => e.preventDefault()}>
-            {/* 여기는 사이즈 선택칸 */}
-            <div className="product-single__swatches">
-              {/* <div className="product-swatch text-swatches">
-                <label>Sizes</label>
-                <div className="swatch-list">
-                  <Size />
-                </div>
-                <a
-                  href="#"
-                  className="sizeguide-link"
-                  data-bs-toggle="modal"
-                  data-bs-target="#sizeGuide"
-                >
-                  Size Guide
-                </a>
-              </div> */}
-
-              {/* 여기는 색상 선택칸 */}
-              {/* <div className="product-swatch color-swatches">
-                <label>Color</label>
-                <div className="swatch-list">
-                  <Colors />
-                </div>
-              </div> */}
-            </div>
             <div className="product-single__addtocart">
               <div className="qty-control position-relative">
                 <input
@@ -376,7 +266,6 @@ export default function SingleProduct10({ productId }) {
                   +
                 </div>
               </div>
-              {/* 여기는 ADD TO CART 버튼 */}
               <button
                 type="button"
                 className="btn btn-primary btn-addtocart js-open-aside"
@@ -386,53 +275,24 @@ export default function SingleProduct10({ productId }) {
               </button>
             </div>
           </form>
-          {/* 여기에서 form 태그 끝!! */}
 
-          {/* 여기는 ADD TO WISHLIST 부분 */}
-          {/* <div className="product-single__addtolinks">
-            <a href="#" className="menu-link menu-link_us-s add-to-wishlist">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <use href="#icon_heart" />
-              </svg>
-              <span>좋아요 Add to Wishlist</span>
-            </a>
-            {/* <ShareComponent title={product.title} />
-          </div> */}
-          {/* 밑에 작게 있는 제품 정보칸 */}
           <div className="product-single__meta-info">
             <div className="meta-item">
               <label>제품코드 : </label>
               <span>{product1.productCode}</span>
             </div>
             <div className="meta-item">
-              <label>카테고리 :</label>
+              <label>카테고리 : </label>
               <span>{product1.categoryId} </span>
-            </div>
-            <div className="meta-item">
-              {/* <label>Tags:</label> */}
-              {/* <span>biker, black, bomber, leather</span> */}
             </div>
           </div>
 
-          {/* 아코디언란 */}
             <div
               id="product_single_details_accordion"
               className="product-single__details-accordion accordion"
             >
-              {/* DESCRIPTION 부분 */}
               <div className="accordion-item">
                 <h5 className="accordion-header" id="accordion-heading-11">
-                  {/* DESCRIPTION 디폴트 닫아져있게 하는 법
-                    1. className="accordion-button !!collapsed!!" 로 변경
-                    2. aria-expanded="!!false!!" 로 변경
-                    3. 밑에 className="accordion-collapse !!collapse!!" 로 변경
-                */}
                   <button
                     className="accordion-button collapsed"
                     type="button"
@@ -442,7 +302,6 @@ export default function SingleProduct10({ productId }) {
                     aria-controls="accordion-collapse-1"
                   >
                     상품상세
-                    {/* 여기 svg는 +,- 아이콘 */}
                     <svg className="accordion-button__icon" viewBox="0 0 14 14">
                       <g aria-hidden="true" stroke="none" fillRule="evenodd">
                         <path
@@ -464,15 +323,12 @@ export default function SingleProduct10({ productId }) {
                   data-bs-parent="#product_single_details_accordion"
                 >
                   <div className="accordion-body">
-                    {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
-                    {/* {product1 && <Description product1={product1} />} */}
                     {product1.productDescription} <br></br>
                     {product1.productDetailedDescription}
                   </div>
                 </div>
               </div>
 
-              {/* ADDITIONAL INFORMATION 부분 */}
               <div className="accordion-item">
                 <h5 className="accordion-header" id="accordion-heading-2">
                   <button
@@ -505,14 +361,12 @@ export default function SingleProduct10({ productId }) {
                   data-bs-parent="#product_single_details_accordion"
                 >
                   <div className="accordion-body">
-                    {/* 이 부분 어떻게 할 지 고민 중 ~.~ */}
                     <AdditionalInfo />
                     {product1.productAdditionalInfo}
                   </div>
                 </div>
               </div>
 
-              {/* REVIEWS 부분 */}
               <div className="accordion-item">
                 <h5 className="accordion-header" id="accordion-heading-3">
                   <button
@@ -552,7 +406,6 @@ export default function SingleProduct10({ productId }) {
             </div>
         </div>
       </div>
-      {/* <RelatedSlider productId={productId} product1={product1}/> */}
     </section >
   );
 }
