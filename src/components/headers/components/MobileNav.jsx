@@ -1,31 +1,14 @@
 import { useEffect } from "react";
-import {
-  additionalShopPageitems,
-  // blogmenuItems,
-  homePages,
-  othersMenuItems,
-  shopDetails,
-  shopList,
-} from "@/data/menu";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
 
-// 모바일 사이즈에서 Navbar!
+// 모바일 Nav
 export default function MobileNav() {
 
   const userId = localStorage.getItem("userId");
   const { setLogined, setCartId, setCartProducts, setOrderDetails} = useContextElement();
   const navigate = useNavigate();
-  // const { cartId } = useContextElement();
   const { pathname } = useLocation();
-  const isMenuActive = (menu) => {
-    return menu.split("/")[1] == pathname.split("/")[1];
-  };
-  const isActiveParentMenu = (menus) => {
-    return menus.some(
-      (menu) => menu.href.split("/")[1] == pathname.split("/")[1]
-    );
-  };
 
   useEffect(() => {
     const selectors = {
@@ -54,8 +37,8 @@ export default function MobileNav() {
         mobileDropdown.style.paddingRight = "";
       } else {
         document.body.classList.add(selectors.mobileMenuActiveClass);
-        document.body.style.paddingRight = "scrollWidth"; // Replace with appropriate value
-        mobileDropdown.style.paddingRight = "scrollWidth"; // Replace with appropriate value
+        document.body.style.paddingRight = "scrollWidth";
+        mobileDropdown.style.paddingRight = "scrollWidth";
       }
     };
 
@@ -176,55 +159,6 @@ export default function MobileNav() {
 
   return (
     <>
-      {/* <li className="navigation__item">
-        <a
-          href="#"
-          className={`navigation__link js-nav-right d-flex align-items-center ${isActiveParentMenu(othersMenuItems) ? "menu-active" : ""
-            }`}
-        >
-          Pages
-          <svg
-            className="ms-auto"
-            width="7"
-            height="11"
-            viewBox="0 0 7 11"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <use href="#icon_next_sm" />
-          </svg>
-        </a>
-        <div className="sub-menu position-absolute top-0 start-100 w-100 d-none">
-          <a
-            href="#"
-            className="navigation__link js-nav-left d-flex align-items-center border-bottom mb-2"
-          >
-            <svg
-              className="me-2"
-              width="7"
-              height="11"
-              viewBox="0 0 7 11"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <use href="#icon_prev_sm" />
-            </svg>
-            Pages
-          </a>
-          <ul className="list-unstyled">
-            {othersMenuItems.map((elm, i) => (
-              <li key={i} className="sub-menu__item">
-                <Link
-                  to={elm.href}
-                  className={`menu-link menu-link_us-s ${isMenuActive(elm.href) ? "menu-active" : ""
-                    }`}
-                >
-                  {elm.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </li> */}
-
       {/* 모바일 화면 메뉴 - Home 메뉴 */}
       <li className="navigation__item">
         <Link
@@ -268,17 +202,6 @@ export default function MobileNav() {
         </Link>
       </li>
 
-      {/* 모바일 화면 메뉴 - 제품 상세페이지 메뉴 */}
-      {/* <li className="navigation__item">
-        <Link
-          to="/bisang/products/95"
-          className={`navigation__link ${pathname == "/bisang/products/95" ? "menu-active" : ""
-            }`}
-        >
-          Product detail
-        </Link>
-      </li> */}
-
       {/* 모바일 화면 메뉴 - about 메뉴 */}
       <li className="navigation__item">
         <Link
@@ -308,30 +231,6 @@ export default function MobileNav() {
           </Link>
         )}
       </li>
-
-      {/* 모바일 화면 메뉴 - 마이페이지 메뉴
-      <li className="navigation__item">
-        <Link
-          to="/account_dashboard"
-          className={`navigation__link ${pathname == "/account_dashboard" ? "menu-active" : ""
-            }`}
-        >
-          My account
-        </Link>
-      </li> */}
-      
-      
-
-      {/* 모바일 화면 메뉴 - CONTACT 메뉴
-      <li className="navigation__item">
-        <Link
-          to="/contact"
-          className={`navigation__link ${pathname == "/contact" ? "menu-active" : ""
-            }`}
-        >
-          Contact
-        </Link>
-      </li> */}
     </>
   );
 }
