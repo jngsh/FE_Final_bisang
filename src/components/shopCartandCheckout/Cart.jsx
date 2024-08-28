@@ -319,31 +319,27 @@ export default function Cart() {
     }
   };
 
-  //솔님 주소 띄우실 때 사용하세요!!
+  //토글버튼이 배송 상태일 때 기본 배송지 조회
   useLayoutEffect(() => {
 
     if (!userId) {
       console.error("userId is not defined");
-      console.log('userIderror:', userId);
       return;
     }
 
     else {
       const fetchUserData = async () => {
         try {
-          console.log('Fetching user data...'); // 데이터 로드 시작 시 로그
           const response = await axios.get(`${BASE_URL}/bisang/deliveryAddr/${userId}`, {
             headers: {
               Authorization: token ? `Bearer ${token}` : ''
             }
           });
           if (response.data) {
-            console.log('User data fetched:', response.data[0]); // 데이터 로드 성공 시 로그
             setFormData(response.data[0]);
             setSavedData(response.data[0]);
-            console.log("formdata:", formData);
           } else {
-            console.log('No data found'); // 데이터가 없을 경우 로그
+            console.log('No data found');
           }
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -412,6 +408,7 @@ export default function Cart() {
 
   };
 
+  // 배송지 수정
   const updateDelivery = async () => {
 
     const updateDeliveryAddr = { ...formData };

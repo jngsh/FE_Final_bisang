@@ -59,6 +59,7 @@ export default function LoginRegister() {
     }
   }, [storedId]);
 
+  // 아이디 저장하기
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked;
     setRemember(isChecked);
@@ -86,6 +87,7 @@ export default function LoginRegister() {
     setLoginData(prevData => ({ ...prevData, [name]: value }));
   };
 
+  // 비밀번호 설정
   const handleRegisterChange = async (e) => {
     const { name, value } = e.target;
 
@@ -119,6 +121,7 @@ export default function LoginRegister() {
     }
   }, [registerData.pw]);
 
+  // 아이디 중복확인
   const handleIdCheck = async () => {
     if (!registerData.id) {
       setIdError("아이디를 입력해 주세요.");
@@ -202,7 +205,6 @@ export default function LoginRegister() {
     }
 }, []);
 
-
   const fetchDataWithToken = async () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
@@ -214,8 +216,6 @@ export default function LoginRegister() {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log("Data fetched successfully:", response.data);
-        console.log("UserID:",userId);
       } catch (error) {
         console.error("Error fetching data:", error.response?.data || error.message);
       }
@@ -224,21 +224,17 @@ export default function LoginRegister() {
     }
 };
 
-
+  // 로그인 폼 제출, 응답데이터 로컬스토리지 저장
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(`${BASE_URL}/bisang/auth/login`, loginData);
-      console.log("Login successful:", response.data);
 
       if (response.data.token) {
-        // JWT토큰 로컬스토리지에 저장
         localStorage.setItem("token", response.data.token);
         
-        // 서버 응답에서 userId를 가져와서 로컬스토리지에 저장
         if (response.data.userId) {
-          console.log("userId recived:",response.data.userId);
           localStorage.setItem("userId", response.data.userId);
           setLogined(true);
           localStorage.setItem("logined", JSON.stringify(true));
@@ -248,7 +244,6 @@ export default function LoginRegister() {
         }
 
         if (response.data.cartId) {
-          console.log("cartId received:", response.data.cartId);
           setCartId(response.data.cartId);
           const cartId = response.data.cartId;
           localStorage.setItem("cartId", cartId);
@@ -256,10 +251,7 @@ export default function LoginRegister() {
           try {
             const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`
             );
-            // 카트 아이템을 로컬스토리지에 저장
-            console.log("CartItem Response:",cartItemsResponse.data);
             setCartProducts(cartItemsResponse.data);
-            // localStorage.setItem("cartItems", JSON.stringify(cartItemsResponse.data));
           } catch (error) {
             console.error("Error fetching cart items:", error.response?.data || error.message);
           }
@@ -292,6 +284,7 @@ export default function LoginRegister() {
     }
   };
 
+  // 회원가입 폼 제출
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
 
@@ -306,7 +299,6 @@ export default function LoginRegister() {
 
     try {
       const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
-      console.log("Registration successful:", response.data);
       if (response.data){
         setLogined(false);
         setActiveTab("login");
@@ -317,12 +309,6 @@ export default function LoginRegister() {
       console.error("Registration error:", error.response?.data || error.message);
     }
   };
-
-  useEffect(() => {
-    if (cartId) {
-      console.log("CartId:", cartId);
-    }
-  }, [cartId]); 
 
   const handleEmailDomainChange = (e) => {
     const selectedDomain = e.target.value;

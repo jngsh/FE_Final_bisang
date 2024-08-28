@@ -3,8 +3,6 @@ import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
 
 
-// 상세페이지에 보이는 리뷰 부분 !!
-
 function maskName(name){
   if(name.length <= 4){
     return '****';
@@ -26,7 +24,7 @@ function sortReivewsByDate(reviews) {
 
 export default function Reviews({productId, reviewCount}) {
   const [reviews, setReviews] = useState([]);
-
+  //제품 상세페이지 리뷰 조회
   useEffect (() =>{
     const fetchReviews = async () =>{
       try{

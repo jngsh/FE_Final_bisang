@@ -9,6 +9,7 @@ export default function DashboardSidebar() {
   const userId = localStorage.getItem("userId");
   const { setLogined, setCartId, setCartProducts, setOrderDetails} = useContextElement();
 
+  // 로그아웃시 로컬스토리지 정보 삭제
   const handleLogout = (event) => {
     event.preventDefault();
     localStorage.removeItem("token");

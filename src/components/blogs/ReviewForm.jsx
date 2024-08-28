@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import BASE_URL from "@/utils/globalBaseUrl";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ReviewForm({ productId, orderDetailId }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const userId = localStorage.getItem("userId");
   
   const [ reviewData, setReviewData ] = useState({
@@ -16,14 +15,13 @@ export default function ReviewForm({ productId, orderDetailId }) {
   });
 
   const [hoverRating, setHoverRating] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
   const [productInfo, setProductInfo] = useState({ name:'', productImage:''});
 
+  // 리뷰 작성할 상품 데이터 조회
   useEffect(() => {
     const fetchProductDetails = async () => {
     try{
       const response = await axios.get(`${BASE_URL}/bisang/review/productDetail/${productId}`);
-      console.log("ProductInfo:",response.data);
       setProductInfo({
         name: response.data.productName,
         productImage: response.data.productImage
@@ -36,13 +34,12 @@ export default function ReviewForm({ productId, orderDetailId }) {
   
   },[productId]);
 
+  // 리뷰 등록
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(productId,userId, orderDetailId);
     try {
       const response = await axios.post(`${BASE_URL}/bisang/review/${orderDetailId}/${productId}/${userId}`, reviewData);
-      console.log('Review submitted successfully:', response.data);
       alert('리뷰가 등록되었습니다.')
       navigate('/account_reviews?tab=reviewList');
     }catch (error) {
