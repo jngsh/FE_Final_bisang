@@ -1,5 +1,3 @@
-import { useContextElement } from "@/context/Context";
-import { products51 } from "@/data/products/fashion";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,21 +7,11 @@ import BASE_URL from "@/utils/globalBaseUrl";
 
 // productId를 가져온다
 export default function RelatedSlider({ productId }) {
-  const { toggleWishlist, isAddedtoWishlist } = useContextElement();
-  const { setQuickViewItem } = useContextElement();
-  const { addProductToCart, isAddedToCartProducts } = useContextElement();
-
-  // produtct 정보 가져와서 뿌려주기
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentCategoryId, setCurrentCategoryId] = useState();
   const [sliderProduct, setSliderProduct] = useState([]);
-
-  // 받아온 productId
-  // !!!!!
-  // const currentProductId = { productId }; // 무한 루프 발생 !!!
   const currentProductId = parseInt(productId, 10); // 파라미터일 수 있는 productId를 10진수 정수로 변환해서 저장한다
 
   // 컴포넌트가 마운트된 후 실행하기 (useEffect())
@@ -34,12 +22,11 @@ export default function RelatedSlider({ productId }) {
         const response = await axios.get(`${BASE_URL}/bisang/products`,
           {
             headers: {
-              'ngrok-skip-browser-warning': true,
+              'ngrok-skip-browser-warning': true, // ngrok 사용할 때 warning 페이지 무시하기
             }
           }
         );
         setSliderProduct(response.data); // sliderProduct에 axios로 가져온 data를 넣어줌
-        // setCurrentCategoryId(response.data[currentProductId])
 
         // 현재 제품을 찾기 위해 데이터에서 해당 제품 찾기
         const currentProduct = response.data.find(
@@ -109,31 +96,10 @@ export default function RelatedSlider({ productId }) {
     },
   };
 
-  // 여기는 메서드들
-  const isIncludeCard = () => {
-    const item = cartProducts.filter((elm) => elm.id == product.id)[0];
-    return item;
-  };
-  // // 카트에 담을 수량 설정
-  // const setQuantityCartItem = (id, quantity) => {
-  //   if (isIncludeCard()) {
-  //     if (quantity >= 1) {
-  //       const item = cartProducts.filter((elm) => elm.id == id)[0];
-  //       const items = [...cartProducts];
-  //       const itemIndex = items.indexOf(item);
-  //       item.quantity = quantity;
-  //       items[itemIndex] = item;
-  //       setCartProducts(items);
-  //     }
-  //   } else {
-  //     setQuantity(quantity - 1 ? quantity : 1);
-  //   }
-  // };
-  
   return (
     <section className="products-carousel container">
       <h2 className="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">
-        Related <strong>Products</strong> 이 제품은 어떠신가요?
+        이 제품은 어떠신가요?
       </h2>
 
       <div id="related_products" className="position-relative">
@@ -157,51 +123,18 @@ export default function RelatedSlider({ productId }) {
                     className="pc__img"
                   />
                 </Link>
-                {/* <button
-                  className="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
-                  onClick={() => addProductToCart(elm.id)}
-                  title={
-                    isAddedToCartProducts(elm.id)
-                      ? "Already Added"
-                      : "장바구니에 담기 Add to Cart"
-                  }
-                >
-                  {isAddedToCartProducts(elm.id)
-                    ? "또 담기"
-                    : "장바구니에 담기 Add To Cart"}
-                </button> */}
               </div>
 
-              {/* 제품 정보 */}
               <div className="pc__info position-relative">
-                <p className="pc__category">{elm.categoryId}</p>
                 <h6 className="pc__title">
                   <Link to={`/bisang/products/${elm.productId}`}>{elm.productName}</Link>
                 </h6>
                 <div className="product-card__price d-flex">
                   <span className="money price">₩{elm.productPrice}</span>
                 </div>
-
-                {/* <button
-                  className={`pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist ${isAddedtoWishlist(elm.id) ? "active" : ""
-                    }`}
-                  title="Add To Wishlist"
-                  onClick={() => toggleWishlist(elm.id)}
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <use href="#icon_heart" />
-                  </svg>
-                </button> */}
               </div>
             </SwiperSlide>
           ))}
-
         </Swiper>
 
         <div className="cursor-pointer products-carousel__prev ssp11 position-absolute top-50 d-flex align-items-center justify-content-center">
@@ -224,7 +157,6 @@ export default function RelatedSlider({ productId }) {
             <use href="#icon_next_md" />
           </svg>
         </div>
-
         <div className="products-pagination mt-4 mb-5 d-flex align-items-center justify-content-center"></div>
       </div>
     </section>

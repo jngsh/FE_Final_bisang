@@ -5,7 +5,7 @@ import "./QrStyles.css";
 
 // Qr Scanner
 import QrScanner from "qr-scanner";
-import QrFrame from "../../../assets_scanner/qr-frame.svg";
+import QrFrame from "../../assets_scanner/qr-frame.svg";
 
 // axios
 import axios from "axios";

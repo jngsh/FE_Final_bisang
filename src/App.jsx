@@ -33,7 +33,7 @@ import { Route, Routes } from "react-router-dom";
 import ShopPage from "./pages/shoplist/index";
 
 
-import ProductDetailsPage15 from "./pages/shopSingle/product15_v10/[id]";
+import ProductDetailsPage15 from "./pages/shopSingle/product/[id]";
 import ProductDetailsPage1 from "./pages/shopSingle/product1_simple/[id]";
 import ProductDetailsPage3 from "./pages/shopSingle/product3_external/[id]";
 import ProductDetailsPage4 from "./pages/shopSingle/product4_grouped/[id]";
@@ -63,8 +63,8 @@ import AboutPage from "./pages/otherPages/about";
 import ContactPage from "./pages/otherPages/contact";
 import ScrollTopBehaviour from "./components/common/ScrollTopBehaviour";
 import AdminPage from "./components/admin/AdminPage";
-import QrHome from "./pages/homes/QrReader";
-import QrReader from "./pages/homes/QrReader/QrReader";
+import QrHome from "./pages/QrReader";
+import QrReader from "./pages/QrReader/QrReader";
 import "./locales/i18n";
 
 import ReviewPage from "./pages/dashboard/reivew";
@@ -73,6 +73,7 @@ import ReviewPage from "./pages/dashboard/reivew";
 import OrderDetailsPage from "./pages/dashboard/account_orderDetails";
 import './App.css';
 import HomePage from "./pages/homes/home";
+import ProductDetailsPage from "./pages/shopSingle/product/[id]";
 
 
 function App() {
@@ -105,7 +106,7 @@ function App() {
 
             {/* 우리가 쓰는 제품 디테일 페이지 !!  */}
             {/* <Route path="product15_v10/:id" element={<ProductDetailsPage15 />} /> */}
-            <Route path="bisang/products/:ProductId" element={<ProductDetailsPage15 />} />
+            <Route path="bisang/products/:ProductId" element={<ProductDetailsPage />} />
             {/* <Route path="product16_v11/:id" element={<ProductDetailsPage16 />} /> */}
 
             <Route path="product1_simple/:id" element={<ProductDetailsPage1 />} />
