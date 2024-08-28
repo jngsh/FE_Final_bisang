@@ -9,9 +9,9 @@ import BASE_URL from "@/utils/globalBaseUrl";
 
 // productId를 가져온다
 export default function RelatedSlider({ productId }) {
-  const { toggleWishlist, isAddedtoWishlist } = useContextElement();
-  const { setQuickViewItem } = useContextElement();
-  const { addProductToCart, isAddedToCartProducts } = useContextElement();
+  // const { toggleWishlist, isAddedtoWishlist } = useContextElement();
+  // const { setQuickViewItem } = useContextElement();
+  // const { addProductToCart, isAddedToCartProducts } = useContextElement();
 
   // produtct 정보 가져와서 뿌려주기
   const [error, setError] = useState(null);

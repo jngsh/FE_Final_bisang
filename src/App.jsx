@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/no-unknown-property */
 import Svgs from "@/components/common/Svgs";
 import "react-tooltip/dist/react-tooltip.css";
 import "./styles/style.scss";
@@ -10,9 +8,9 @@ import LoginFormPopup from "@/components/common/LoginFormPopup";
 
 import ScrollTop from "@/components/common/ScrollTop";
 import Context from "@/context/Context";
-import QuickView from "@/components/modals/QuickView";
-import CartDrawer from "@/components/shopCartandCheckout/CartDrawer";
-import SiteMap from "@/components/modals/SiteMap";
+// import QuickView from "@/components/modals/QuickView";
+// import CartDrawer from "@/components/shopCartandCheckout/CartDrawer";
+// import SiteMap from "@/components/modals/SiteMap";
 
 import MobileHeader from "@/components/headers/MobileHeader";
 import Delivery from "@/components/modals/Delivery";
@@ -157,10 +155,10 @@ function App() {
 
         <MobileFooter1 />
         <LoginFormPopup />
-        <QuickView />
+        {/* <QuickView /> */}
         <Delivery />
-        <CartDrawer />
-        <SiteMap />
+        {/* <CartDrawer /> */}
+        {/* <SiteMap /> */}
         <CustomerLogin />
         <ShopFilter />
         <ProductDescription />
