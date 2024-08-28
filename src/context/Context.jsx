@@ -18,8 +18,8 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   const storedCartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
   const [orderDetails, setOrderDetails] = useState(storedOrderDetails);
   const [cartProducts, setCartProducts] = useState(storedCartProducts);
-  const [wishList, setWishList] = useState([]);
-  const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
+  // const [wishList, setWishList] = useState([]);
+  // const [quickViewItem, setQuickViewItem] = useState(allProducts[0]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [logined, setLogined ] = useState(storedLogined);
   const [cartId, setCartId] = useState(storedCartId);
@@ -77,40 +77,42 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
   //   setTotalPrice(subtotal);
   // }, [cartProducts]);
 
-  const addProductToCart = (id) => {
-    if (!cartProducts.filter((elm) => elm.id == id)[0]) {
-      const item = {
-        ...allProducts.filter((elm) => elm.id == id)[0],
-        quantity: 1,
-      };
-      setCartProducts((pre) => [...pre, item]);
+  // const addProductToCart = (id) => {
+  //   if (!cartProducts.filter((elm) => elm.id == id)[0]) {
+  //     const item = {
+  //       ...allProducts.filter((elm) => elm.id == id)[0],
+  //       quantity: 1,
+  //     };
+  //     setCartProducts((pre) => [...pre, item]);
 
-      document
-        .getElementById("cartDrawerOverlay")
-        .classList.add("page-overlay_visible");
-      document.getElementById("cartDrawer").classList.add("aside_visible");
-    }
-  };
-  const isAddedToCartProducts = (id) => {
-    if (cartProducts.filter((elm) => elm.id == id)[0]) {
-      return true;
-    }
-    return false;
-  };
+  //     document
+  //       .getElementById("cartDrawerOverlay")
+  //       .classList.add("page-overlay_visible");
+  //     document.getElementById("cartDrawer").classList.add("aside_visible");
+  //   }
+  // };
+  // const isAddedToCartProducts = (id) => {
+  //   if (cartProducts.filter((elm) => elm.id == id)[0]) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
-  const toggleWishlist = (id) => {
-    if (wishList.includes(id)) {
-      setWishList((pre) => [...pre.filter((elm) => elm != id)]);
-    } else {
-      setWishList((pre) => [...pre, id]);
-    }
-  };
-  const isAddedtoWishlist = (id) => {
-    if (wishList.includes(id)) {
-      return true;
-    }
-    return false;
-  };
+  // const toggleWishlist = (id) => {
+  //   if (wishList.includes(id)) {
+  //     setWishList((pre) => [...pre.filter((elm) => elm != id)]);
+  //   } else {
+  //     setWishList((pre) => [...pre, id]);
+  //   }
+  // };
+  // const isAddedtoWishlist = (id) => {
+  //   if (wishList.includes(id)) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
+
+
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cartProducts"));
     if (items?.length) {
@@ -123,16 +125,16 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
     localStorage.setItem("cartProducts", JSON.stringify(cartProducts));
   }, [cartProducts]);
 
-  useEffect(() => {
-    const items = JSON.parse(localStorage.getItem("wishlist"));
-    if (items?.length) {
-      setWishList(items);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const items = JSON.parse(localStorage.getItem("wishlist"));
+  //   if (items?.length) {
+  //     setWishList(items);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    localStorage.setItem("wishlist", JSON.stringify(wishList));
-  }, [wishList]);
+  // useEffect(() => {
+  //   localStorage.setItem("wishlist", JSON.stringify(wishList));
+  // }, [wishList]);
 
   useEffect(() => {
     localStorage.setItem("logined", JSON.stringify(logined));
@@ -159,13 +161,13 @@ const storedLogined = JSON.parse(localStorage.getItem('logined') || 'false');
     setCartProducts,
     totalPrice,
     setTotalPrice,
-    addProductToCart,
-    isAddedToCartProducts,
-    toggleWishlist,
-    isAddedtoWishlist,
-    quickViewItem,
-    wishList,
-    setQuickViewItem,
+    // addProductToCart,
+    // isAddedToCartProducts,
+    // toggleWishlist,
+    // isAddedtoWishlist,
+    // quickViewItem,
+    // wishList,
+    // setQuickViewItem,
     logined,
     setLogined,
     orderDetails,
