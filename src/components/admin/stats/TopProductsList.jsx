@@ -7,10 +7,16 @@ const TopProductsList = ({ selectedDate }) => {
     const [productDetails, setProductDetails] = useState({});
     const [sortOption, setSortOption] = useState('productSalesPrice');
     const [loading, setLoading] = useState(true);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const fetchProductDetails = async () => {
-            const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/products-info`);
+            const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/products-info`, {
+                headers: {
+                  Authorization: token ? `Bearer ${token}` : ''
+                }
+              }
+             );
             const data = await response.json();
             const details = data.reduce((acc, product) => {
                 acc[product.productId] = { name: product.productName, image: product.productImage };

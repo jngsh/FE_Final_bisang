@@ -6,6 +6,8 @@ import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(...registerables);
 
+const token = localStorage.getItem("token");
+
 const WeeklySalesLineChart = ({ selectedDate }) => {
     const generateLast7DaysLabels = () => {
         const labels = [];
@@ -53,7 +55,12 @@ const WeeklySalesLineChart = ({ selectedDate }) => {
     }, [selectedDate]);
 
     const fetchWeeklySales = () => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/recent-week`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/recent-week`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          }
+        )
             .then(response => {
                 const data = response.data;
                 const labels = generateLast7DaysLabels();

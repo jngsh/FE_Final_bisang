@@ -11,13 +11,19 @@ export default function Dashboard() {
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
   const [isPetRegistered, setIsPetRegistered] = useState(false);
   const [registeredPet, setRegisteredPet] = useState(null);
+  const token = localStorage.getItem("token");
 
   // 사용자 ID로 반려동물 데이터 가져오기
   useEffect(() => {
     const fetchPetData = async () => {
       if (userId) {
         try {
-          const response = await axios.get(`${BASE_URL}/bisang/pets/user/${userId}`);
+          const response = await axios.get(`${BASE_URL}/bisang/pets/user/${userId}`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          }
+          );
           console.log("Server Response:", response.data);
   
           if (response.status === 200) {
@@ -92,6 +98,7 @@ export default function Dashboard() {
     try {
       const response = await axios.post(`${BASE_URL}/bisang/pets`, formData, {
         headers: {
+          "Authorization": `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });

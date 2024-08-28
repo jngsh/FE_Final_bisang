@@ -4,6 +4,8 @@ import 'chart.js/auto';
 import BASE_URL from '@/utils/globalBaseUrl';
 import './StatsPage.css';
 
+const token = localStorage.getItem("token");
+
 const PetAgeTypeDoughnutChart = () => {
     const [data, setData] = useState({
         labels: [], 
@@ -17,7 +19,12 @@ const PetAgeTypeDoughnutChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-age-type`);
+                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-age-type`,{
+                    headers: {
+                      Authorization: token ? `Bearer ${token}` : ''
+                    }
+                  }
+                );
                 const result = await response.json();
                 
                 if (Array.isArray(result)) {

@@ -7,6 +7,8 @@ import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
+const token = localStorage.getItem("token");
+
 const DailySalesLineChart = () => {
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
@@ -25,7 +27,11 @@ const DailySalesLineChart = () => {
     }, [selectedYear, selectedMonth]);
 
     const fetchYears = () => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`,{
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+            })
             .then(response => {
                 setYears(response.data);
             })
@@ -33,7 +39,11 @@ const DailySalesLineChart = () => {
     };
 
     const fetchMonthlySales = (year, month) => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily/${year}/${month}`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily/${year}/${month}`,{
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+            })
             .then(response => {
                 const data = response.data;
                 const daysInMonth = new Date(year, month, 0).getDate();

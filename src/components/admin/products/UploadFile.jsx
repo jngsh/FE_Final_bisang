@@ -3,6 +3,8 @@ import axios from 'axios';
 import './UploadFile.css';
 import BASE_URL from '@/utils/globalBaseUrl';
 
+const token = localStorage.getItem("token");
+
 function UploadFile() {
   const [dragging, setDragging] = useState(false);
   const [selectFile, setSelectFile] = useState(null);
@@ -57,6 +59,7 @@ function UploadFile() {
     try {
       const response = await axios.put(`${BASE_URL}/bisang/admin/products/upload`, formData, {
         headers: {
+          "Authorization": `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });

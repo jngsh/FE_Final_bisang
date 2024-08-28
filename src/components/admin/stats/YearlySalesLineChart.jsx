@@ -6,6 +6,8 @@ import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
+const token = localStorage.getItem("token");
+
 const YearlySalesLineChart = () => {
     const [data, setData] = useState({
         labels: [],
@@ -43,7 +45,12 @@ const YearlySalesLineChart = () => {
     }, []);
 
     const fetchYearlySales = () => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/yearly`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/yearly`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          }
+        )
             .then(response => {
                 const data = response.data;
                 const labels = data.map(d => `${d.saleYear}년`);

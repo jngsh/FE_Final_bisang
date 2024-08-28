@@ -6,11 +6,18 @@ import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 import './SalesCalendar.css';
 
+const token = localStorage.getItem("token");
+
 const SalesCalendar = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily-calendar`)
+    axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily-calendar`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : ''
+      }
+    }
+)
       .then(response => {
         const salesData = response.data;
         const fetchedEvents = salesData.map(sale => ({
