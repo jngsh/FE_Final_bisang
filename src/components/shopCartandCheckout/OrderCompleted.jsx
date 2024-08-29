@@ -15,6 +15,7 @@ export default function OrderCompleted() {
   const [showDate, setShowDate] = useState(true);
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
   const [orderNumber, setOrderNumber] = useState(0);
+  const token = localStorage.getItem("token");
 
 
 
@@ -25,7 +26,8 @@ export default function OrderCompleted() {
     // if (cartId) {
     const fetchOrderDetails = async () => {
       try {
-        const response = await axiosInstance.get(`/bisang/pay/details/${cartId}`);
+        const response = await axiosInstance.get(`/bisang/pay/details/${cartId}`
+        );
 
         setOrderDetails(response.data.orderDetails);
         localStorage.setItem("orderDetails", JSON.stringify(response.data.orderDetails));

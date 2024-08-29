@@ -18,8 +18,9 @@ export default function Cart() {
   }
 
   // context에서 필요한 값을 추출합니다.
-  const { cartProducts, setCartProducts, totalPrice, setTotalPrice, logined, token } = context;
+  const { cartProducts, setCartProducts, totalPrice, setTotalPrice, logined } = context;
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem("token");
   const [localCart, setLocalCart] = useState([]);
   const { cartId } = useContextElement();
   const [checkboxes, setCheckboxes] = useState({
@@ -71,7 +72,7 @@ export default function Cart() {
         try {
           const response = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`, {
             headers: {
-              Authorization: token ? `Bearer ${token}` : ''
+              "Authorization": `Bearer ${token}`
             }
           });
           console.log("response.data", response.data);
@@ -103,8 +104,16 @@ export default function Cart() {
 
       try {
         const [cartResponse, itemsResponse] = await Promise.all([
-          axios.get(`${BASE_URL}/bisang/carts/${cartId}`),
-          axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`)
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}`, {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }),
+          axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`, {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          })
         ]);
 
         const items = itemsResponse.data || [];
@@ -149,7 +158,14 @@ export default function Cart() {
 
     setIsUpdating(true);
     try {
-      await axios.put(`${BASE_URL}/bisang/carts/items`, { cartId, productId, amount: quantity });
+      await axios.put(`${BASE_URL}/bisang/carts/items`, 
+        { cartId, productId, amount: quantity },
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
       console.log("Updating UI with new quantity:", updatedProducts);
       setCartProducts(updatedProducts); // UI 업데이트
       updateLocalCart(updatedProducts); // 로컬스토리지 업데이트
@@ -183,7 +199,11 @@ export default function Cart() {
 
     try {
       // 서버 요청
-      await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`);
+      await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`,{
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       console.log("아이템 삭제 성공:", cartItemId);
 
       // 서버 요청이 성공하면 UI와 로컬스토리지 업데이트
@@ -279,6 +299,11 @@ export default function Cart() {
       const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, {
         cartItemId,
         shipping: newStatus,
+      },{
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
 
       // 서버에서 응답한 데이터로 로컬 상태 업데이트
@@ -472,6 +497,7 @@ export default function Cart() {
       const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
         {
           headers: { //body에 뭐넣을지 미리 알려주는 역할
+            // "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,

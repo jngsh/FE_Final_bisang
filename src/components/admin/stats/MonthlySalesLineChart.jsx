@@ -6,6 +6,8 @@ import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
+const token = localStorage.getItem("token");
+
 const MonthlySalesLineChart = () => {
     const currentYear = new Date().getFullYear();
     const [selectedYear, setSelectedYear] = useState(currentYear);
@@ -50,7 +52,12 @@ const MonthlySalesLineChart = () => {
     }, [selectedYear]);
 
     const fetchYears = () => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          }
+)
             .then(response => {
                 setYears(response.data);
             })
@@ -60,7 +67,12 @@ const MonthlySalesLineChart = () => {
     };
 
     const fetchMonthlySales = (year) => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/monthly/${year}`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/monthly/${year}`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : ''
+            }
+          }
+)
             .then(response => {
                 const data = response.data;
                 const defaultLabels = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);

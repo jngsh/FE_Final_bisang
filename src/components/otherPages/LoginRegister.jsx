@@ -251,7 +251,11 @@ export default function LoginRegister() {
           localStorage.setItem("cartId", cartId);
 
           try {
-            const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`
+            const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`,{
+              headers: {
+                "Authorization": `Bearer ${response.data.token}`
+              }
+            }
             );
             setCartProducts(cartItemsResponse.data);
           } catch (error) {

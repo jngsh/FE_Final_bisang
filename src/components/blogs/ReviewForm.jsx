@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function ReviewForm({ productId, orderDetailId }) {
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
   
@@ -21,7 +22,12 @@ export default function ReviewForm({ productId, orderDetailId }) {
   useEffect(() => {
     const fetchProductDetails = async () => {
     try{
-      const response = await axios.get(`${BASE_URL}/bisang/review/productDetail/${productId}`);
+      const response = await axios.get(`${BASE_URL}/bisang/review/productDetail/${productId}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : ''
+        }
+      }
+    );
       setProductInfo({
         name: response.data.productName,
         productImage: response.data.productImage

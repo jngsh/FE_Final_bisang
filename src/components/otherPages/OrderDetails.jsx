@@ -12,10 +12,17 @@ const OrderDetails = () => {
     console.log(orderId);
     const navigate = useNavigate();
     const [reviewExistence, setReviewExistence] = useState({});
+    const token = localStorage.getItem("token");
 
     const fetchOrderDetails = async () => {
         try {
-            const response = await axiosInstance.get(`/bisang/orders/details/${orderId}`);
+            const response = await axiosInstance.get(`/bisang/orders/details/${orderId}`, {
+                headers: {
+                  Authorization: token ? `Bearer ${token}` : ''
+                }
+              }
+    
+            );
             const orderDetailsData = response.data;
             setOrderDetails(response.data);
 

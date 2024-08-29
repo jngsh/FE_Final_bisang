@@ -9,6 +9,7 @@ import { useContextElement } from "@/context/Context";
 
 export default function SingleProduct({ productId }) {
 
+  const token = localStorage.getItem("token");
   const { cartProducts, setCartProducts } = useContextElement();
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
@@ -90,7 +91,6 @@ export default function SingleProduct({ productId }) {
 
   const addToCart = async () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-
     if (cartId === "null") {
       navigate('/login_register');
       return; // 함수 종료
@@ -165,6 +165,7 @@ export default function SingleProduct({ productId }) {
             },
             {
               headers: {
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": true,
               },

@@ -19,6 +19,8 @@ const Checkout = () => {
     "United States",
     "Turkey"
   ];
+  const token = localStorage.getItem("token");
+
 
   const handleButtonClick = async () => {
     console.log("버튼눌림");
@@ -28,6 +30,7 @@ const Checkout = () => {
       const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
         {
           headers: { //body에 뭐넣을지 미리 알려주는 역할
+            // "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,

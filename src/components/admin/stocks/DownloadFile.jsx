@@ -2,6 +2,8 @@ import BASE_URL from '@/utils/globalBaseUrl';
 import React from 'react';
 import './DownloadFile.css';
 
+const token = localStorage.getItem("token");
+
 const DownloadFile = () => {
 
     const downloadFile = async () => {
@@ -9,6 +11,7 @@ const DownloadFile = () => {
             const response = await fetch(`${BASE_URL}/bisang/admin/stocks/download`, {
                 method: 'GET',
                 headers: {
+                    "Authorization": `Bearer ${token}`,
                     'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 }
             });

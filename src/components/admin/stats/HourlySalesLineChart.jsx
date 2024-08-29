@@ -6,6 +6,8 @@ import BASE_URL from '@/utils/globalBaseUrl';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
+const token = localStorage.getItem("token");
+
 const HourlySalesLineChart = ({ selectedDate }) => {
     const [data, setData] = useState({
         labels: Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`),
@@ -43,7 +45,11 @@ const HourlySalesLineChart = ({ selectedDate }) => {
     }, [selectedDate]);
 
     const fetchDateSales = (date) => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/hourly/${date}`)
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/hourly/${date}`,{
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+            })
             .then(response => {
                 const data = response.data;
                 const salesData = Array(24).fill(0);

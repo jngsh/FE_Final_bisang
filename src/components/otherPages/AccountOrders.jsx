@@ -9,6 +9,7 @@ export default function MyOrders() {
   const { userId } = useContextElement();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const userId = localStorage.getItem("userId")|| contextUserId;
@@ -16,7 +17,12 @@ export default function MyOrders() {
 
     const fetchOrders = async () => {
       try {
-        const response = await axiosInstance.get(`/bisang/orders/${userId}`);
+        const response = await axiosInstance.get(`/bisang/orders/${userId}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          }
+        }
+);
         console.log("response?:",response.data);
         setOrders(response.data);
       } catch (error) {
