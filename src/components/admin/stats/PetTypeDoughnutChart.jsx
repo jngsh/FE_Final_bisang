@@ -8,25 +8,26 @@ const token = localStorage.getItem("token");
 
 const PetTypeDoughnutChart = () => {
     const [data, setData] = useState({
-        labels: [], 
+        labels: [],
         datasets: [{
-            data: [], 
-            backgroundColor: ['#FF6384', '#36A2EB', '#B0BEC5'], 
+            data: [],
+            backgroundColor: ['#FF6384', '#36A2EB', '#B0BEC5'],
         }]
     });
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-type`,{
+                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-type`, {
                     headers: {
-                      Authorization: token ? `Bearer ${token}` : ''
+                        Authorization: token ? `Bearer ${token}` : '',
+                        'Access-Control-Allow-Origin': '*'
                     }
-                  }
+                }
                 );
                 const result = await response.json();
-                
+
                 if (Array.isArray(result)) {
                     setData({
                         labels: result.map(item => item.petType),
@@ -62,7 +63,7 @@ const PetTypeDoughnutChart = () => {
             },
             tooltip: {
                 callbacks: {
-                    label: function(tooltipItem) {
+                    label: function (tooltipItem) {
                         return `${tooltipItem.label}: ${tooltipItem.raw}`;
                     }
                 }

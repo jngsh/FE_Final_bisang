@@ -34,7 +34,7 @@ const MonthlySalesLineChart = () => {
                 beginAtZero: true,
                 max: maxY,
                 ticks: {
-                    callback: function(value) {
+                    callback: function (value) {
                         return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
                     }
                 }
@@ -54,10 +54,11 @@ const MonthlySalesLineChart = () => {
     const fetchYears = () => {
         axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`, {
             headers: {
-              Authorization: token ? `Bearer ${token}` : ''
+                Authorization: token ? `Bearer ${token}` : '',
+                'Access-Control-Allow-Origin': '*'
             }
-          }
-)
+        }
+        )
             .then(response => {
                 setYears(response.data);
             })
@@ -69,10 +70,11 @@ const MonthlySalesLineChart = () => {
     const fetchMonthlySales = (year) => {
         axios.get(`${BASE_URL}/bisang/admin/stats/sales/monthly/${year}`, {
             headers: {
-              Authorization: token ? `Bearer ${token}` : ''
+                Authorization: token ? `Bearer ${token}` : '',
+                'Access-Control-Allow-Origin': '*'
             }
-          }
-)
+        }
+        )
             .then(response => {
                 const data = response.data;
                 const defaultLabels = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);

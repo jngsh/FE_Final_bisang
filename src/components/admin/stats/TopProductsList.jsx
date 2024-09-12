@@ -13,10 +13,11 @@ const TopProductsList = ({ selectedDate }) => {
         const fetchProductDetails = async () => {
             const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/products-info`, {
                 headers: {
-                  Authorization: token ? `Bearer ${token}` : ''
+                    Authorization: token ? `Bearer ${token}` : '',
+                    'Access-Control-Allow-Origin': '*'
                 }
-              }
-             );
+            }
+            );
             const data = await response.json();
             const details = data.reduce((acc, product) => {
                 acc[product.productId] = { name: product.productName, image: product.productImage };
@@ -70,8 +71,8 @@ const TopProductsList = ({ selectedDate }) => {
                             <tr key={product.productId}>
                                 <td>{index + 1}</td>
                                 <td>
-                                    <img 
-                                        src={productDetails[product.productId]?.image || 'default-image.jpg'} 
+                                    <img
+                                        src={productDetails[product.productId]?.image || 'default-image.jpg'}
                                         alt={productDetails[product.productId]?.name || 'Product Image'}
                                         className="product-image"
                                     />

@@ -12,7 +12,8 @@ const DownloadFile = () => {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'Access-Control-Allow-Origin': '*'
                 }
             });
 

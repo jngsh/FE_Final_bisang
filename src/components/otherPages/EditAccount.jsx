@@ -6,14 +6,14 @@ export default function EditAccount() {
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
-  const [ error, setError ] = useState('');
+  const [error, setError] = useState('');
   const [isCurrentPasswordValid, setIsCurrentPasswordValid] = useState(true);
-  const [ pwMatchError, setPwMatchError ] = useState('');
+  const [pwMatchError, setPwMatchError] = useState('');
 
-  const[formData, setFormData] = useState({
-    username:'',
-    pw:'',
-    address1:'',
+  const [formData, setFormData] = useState({
+    username: '',
+    pw: '',
+    address1: '',
     address2: '',
     post: '',
     email1: '',
@@ -24,42 +24,43 @@ export default function EditAccount() {
   });
 
   const [password, setPassword] = useState({
-    current:'',
-    new:'',
-    confirm:''
+    current: '',
+    new: '',
+    confirm: ''
   });
 
 
-  
+
   // 마이페이지 조회
-  useEffect(()=>{
-  
+  useEffect(() => {
+
     if (!userId) {
       console.error("userId is not defined");
       return;
     }
-    
-    else{
-    const fetchUserData = async () => {
-      try{
-        const response = await axios.get(`${BASE_URL}/bisang/mypage/${userId}`, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : ''
-          } 
-        });
-        if (response.data) {
-          setFormData(response.data);
-        } else {
-          console.log('No data found');
+
+    else {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/bisang/mypage/${userId}`, {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : '',
+              'Access-Control-Allow-Origin': '*'
+            }
+          });
+          if (response.data) {
+            setFormData(response.data);
+          } else {
+            console.log('No data found');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
         }
-      }catch(error){
-        console.error('Error fetching user data:', error);
+      };
+      if (token && userId) {
+        fetchUserData();
       }
-    };
-    if (token && userId){
-      fetchUserData();
     }
-  }
   }, [userId, token]);
 
   // 현재 비밀번호 유효성 확인
@@ -70,7 +71,8 @@ export default function EditAccount() {
         pw: password.current
       }, {
         headers: {
-          Authorization: token ? `Bearer ${token}` : ''
+          Authorization: token ? `Bearer ${token}` : '',
+          'Access-Control-Allow-Origin': '*'
         }
       });
       console.log('Password check response:', response.data);
@@ -82,22 +84,22 @@ export default function EditAccount() {
         console.error('Response data:', error.response.data);
         console.error('Response status:', error.response.status);
         console.error('Response headers:', error.response.headers);
-    } else if (error.request) {
+      } else if (error.request) {
         // 요청은 보냈지만 응답이 없는 경우
         console.error('Request data:', error.request);
-    } else {
+      } else {
         // 기타 오류
         console.error('Error message:', error.message);
-    }
+      }
       return false;
     }
   };
 
   useEffect(() => {
-    const validateCurrentPw = async()=>{
-      if(password.current){
+    const validateCurrentPw = async () => {
+      if (password.current) {
         const isValid = await checkCurrentPassword();
-  
+
         if (!isValid) {
           setError('현재 비밀번호가 올바르지 않습니다.');
           setIsCurrentPasswordValid(false);
@@ -116,13 +118,13 @@ export default function EditAccount() {
     if (password.new && password.new !== password.confirm) {
       setPwMatchError('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
       return;
-    }else{
+    } else {
       setPwMatchError('');
     }
-    
+
     if (password.new && !isCurrentPasswordValid) {
-        setError('현재 비밀번호가 올바르지 않습니다.');
-        return;
+      setError('현재 비밀번호가 올바르지 않습니다.');
+      return;
     } else {
       setError('');
     }
@@ -130,14 +132,15 @@ export default function EditAccount() {
     const updatePayload = { ...formData };
 
     if (password.new) {
-            updatePayload.pw = password.new;
+      updatePayload.pw = password.new;
     }
 
     // 수정 정보 업데이트
     try {
       const response = await axios.put(`${BASE_URL}/bisang/mypage/${userId}/profile`, updatePayload, {
         headers: {
-          Authorization: token ? `Bearer ${token}` : ''
+          Authorization: token ? `Bearer ${token}` : '',
+          'Access-Control-Allow-Origin': '*'
         }
       });
 
@@ -156,12 +159,12 @@ export default function EditAccount() {
   const handleChange = (e) => {
     const { id, value } = e.target;
 
-    if(id !== 'current' && id !== 'new' && id !== 'confirmS'){
+    if (id !== 'current' && id !== 'new' && id !== 'confirmS') {
       setFormData(prev => ({
         ...prev,
         [id]: value
       }));
-    }  
+    }
   };
 
   const handlePasswordFieldChange = async (e) => {
@@ -243,48 +246,48 @@ export default function EditAccount() {
               </div>
 
               <div className="address-form">
-              <div className="address-row">
-              <div className="col-md-6">
-                <div className="form-floating my-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="post"
-                    value={formData.post}
-                    onChange={handleChange}
-                    readOnly
-                  />
-                  <label htmlFor="post">우편주소</label>
-                  
-                </div>
-              </div>
-              <button type="button" onClick={handlePostcodeSearch} className="address-btn">주소 찾기</button>
-              </div>
+                <div className="address-row">
+                  <div className="col-md-6">
+                    <div className="form-floating my-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="post"
+                        value={formData.post}
+                        onChange={handleChange}
+                        readOnly
+                      />
+                      <label htmlFor="post">우편주소</label>
 
-              <div className="col-md-6">
-                <div className="form-floating my-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="address1"
-                    value={formData.address1}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="address1">주소</label>
+                    </div>
+                  </div>
+                  <button type="button" onClick={handlePostcodeSearch} className="address-btn">주소 찾기</button>
                 </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-floating my-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="address2"
-                    value={formData.address2}
-                    onChange={handleChange}
-                  />
-                  <label htmlFor="address2">상세주소</label>
+
+                <div className="col-md-6">
+                  <div className="form-floating my-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="address1"
+                      value={formData.address1}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="address1">주소</label>
+                  </div>
                 </div>
-              </div>
+                <div className="col-md-6">
+                  <div className="form-floating my-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="address2"
+                      value={formData.address2}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="address2">상세주소</label>
+                  </div>
+                </div>
               </div>
 
               <div className="email-form">
@@ -299,8 +302,8 @@ export default function EditAccount() {
                   <label htmlFor="email1">이메일</label>
                 </div>
 
-              <span className="email-separator">@</span>
-              
+                <span className="email-separator">@</span>
+
                 <div className="form-floating my-3">
                   <input
                     type="text"
@@ -321,8 +324,8 @@ export default function EditAccount() {
                     value={formData.phone1}
                     onChange={handleChange}
                   >
-                  <option value="010">010</option>
-                  <option value="011">011</option>
+                    <option value="010">010</option>
+                    <option value="011">011</option>
                   </select>
                   <label htmlFor="phone1">전화번호</label>
                 </div>
@@ -370,7 +373,7 @@ export default function EditAccount() {
                     placeholder="Current password"
                     value={password.current}
                     onChange={handlePasswordFieldChange}
-                    // required
+                  // required
                   />
                   <label htmlFor="current">
                     현재 비밀번호
@@ -408,7 +411,7 @@ export default function EditAccount() {
                 </div>
               </div>
               <div className="btn-container">
-                  <button className="btn btn-primary">수정하기</button>
+                <button className="btn btn-primary">수정하기</button>
               </div>
             </div>
           </form>

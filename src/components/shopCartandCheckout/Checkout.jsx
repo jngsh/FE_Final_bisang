@@ -24,7 +24,7 @@ const Checkout = () => {
 
   const handleButtonClick = async () => {
     console.log("버튼눌림");
-    let xxx = {'cartId': cartId};
+    let xxx = { 'cartId': cartId };
     console.log(xxx);
     try {
       const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
@@ -34,10 +34,10 @@ const Checkout = () => {
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,
-
+            'Access-Control-Allow-Origin': '*'
           }
         }
-  
+
       );
 
       console.log("PaymentResponse:", response.data);
@@ -66,11 +66,11 @@ const Checkout = () => {
   };
 
 
-  
-  
-  
-  
-  
+
+
+
+
+
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="checkout-form">
@@ -115,9 +115,8 @@ const Checkout = () => {
             <div className="col-md-12">
               <div className="search-field my-3">
                 <div
-                  className={`form-label-fixed hover-container ${
-                    idDDActive ? "js-content_visible" : ""
-                  }`}
+                  className={`form-label-fixed hover-container ${idDDActive ? "js-content_visible" : ""
+                    }`}
                 >
                   <label htmlFor="search-dropdown" className="form-label">
                     Country / Region*
@@ -414,15 +413,15 @@ const Checkout = () => {
               </div>
             </div>
             <button className="btn btn-checkout" onClick={handleButtonClick}>
-            <img
-              style={{ height: "fit-content" }}
-              className="h-auto"
-              loading="lazy"
-              src="/assets/images/카카오페이로결제하기버튼.png"
-              width="375"
-              height="80"
-              alt="image"
-            />
+              <img
+                style={{ height: "fit-content" }}
+                className="h-auto"
+                loading="lazy"
+                src="/assets/images/카카오페이로결제하기버튼.png"
+                width="375"
+                height="80"
+                alt="image"
+              />
             </button>
           </div>
         </div>

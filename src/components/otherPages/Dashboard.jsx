@@ -20,21 +20,22 @@ export default function Dashboard() {
         try {
           const response = await axios.get(`${BASE_URL}/bisang/pets/user/${userId}`, {
             headers: {
-              Authorization: token ? `Bearer ${token}` : ''
+              Authorization: token ? `Bearer ${token}` : '',
+              'Access-Control-Allow-Origin': '*'
             }
           }
           );
           console.log("Server Response:", response.data);
-  
+
           if (response.status === 200) {
             const petData = response.data.length > 0 ? response.data[0] : null;
             setRegisteredPet(petData);
-  
+
             if (petData) {
               setPetName(petData.petName || '');
               setPetBirthdate(petData.petBirthdate || '');
               setPetType(petData.petType || 'D');
-  
+
               // petImage가 객체인지 확인하고, 올바른 파일명을 추출합니다.
               if (petData.petImage && typeof petData.petImage === 'object') {
                 const petImageObject = petData.petImage;
@@ -53,7 +54,7 @@ export default function Dashboard() {
               } else {
                 setImagePreview(null);  // 이미지가 없을 경우 null로 설정
               }
-  
+
               setIsPetRegistered(true);
             } else {
               resetForm();
@@ -67,7 +68,7 @@ export default function Dashboard() {
         }
       }
     };
-  
+
     fetchPetData();
   }, [userId]);
 
@@ -84,32 +85,33 @@ export default function Dashboard() {
   // 폼 제출 핸들러
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('userId', userId);
     formData.append('petName', petName);
     formData.append('petBirthdate', petBirthdate);
     formData.append('petType', petType);
-  
+
     if (petImage) {
       formData.append('petImage', petImage);
     }
-  
+
     try {
       const response = await axios.post(`${BASE_URL}/bisang/pets`, formData, {
         headers: {
           "Authorization": `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
         },
       });
-  
+
       console.log("Status Code:", response.status); // 상태 코드 로그
       console.log("Response Headers:", response.headers); // 응답 헤더 로그
       console.log("Server Response:", response.data); // 서버 응답 데이터 로그
       console.log("petImage", response.data.petImage);
       if (response.status === 201) {
         alert("반려동물 정보가 저장되었습니다");
-  
+
         const updatedPetData = {
           petName,
           petBirthdate,
@@ -123,9 +125,9 @@ export default function Dashboard() {
         setPetBirthdate('');
         setPetType('D');
         setPetImage(null);
-  
-      // 서버에서 반환된 이미지 URL을 통해 이미지 미리보기 상태를 업데이트
-      const updatedImagePreview = response.data.petImage ? `${BASE_URL}/bisang/pets/images?petImage=${response.data.petImage}` : null;
+
+        // 서버에서 반환된 이미지 URL을 통해 이미지 미리보기 상태를 업데이트
+        const updatedImagePreview = response.data.petImage ? `${BASE_URL}/bisang/pets/images?petImage=${response.data.petImage}` : null;
         console.log("updatedImagePreview", updatedImagePreview);
         setImagePreview(updatedImagePreview);
         setIsPetRegistered(true);
