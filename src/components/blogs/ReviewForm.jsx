@@ -8,37 +8,38 @@ export default function ReviewForm({ productId, orderDetailId }) {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
-  
-  const [ reviewData, setReviewData ] = useState({
-    contents:'',
-    reviewImage:'',
-    rating:0,
+
+  const [reviewData, setReviewData] = useState({
+    contents: '',
+    reviewImage: '',
+    rating: 0,
   });
 
   const [hoverRating, setHoverRating] = useState(null);
-  const [productInfo, setProductInfo] = useState({ name:'', productImage:''});
+  const [productInfo, setProductInfo] = useState({ name: '', productImage: '' });
 
   // 리뷰 작성할 상품 데이터 조회
   useEffect(() => {
     const fetchProductDetails = async () => {
-    try{
-      const response = await axios.get(`${BASE_URL}/bisang/review/productDetail/${productId}`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : ''
+      try {
+        const response = await axios.get(`${BASE_URL}/bisang/review/productDetail/${productId}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+            'Access-Control-Allow-Origin': '*'
+          }
         }
+        );
+        setProductInfo({
+          name: response.data.productName,
+          productImage: response.data.productImage
+        });
+      } catch (error) {
+        console.error('Error fetching product details:', error);
       }
-    );
-      setProductInfo({
-        name: response.data.productName,
-        productImage: response.data.productImage
-      });
-    }catch (error) {
-      console.error('Error fetching product details:', error);
-    }
     };
     fetchProductDetails();
-  
-  },[productId]);
+
+  }, [productId]);
 
   // 리뷰 등록
   const handleSubmit = async (e) => {
@@ -48,7 +49,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
       const response = await axios.post(`${BASE_URL}/bisang/review/${orderDetailId}/${productId}/${userId}`, reviewData);
       alert('리뷰가 등록되었습니다.')
       navigate('/account_reviewlist?tab=reviewList');
-    }catch (error) {
+    } catch (error) {
       console.error('Error submitting review:', error);
     }
 
@@ -74,15 +75,15 @@ export default function ReviewForm({ productId, orderDetailId }) {
     <div className="blog-single__review-form">
       <form onSubmit={handleSubmit} className="needs-validation">
         <div className="product-info">
-          {productInfo.productImage && 
-          <img src={productInfo.productImage} alt={productInfo.name}/>}
-          <h5 style={{lineHeight:'1.8'}}>{productInfo.name}</h5>
+          {productInfo.productImage &&
+            <img src={productInfo.productImage} alt={productInfo.name} />}
+          <h5 style={{ lineHeight: '1.8' }}>{productInfo.name}</h5>
         </div>
-        <hr className="line"/>
+        <hr className="line" />
         <label>상품에 만족하셨나요?</label>
         <div className="select-star-rating">
           <span className="star-rating">
-          {[1, 2, 3, 4, 5].map((star) => (
+            {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
                 className={`star-rating__star-icon ${hoverRating >= star || reviewData.rating >= star ? 'is-selected' : ''}`}
@@ -99,7 +100,7 @@ export default function ReviewForm({ productId, orderDetailId }) {
           </span>
           <input type="hidden" name="rating" value="{reviewData.rating}" />
         </div>
-        <hr className="slem-line"/>
+        <hr className="slem-line" />
         <div className="mb-4">
           <textarea
             className="form-control form-control_gray"

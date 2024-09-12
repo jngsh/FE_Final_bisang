@@ -14,10 +14,11 @@ const SalesCalendar = () => {
   useEffect(() => {
     axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily-calendar`, {
       headers: {
-        Authorization: token ? `Bearer ${token}` : ''
+        Authorization: token ? `Bearer ${token}` : '',
+        'Access-Control-Allow-Origin': '*'
       }
     }
-)
+    )
       .then(response => {
         const salesData = response.data;
         const fetchedEvents = salesData.map(sale => ({

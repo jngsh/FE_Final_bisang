@@ -19,30 +19,30 @@ export default function LoginRegister() {
   const [isCustomDomain, setIsCustomDomain] = useState(false);
   const [remember, setRemember] = useState(false);
   const [storedId, setStoredId] = useState('');
-  
-  const {setLogined, setCartId, cartId, cartProducts, setCartProducts} = useContextElement();
+
+  const { setLogined, setCartId, cartId, cartProducts, setCartProducts } = useContextElement();
 
   const [activeTab, setActiveTab] = useState("login");
 
   const [loginData, setLoginData] = useState({
-    userid:"",
-    id:"",
-    pw:"",
-    error:""
+    userid: "",
+    id: "",
+    pw: "",
+    error: ""
   });
 
   const [registerData, setRegisterData] = useState({
-    username:"",
-    id:"",
-    pw:"",
-    address1:"",
-    address2:"",
-    post:"",
-    email1:"",
-    email2:"",
-    phone1:"010",
-    phone2:"",
-    phone3:""
+    username: "",
+    id: "",
+    pw: "",
+    address1: "",
+    address2: "",
+    post: "",
+    email1: "",
+    email2: "",
+    phone1: "010",
+    phone2: "",
+    phone3: ""
   });
 
   //아이디 저장 쿠키로 불러오기
@@ -52,7 +52,7 @@ export default function LoginRegister() {
 
     setRemember(remembered);
     setStoredId(storedId);
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (storedId) {
@@ -65,9 +65,9 @@ export default function LoginRegister() {
     const isChecked = e.target.checked;
     setRemember(isChecked);
     if (isChecked) {
-      Cookies.set('remember', 'true', {expires:7});
-      Cookies.set('storedId', loginData.id, {expires:7});
-    }else{
+      Cookies.set('remember', 'true', { expires: 7 });
+      Cookies.set('storedId', loginData.id, { expires: 7 });
+    } else {
       Cookies.remove('remember');
       Cookies.remove('storedId');
     }
@@ -99,8 +99,8 @@ export default function LoginRegister() {
         setPwError("비밀번호는 8~12자리의 영문자 + 숫자 + 특수문자여야 합니다.");
       } else {
         setPwError("");
-      } 
-    }else if (name === "confirmPw") {
+      }
+    } else if (name === "confirmPw") {
       if (value !== registerData.pw) {
         setPwMatchError("비밀번호가 일치하지 않습니다.");
       } else {
@@ -130,7 +130,7 @@ export default function LoginRegister() {
       return;
     }
     try {
-      let response = await axios.post(`${BASE_URL}/bisang/auth/idCheck`, { id: registerData.id } );
+      let response = await axios.post(`${BASE_URL}/bisang/auth/idCheck`, { id: registerData.id });
       if (response.data) {
         setIdError("이미 존재하는 아이디입니다.");
       } else {
@@ -186,12 +186,12 @@ export default function LoginRegister() {
       },
     }).open();
   };
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedCartId = localStorage.getItem("cartId");
     const loginedStatus = JSON.parse(localStorage.getItem("logined"));
-    
+
     if (loginedStatus) {
       setLogined(loginedStatus);
     }
@@ -201,9 +201,9 @@ export default function LoginRegister() {
     }
 
     if (token) {
-        fetchDataWithToken();
+      fetchDataWithToken();
     } else {
-        console.log("User is not logged in");
+      console.log("User is not logged in");
     }
   }, []);
 
@@ -215,7 +215,8 @@ export default function LoginRegister() {
       try {
         const response = await axios.get(`${BASE_URL}/bisang/auth/check-login`, {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            'Access-Control-Allow-Origin': '*'
           }
         });
       } catch (error) {
@@ -224,7 +225,7 @@ export default function LoginRegister() {
     } else {
       console.log("No token found");
     }
-};
+  };
 
   // 로그인 폼 제출, 응답데이터 로컬스토리지 저장
   const handleLoginSubmit = async (e) => {
@@ -235,14 +236,14 @@ export default function LoginRegister() {
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
-        
+
         if (response.data.userId) {
           localStorage.setItem("userId", response.data.userId);
           setLogined(true);
           localStorage.setItem("logined", JSON.stringify(true));
-          
+
         } else {
-            console.error("userId not found in response");
+          console.error("userId not found in response");
         }
 
         if (response.data.cartId) {
@@ -251,9 +252,10 @@ export default function LoginRegister() {
           localStorage.setItem("cartId", cartId);
 
           try {
-            const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`,{
+            const cartItemsResponse = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`, {
               headers: {
-                "Authorization": `Bearer ${response.data.token}`
+                "Authorization": `Bearer ${response.data.token}`,
+                'Access-Control-Allow-Origin': '*'
               }
             }
             );
@@ -263,7 +265,7 @@ export default function LoginRegister() {
           }
         }
 
-        if (response.data.isCustomer){
+        if (response.data.isCustomer) {
           setLoginData(prevData => ({ ...prevData, error: '' }));
           navigate('/');
         } else {
@@ -305,12 +307,12 @@ export default function LoginRegister() {
 
     try {
       const response = await axios.post(`${BASE_URL}/bisang/auth/signup`, registerData);
-      if (response.data){
+      if (response.data) {
         setLogined(false);
         setActiveTab("login");
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
-      
+
     } catch (error) {
       console.error("Registration error:", error.response?.data || error.message);
     }
@@ -334,11 +336,11 @@ export default function LoginRegister() {
       }));
     }
   };
-  
+
 
   const handleEmailChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "email1") {
       setRegisterData((prevData) => ({
         ...prevData,
@@ -352,7 +354,7 @@ export default function LoginRegister() {
       }));
     }
   };
-  
+
 
   return (
     <section className="login-register container">
@@ -408,7 +410,7 @@ export default function LoginRegister() {
                   placeholder="아이디 *"
                   required
                   value={loginData.id}
-    
+
                   onChange={handleLoginChange}
                 />
                 <label htmlFor="id">아이디 *</label>
@@ -459,8 +461,8 @@ export default function LoginRegister() {
 
               <div className="customer-option mt-4 text-center">
                 <span className="text-secondary">아직 계정이 없으신가요?</span>{" "}
-                <a 
-                  href="#register-tab" 
+                <a
+                  href="#register-tab"
                   className="btn-text js-show-register"
                   onClick={(e) => {
                     e.preventDefault();
@@ -489,16 +491,16 @@ export default function LoginRegister() {
             >
               <div className="form-floating mb-3">
                 <div className="id-container">
-                <input
-                  name="id"
-                  type="text"
-                  className="form-control form-control_gray"
-                  id="id"
-                  placeholder="아이디 *"
-                  required
-                  value={registerData.id}
-                  onChange={handleRegisterChange}
-                />
+                  <input
+                    name="id"
+                    type="text"
+                    className="form-control form-control_gray"
+                    id="id"
+                    placeholder="아이디 *"
+                    required
+                    value={registerData.id}
+                    onChange={handleRegisterChange}
+                  />
                   <button
                     type="button"
                     className="btn btn-secondary id-check-btn"
@@ -548,56 +550,56 @@ export default function LoginRegister() {
 
               <div className="form-floating mb-3">
                 <div className="email-container">
-                <div className="email-part">
-                  <input
-                    name="email1"
-                    type="text"
-                    className="form-control form-control_gray email-input"
-                    id="email1"
-                    placeholder="이메일"
-                    required
-                    value={registerData.email1}
-                    onChange={handleEmailChange}
-                  />
-                  <label htmlFor="email1"></label>
-                </div>
-                <span className="email-separator">@</span>
-                <div className="email-part">
-                  {isCustomDomain ? (
+                  <div className="email-part">
                     <input
-                      name="email2"
+                      name="email1"
                       type="text"
                       className="form-control form-control_gray email-input"
-                      id="email2"
-                      placeholder="직접입력"
-                      value={emailCustomDomain}
-                      onChange={(e) => {
-                        setEmailCustomDomain(e.target.value);
-                        setRegisterData((prevData) => ({
-                          ...prevData,
-                          email2: e.target.value
-                        }));
-                      }}
+                      id="email1"
+                      placeholder="이메일"
+                      required
+                      value={registerData.email1}
+                      onChange={handleEmailChange}
                     />
-                  ) : (
-                    <select
-                      className="form-select email-select"
-                      value={emailDomain}
-                      onChange={(e) => {
-                        handleEmailDomainChange(e);
-                        setRegisterData((prevData) => ({
-                          ...prevData,
-                          email2: e.target.value
-                        }));
-                      }}
-                    >
-                      <option value="naver.com">naver.com</option>
-                      <option value="google.com">gmail.com</option>
-                      <option value="custom">직접 입력</option>
-                    </select>
-                  )}
-                  <label htmlFor="email2"></label>
-                </div>
+                    <label htmlFor="email1"></label>
+                  </div>
+                  <span className="email-separator">@</span>
+                  <div className="email-part">
+                    {isCustomDomain ? (
+                      <input
+                        name="email2"
+                        type="text"
+                        className="form-control form-control_gray email-input"
+                        id="email2"
+                        placeholder="직접입력"
+                        value={emailCustomDomain}
+                        onChange={(e) => {
+                          setEmailCustomDomain(e.target.value);
+                          setRegisterData((prevData) => ({
+                            ...prevData,
+                            email2: e.target.value
+                          }));
+                        }}
+                      />
+                    ) : (
+                      <select
+                        className="form-select email-select"
+                        value={emailDomain}
+                        onChange={(e) => {
+                          handleEmailDomainChange(e);
+                          setRegisterData((prevData) => ({
+                            ...prevData,
+                            email2: e.target.value
+                          }));
+                        }}
+                      >
+                        <option value="naver.com">naver.com</option>
+                        <option value="google.com">gmail.com</option>
+                        <option value="custom">직접 입력</option>
+                      </select>
+                    )}
+                    <label htmlFor="email2"></label>
+                  </div>
                 </div>
               </div>
 
@@ -618,7 +620,7 @@ export default function LoginRegister() {
               </div>
 
               <div className="pb-3"></div>
-              
+
               <div className="pb-3">
                 <div className="form-group d-flex align-items-center">
                   <input
@@ -631,10 +633,10 @@ export default function LoginRegister() {
                     onChange={handleRegisterChange}
                     readOnly
                   />
-                  <button 
-                  type="button"
-                  className="btn btn-secondary ms-2"
-                  onClick={handlePostcodeSearch}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary ms-2"
+                    onClick={handlePostcodeSearch}>
                     주소 찾기
                   </button>
                 </div>
@@ -666,61 +668,61 @@ export default function LoginRegister() {
               <div className="pb-3"></div>
 
               <div className="form-floating mb-3">
-              <div className="d-flex align-items-center">
-                <div className="phone-part position-relative">
-                  <select
-                    name="phone1"
-                    type="text"
-                    className="form-control form-control_gray"
-                    id="phone1"
-                    required
-                    value={registerData.phone1}
-                    onChange={handleRegisterChange}
-                  >
-                    <option value="010">010</option>
-                    <option value="011">011</option>
-                  </select>
-                  <label htmlFor="phone1">전화번호</label>
+                <div className="d-flex align-items-center">
+                  <div className="phone-part position-relative">
+                    <select
+                      name="phone1"
+                      type="text"
+                      className="form-control form-control_gray"
+                      id="phone1"
+                      required
+                      value={registerData.phone1}
+                      onChange={handleRegisterChange}
+                    >
+                      <option value="010">010</option>
+                      <option value="011">011</option>
+                    </select>
+                    <label htmlFor="phone1">전화번호</label>
+                  </div>
+
+                  <span className="phone-separator mx-2">-</span>
+
+                  <div className="phone-part position-relative">
+                    <input
+                      name="phone2"
+                      type="number"
+                      className="form-control form-control_gray"
+                      id="phone2"
+                      placeholder="1234"
+                      required
+                      value={registerData.phone2}
+                      onChange={handleRegisterChange}
+                      pattern="[0-9]*"
+                    />
+                  </div>
+
+                  <span className="phone-separator mx-2">-</span>
+
+                  <div className="phone-part position-relative">
+                    <input
+                      name="phone3"
+                      type="number"
+                      className="form-control form-control_gray"
+                      id="phone3"
+                      placeholder="5678"
+                      required
+                      value={registerData.phone3}
+                      onChange={handleRegisterChange}
+                      pattern="[0-9]*"
+                    />
+                  </div>
                 </div>
-
-              <span className="phone-separator mx-2">-</span>
-
-              <div className="phone-part position-relative">
-                <input
-                  name="phone2"
-                  type="number"
-                  className="form-control form-control_gray"
-                  id="phone2"
-                  placeholder="1234"
-                  required
-                  value={registerData.phone2}
-                  onChange={handleRegisterChange}
-                  pattern="[0-9]*"
-                />
               </div>
 
-              <span className="phone-separator mx-2">-</span>
-
-              <div className="phone-part position-relative">
-                <input
-                  name="phone3"
-                  type="number"
-                  className="form-control form-control_gray"
-                  id="phone3"
-                  placeholder="5678"
-                  required
-                  value={registerData.phone3}
-                  onChange={handleRegisterChange}
-                  pattern="[0-9]*"
-                />
-              </div>
-              </div>
-              </div>
-                
 
               <div className="d-flex align-items-center mb-3 pb-2">
                 <p className="m-0">
-                 
+
                 </p>
               </div>
 

@@ -18,10 +18,11 @@ const OrderDetails = () => {
         try {
             const response = await axiosInstance.get(`/bisang/orders/details/${orderId}`, {
                 headers: {
-                  Authorization: token ? `Bearer ${token}` : ''
+                    Authorization: token ? `Bearer ${token}` : '',
+                    'Access-Control-Allow-Origin': '*'
                 }
-              }
-    
+            }
+
             );
             const orderDetailsData = response.data;
             setOrderDetails(response.data);
@@ -55,7 +56,7 @@ const OrderDetails = () => {
     };
 
     const checkReivewExistence = async (orderDetails) => {
-        try{
+        try {
             const existencePromies = orderDetails.map(item =>
                 axios.get(`${BASE_URL}/bisang/review/exist/${item.orderDetailId}`)
             );
@@ -111,7 +112,7 @@ const OrderDetails = () => {
                                     <td>{formatCurrency(items.totalPrice)}원</td>
                                     <td>
                                         {!reviewExistence[items.orderDetailId] ? (
-                                        <button className="button" onClick={()=>goToReview(items.orderDetailId, items.productId)}>리뷰 작성</button>
+                                            <button className="button" onClick={() => goToReview(items.orderDetailId, items.productId)}>리뷰 작성</button>
                                         ) : ('')}
                                     </td>
                                 </tr>

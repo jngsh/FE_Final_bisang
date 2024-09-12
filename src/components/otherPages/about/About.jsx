@@ -9,7 +9,7 @@ const About = () => {
 
   const handleButtonClick = async () => {
     console.log("버튼눌림");
-    let xxx = {'cartId': cartId};
+    let xxx = { 'cartId': cartId };
     console.log(xxx);
     try {
       const response = await axiosInstance.post(`/bisang/pay/ready`, JSON.stringify(xxx),
@@ -18,10 +18,10 @@ const About = () => {
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,
-
+            'Access-Control-Allow-Origin': '*'
           }
         }
-  
+
       );
 
 
@@ -57,19 +57,19 @@ const About = () => {
   return (
     <section className="about-us container">
       <div className="mw-930">
-              </div>
+      </div>
       <div className="about-us__content pb-5 mb-5">
         <p className="mb-5">
         </p>
         <div className="mw-930">
-            <h3 className="mb-4"></h3>
-            <p className="fs-6 fw-medium mb-4">
-            <img 
-          src="/assets/images/aboutpeterpet.png"/>
-            </p>
-           </div>
+          <h3 className="mb-4"></h3>
+          <p className="fs-6 fw-medium mb-4">
+            <img
+              src="/assets/images/aboutpeterpet.png" />
+          </p>
+        </div>
         <div className="mw-930 d-lg-flex align-items-lg-center">
-{/*           
+          {/*           
           <div className="content-wrapper col-lg-6 px-lg-4">
               <h5 className="mb-3"></h5>
               
@@ -86,7 +86,7 @@ const About = () => {
       <div className="about-us__content pb-5 mb-5">
         <p className="mb-5">
           {/*   */}
-       {/* </p>
+      {/* </p>
         <div className="mw-930">
             <h3 className="mb-4">OUR STORY</h3>
             <p className="fs-6 fw-medium mb-4">f

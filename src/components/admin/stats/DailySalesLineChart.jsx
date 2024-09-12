@@ -27,11 +27,12 @@ const DailySalesLineChart = () => {
     }, [selectedYear, selectedMonth]);
 
     const fetchYears = () => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`,{
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/years`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
+                'Access-Control-Allow-Origin': '*'
             },
-            })
+        })
             .then(response => {
                 setYears(response.data);
             })
@@ -39,11 +40,12 @@ const DailySalesLineChart = () => {
     };
 
     const fetchMonthlySales = (year, month) => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily/${year}/${month}`,{
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/daily/${year}/${month}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
+                'Access-Control-Allow-Origin': '*'
             },
-            })
+        })
             .then(response => {
                 const data = response.data;
                 const daysInMonth = new Date(year, month, 0).getDate();
@@ -98,9 +100,9 @@ const DailySalesLineChart = () => {
             },
             y: {
                 beginAtZero: true,
-                max: maxY, 
+                max: maxY,
                 ticks: {
-                    callback: function(value) {
+                    callback: function (value) {
                         return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
                     }
                 }

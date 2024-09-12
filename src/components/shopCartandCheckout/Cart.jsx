@@ -72,7 +72,8 @@ export default function Cart() {
         try {
           const response = await axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`, {
             headers: {
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${token}`,
+              'Access-Control-Allow-Origin': '*'
             }
           });
           console.log("response.data", response.data);
@@ -106,12 +107,14 @@ export default function Cart() {
         const [cartResponse, itemsResponse] = await Promise.all([
           axios.get(`${BASE_URL}/bisang/carts/${cartId}`, {
             headers: {
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${token}`,
+              'Access-Control-Allow-Origin': '*'
             }
           }),
           axios.get(`${BASE_URL}/bisang/carts/${cartId}/items`, {
             headers: {
-              "Authorization": `Bearer ${token}`
+              "Authorization": `Bearer ${token}`,
+              'Access-Control-Allow-Origin': '*'
             }
           })
         ]);
@@ -158,12 +161,13 @@ export default function Cart() {
 
     setIsUpdating(true);
     try {
-      await axios.put(`${BASE_URL}/bisang/carts/items`, 
+      await axios.put(`${BASE_URL}/bisang/carts/items`,
         { cartId, productId, amount: quantity },
         {
           headers: {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*'
           },
         });
       console.log("Updating UI with new quantity:", updatedProducts);
@@ -199,9 +203,10 @@ export default function Cart() {
 
     try {
       // 서버 요청
-      await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`,{
+      await axios.delete(`${BASE_URL}/bisang/carts/items/${cartItemId}`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*'
         }
       });
       console.log("아이템 삭제 성공:", cartItemId);
@@ -299,10 +304,11 @@ export default function Cart() {
       const response = await axios.put(`${BASE_URL}/bisang/carts/items/shipping`, {
         cartItemId,
         shipping: newStatus,
-      },{
+      }, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*'
         },
       });
 
@@ -357,7 +363,8 @@ export default function Cart() {
         try {
           const response = await axios.get(`${BASE_URL}/bisang/deliveryAddr/${userId}`, {
             headers: {
-              Authorization: token ? `Bearer ${token}` : ''
+              Authorization: token ? `Bearer ${token}` : '',
+              'Access-Control-Allow-Origin': '*'
             }
           });
           if (response.data) {
@@ -441,7 +448,8 @@ export default function Cart() {
     try {
       const response = await axios.put(`${BASE_URL}/bisang/deliveryAddr/${userId}`, updateDeliveryAddr, {
         headers: {
-          Authorization: token ? `Bearer ${token}` : ''
+          Authorization: token ? `Bearer ${token}` : '',
+          'Access-Control-Allow-Origin': '*'
         }
       });
 
@@ -501,7 +509,7 @@ export default function Cart() {
             "Content-Type": "application/json",
             'Access-Control-Allow-Credentials': true,
             'ngrok-skip-browser-warning': true,
-
+            'Access-Control-Allow-Origin': '*'
           }
         }
 
@@ -862,7 +870,7 @@ export default function Cart() {
                   <button
                     className="btn btn-primary btn btn-checkout pay"
                     onClick={handlePageChange}>
-                    <img src="/assets/images/payment_icon_yellow_small.png"/>
+                    <img src="/assets/images/payment_icon_yellow_small.png" />
                     &nbsp;로 결제하기
                   </button>
                   <div className="errorMessage">
@@ -878,7 +886,7 @@ export default function Cart() {
                   <button
                     className="btn btn-primary btn btn-checkout pay"
                     onClick={Checkout}>
-                    <img src="/assets/images/payment_icon_yellow_small.png"/>
+                    <img src="/assets/images/payment_icon_yellow_small.png" />
                     &nbsp;로 결제하기
                   </button>
                 </div>

@@ -8,25 +8,26 @@ const token = localStorage.getItem("token");
 
 const PetAgeTypeDoughnutChart = () => {
     const [data, setData] = useState({
-        labels: [], 
+        labels: [],
         datasets: [{
             data: [],
-            backgroundColor: ['#0033A0', '#4CAF50', '#FF6F00'], 
+            backgroundColor: ['#0033A0', '#4CAF50', '#FF6F00'],
         }]
     });
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-age-type`,{
+                const response = await fetch(`${BASE_URL}/bisang/admin/stats/sales/pet-age-type`, {
                     headers: {
-                      Authorization: token ? `Bearer ${token}` : ''
+                        Authorization: token ? `Bearer ${token}` : '',
+                        'Access-Control-Allow-Origin': '*'
                     }
-                  }
+                }
                 );
                 const result = await response.json();
-                
+
                 if (Array.isArray(result)) {
                     setData({
                         labels: result.map(item => item.ageType),

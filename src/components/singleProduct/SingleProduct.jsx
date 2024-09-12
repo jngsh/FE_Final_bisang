@@ -33,6 +33,7 @@ export default function SingleProduct({ productId }) {
           {
             headers: {
               'ngrok-skip-browser-warning': true,
+              'Access-Control-Allow-Origin': '*'
             }
           }
         );
@@ -77,15 +78,15 @@ export default function SingleProduct({ productId }) {
   const setQuantityCartItem = (id, quantity) => {
     if (isIncludeCard()) {
       if (quantity < 1) return;
-        const item = cartProducts.filter((elm) => elm.id == id)[0];
-        const items = [...cartProducts];
-        const itemIndex = items.indexOf(item);
-        item.quantity = quantity;
-        items[itemIndex] = item;
-        setCartProducts((pre) => [...pre, items]);
-      }
-      else {
-        setQuantity(quantity < 1 ? 1 : quantity);
+      const item = cartProducts.filter((elm) => elm.id == id)[0];
+      const items = [...cartProducts];
+      const itemIndex = items.indexOf(item);
+      item.quantity = quantity;
+      items[itemIndex] = item;
+      setCartProducts((pre) => [...pre, items]);
+    }
+    else {
+      setQuantity(quantity < 1 ? 1 : quantity);
     }
   };
 
@@ -128,6 +129,7 @@ export default function SingleProduct({ productId }) {
               headers: {
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": true,
+                'Access-Control-Allow-Origin': '*'
               },
             }
           );
@@ -168,6 +170,7 @@ export default function SingleProduct({ productId }) {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json",
                 "ngrok-skip-browser-warning": true,
+                'Access-Control-Allow-Origin': '*'
               },
             }
           );
@@ -209,7 +212,7 @@ export default function SingleProduct({ productId }) {
             alt="image"
           />
         </div>
-        <div className="col-lg-5" style={{paddingRight:'30px'}}>
+        <div className="col-lg-5" style={{ paddingRight: '30px' }}>
           <div className="d-flex justify-content-between mb-4 pb-md-2"></div>
 
           <h1 className="product-single__name">{product1.productName}</h1>
@@ -288,123 +291,123 @@ export default function SingleProduct({ productId }) {
             </div>
           </div>
 
-            <div
-              id="product_single_details_accordion"
-              className="product-single__details-accordion accordion"
-            >
-              <div className="accordion-item">
-                <h5 className="accordion-header" id="accordion-heading-11">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#accordion-collapse-1"
-                    aria-expanded="false"
-                    aria-controls="accordion-collapse-1"
-                  >
-                    상품상세
-                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                        <path
-                          className="svg-path-vertical"
-                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                        ></path>
-                        <path
-                          className="svg-path-horizontal"
-                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                        ></path>
-                      </g>
-                    </svg>
-                  </button>
-                </h5>
-                <div
-                  id="accordion-collapse-1"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="accordion-heading-11"
-                  data-bs-parent="#product_single_details_accordion"
+          <div
+            id="product_single_details_accordion"
+            className="product-single__details-accordion accordion"
+          >
+            <div className="accordion-item">
+              <h5 className="accordion-header" id="accordion-heading-11">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#accordion-collapse-1"
+                  aria-expanded="false"
+                  aria-controls="accordion-collapse-1"
                 >
-                  <div className="accordion-body">
-                    {product1.productDescription} <br></br>
-                    {product1.productDetailedDescription}
-                  </div>
-                </div>
-              </div>
-
-              <div className="accordion-item">
-                <h5 className="accordion-header" id="accordion-heading-2">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#accordion-collapse-2"
-                    aria-expanded="false"
-                    aria-controls="accordion-collapse-2"
-                  >
-                    상품정보
-                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                        <path
-                          className="svg-path-vertical"
-                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                        ></path>
-                        <path
-                          className="svg-path-horizontal"
-                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                        ></path>
-                      </g>
-                    </svg>
-                  </button>
-                </h5>
-                <div
-                  id="accordion-collapse-2"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="accordion-heading-2"
-                  data-bs-parent="#product_single_details_accordion"
-                >
-                  <div className="accordion-body">
-                    <AdditionalInfo />
-                    {product1.productAdditionalInfo}
-                  </div>
-                </div>
-              </div>
-
-              <div className="accordion-item">
-                <h5 className="accordion-header" id="accordion-heading-3">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#accordion-collapse-3"
-                    aria-expanded="false"
-                    aria-controls="accordion-collapse-3"
-                  >
-                    리뷰 ({reviewCount})
-                    <svg className="accordion-button__icon" viewBox="0 0 14 14">
-                      <g aria-hidden="true" stroke="none" fillRule="evenodd">
-                        <path
-                          className="svg-path-vertical"
-                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                        ></path>
-                        <path
-                          className="svg-path-horizontal"
-                          d="M14,6 L14,8 L0,8 L0,6 L14,6"
-                        ></path>
-                      </g>
-                    </svg>
-                  </button>
-                </h5>
-                <div
-                  id="accordion-collapse-3"
-                  className="accordion-collapse collapse"
-                  aria-labelledby="accordion-heading-3"
-                  data-bs-parent="#product_single_details_accordion"
-                >
-                  <div className="accordion-body">
-                    <Reviews productId={productId} reviewCount={reviewCount} />
-                  </div>
+                  상품상세
+                  <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                    <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                      <path
+                        className="svg-path-vertical"
+                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                      ></path>
+                      <path
+                        className="svg-path-horizontal"
+                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                      ></path>
+                    </g>
+                  </svg>
+                </button>
+              </h5>
+              <div
+                id="accordion-collapse-1"
+                className="accordion-collapse collapse"
+                aria-labelledby="accordion-heading-11"
+                data-bs-parent="#product_single_details_accordion"
+              >
+                <div className="accordion-body">
+                  {product1.productDescription} <br></br>
+                  {product1.productDetailedDescription}
                 </div>
               </div>
             </div>
+
+            <div className="accordion-item">
+              <h5 className="accordion-header" id="accordion-heading-2">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#accordion-collapse-2"
+                  aria-expanded="false"
+                  aria-controls="accordion-collapse-2"
+                >
+                  상품정보
+                  <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                    <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                      <path
+                        className="svg-path-vertical"
+                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                      ></path>
+                      <path
+                        className="svg-path-horizontal"
+                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                      ></path>
+                    </g>
+                  </svg>
+                </button>
+              </h5>
+              <div
+                id="accordion-collapse-2"
+                className="accordion-collapse collapse"
+                aria-labelledby="accordion-heading-2"
+                data-bs-parent="#product_single_details_accordion"
+              >
+                <div className="accordion-body">
+                  <AdditionalInfo />
+                  {product1.productAdditionalInfo}
+                </div>
+              </div>
+            </div>
+
+            <div className="accordion-item">
+              <h5 className="accordion-header" id="accordion-heading-3">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#accordion-collapse-3"
+                  aria-expanded="false"
+                  aria-controls="accordion-collapse-3"
+                >
+                  리뷰 ({reviewCount})
+                  <svg className="accordion-button__icon" viewBox="0 0 14 14">
+                    <g aria-hidden="true" stroke="none" fillRule="evenodd">
+                      <path
+                        className="svg-path-vertical"
+                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                      ></path>
+                      <path
+                        className="svg-path-horizontal"
+                        d="M14,6 L14,8 L0,8 L0,6 L14,6"
+                      ></path>
+                    </g>
+                  </svg>
+                </button>
+              </h5>
+              <div
+                id="accordion-collapse-3"
+                className="accordion-collapse collapse"
+                aria-labelledby="accordion-heading-3"
+                data-bs-parent="#product_single_details_accordion"
+              >
+                <div className="accordion-body">
+                  <Reviews productId={productId} reviewCount={reviewCount} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section >

@@ -32,7 +32,7 @@ const HourlySalesLineChart = ({ selectedDate }) => {
                 beginAtZero: true,
                 max: maxY,
                 ticks: {
-                    callback: function(value) {
+                    callback: function (value) {
                         return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
                     }
                 }
@@ -45,11 +45,12 @@ const HourlySalesLineChart = ({ selectedDate }) => {
     }, [selectedDate]);
 
     const fetchDateSales = (date) => {
-        axios.get(`${BASE_URL}/bisang/admin/stats/sales/hourly/${date}`,{
+        axios.get(`${BASE_URL}/bisang/admin/stats/sales/hourly/${date}`, {
             headers: {
                 "Authorization": `Bearer ${token}`,
+                'Access-Control-Allow-Origin': '*'
             },
-            })
+        })
             .then(response => {
                 const data = response.data;
                 const salesData = Array(24).fill(0);

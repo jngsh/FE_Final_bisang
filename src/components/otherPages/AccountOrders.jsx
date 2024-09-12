@@ -12,18 +12,19 @@ export default function MyOrders() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId")|| contextUserId;
+    const userId = localStorage.getItem("userId") || contextUserId;
     console.log("user Id: ", userId);
 
     const fetchOrders = async () => {
       try {
         const response = await axiosInstance.get(`/bisang/orders/${userId}`, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : ''
+            Authorization: token ? `Bearer ${token}` : '',
+            'Access-Control-Allow-Origin': '*'
           }
         }
-);
-        console.log("response?:",response.data);
+        );
+        console.log("response?:", response.data);
         setOrders(response.data);
       } catch (error) {
         console.log('Error fetching orders:', error);
@@ -33,7 +34,7 @@ export default function MyOrders() {
     };
     fetchOrders();
   }, [userId]);
-  
+
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('ko-KR', {
       style: 'decimal',
@@ -46,7 +47,7 @@ export default function MyOrders() {
       // year: '2-digit',
       // month: 'short',
       // date: 'short',
-      dateStyle:'medium',
+      dateStyle: 'medium',
       // weekday: 'narrow'
     }).format(new Date(value));
   }
@@ -56,7 +57,7 @@ export default function MyOrders() {
       // hour: 'numeric',
       // minute: 'numeric',
       // second: 'numeric'
-      timeStyle:'short'
+      timeStyle: 'short'
     }).format(new Date(value));
   }
 
@@ -65,34 +66,34 @@ export default function MyOrders() {
   return (
     <div className="div1">
       <div className="div2">
-      {orders.length===0?( <div className="empty">
-            <div className="emptyOrder">주문 정보가 없습니다🥲</div>
-            <button className="goCategory">
-              <Link className="goCategory2" to={"/shoplist"}>상품 보러 가기🛍️</Link>
-            </button>
-          </div>):(
-        <table className="orders-table">
-          <thead className="orders-header">
-            <tr>
-            <th className="orderNo">no.</th>
-        <th className="orderDate">주문일자</th>
-        <th className="orderPrice">결제금액</th>
-        <th className="orderDetails">🎁</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((items, i)=>(
-              <tr key={i}>
-              <td className="orderNo">{items.orderId}</td>
-              <td className="orderDate">{formatDate(items.orderDate)}<br/>{formatTime(items.orderDate)}</td>
-              <td className="orderPrice">{formatCurrency(items.totalPrice)}</td>
-              <td className="orderDetails">
-                <Link to={`/order-details/${items.orderId}`} className="order-details">상세보기</Link>
-              </td>
-            </tr>
-            ))}
-          </tbody>
-        </table>)}
+        {orders.length === 0 ? (<div className="empty">
+          <div className="emptyOrder">주문 정보가 없습니다🥲</div>
+          <button className="goCategory">
+            <Link className="goCategory2" to={"/shoplist"}>상품 보러 가기🛍️</Link>
+          </button>
+        </div>) : (
+          <table className="orders-table">
+            <thead className="orders-header">
+              <tr>
+                <th className="orderNo">no.</th>
+                <th className="orderDate">주문일자</th>
+                <th className="orderPrice">결제금액</th>
+                <th className="orderDetails">🎁</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((items, i) => (
+                <tr key={i}>
+                  <td className="orderNo">{items.orderId}</td>
+                  <td className="orderDate">{formatDate(items.orderDate)}<br />{formatTime(items.orderDate)}</td>
+                  <td className="orderPrice">{formatCurrency(items.totalPrice)}</td>
+                  <td className="orderDetails">
+                    <Link to={`/order-details/${items.orderId}`} className="order-details">상세보기</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>)}
       </div>
     </div>
   );

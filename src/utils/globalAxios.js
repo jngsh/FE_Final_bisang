@@ -18,6 +18,7 @@ const axiosInstance = axios.create({
   headers: {
     'Authorization': `DEV_SECRET_KEY ${TEST_SECRET_KEY}`, //bearer아님!
     'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
   },
 });
 

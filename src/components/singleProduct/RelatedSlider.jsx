@@ -24,6 +24,7 @@ export default function RelatedSlider({ productId }) {
           {
             headers: {
               'ngrok-skip-browser-warning': true, // ngrok 사용할 때 warning 페이지 무시하기
+              'Access-Control-Allow-Origin': '*'
             }
           }
         );

@@ -44,23 +44,24 @@ function UploadFile() {
       alert("먼저 엑셀 파일을 선택하세요.");
       return;
     }
-    
-    if(!window.confirm("업로드하시겠습니까?")) {
+
+    if (!window.confirm("업로드하시겠습니까?")) {
       return;
     }
 
     const formData = new FormData();
-    if(dragAndDropFile){
+    if (dragAndDropFile) {
       formData.append('file', dragAndDropFile);
-    }else if(selectFile){
+    } else if (selectFile) {
       formData.append('file', selectFile);
     }
-    
+
     try {
       const response = await axios.post(`${BASE_URL}/bisang/admin/stocks/upload`, formData, {
         headers: {
           "Authorization": `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
+          'Access-Control-Allow-Origin': '*'
         },
       });
       alert(response.data);

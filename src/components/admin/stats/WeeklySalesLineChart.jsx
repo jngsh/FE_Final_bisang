@@ -42,7 +42,7 @@ const WeeklySalesLineChart = ({ selectedDate }) => {
                 beginAtZero: true,
                 max: maxY,
                 ticks: {
-                    callback: function(value) {
+                    callback: function (value) {
                         return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
                     }
                 }
@@ -57,9 +57,10 @@ const WeeklySalesLineChart = ({ selectedDate }) => {
     const fetchWeeklySales = () => {
         axios.get(`${BASE_URL}/bisang/admin/stats/sales/recent-week`, {
             headers: {
-              Authorization: token ? `Bearer ${token}` : ''
+                Authorization: token ? `Bearer ${token}` : '',
+                'Access-Control-Allow-Origin': '*'
             }
-          }
+        }
         )
             .then(response => {
                 const data = response.data;
