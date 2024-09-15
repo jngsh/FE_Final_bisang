@@ -139,7 +139,7 @@ export default function ProductList({ petType, typeValue }) {
       <div className="shop-sidebar side-sticky bg-body">
         <div className="aside-filters aside aside_right" id="shopFilterAside">
           <div className="aside-header d-flex align-items-center">
-            <h3 className="text-uppercase fs-6 mb-0">가격 필터</h3>
+            <h3 className="text-uppercase fs-6 mb-0">{t('priceFilter')}</h3>
             <button
               onClick={() => closeModalShopFilter()}
               className="btn-close-lg js-close-aside btn-close-aside ms-auto"
@@ -156,7 +156,7 @@ export default function ProductList({ petType, typeValue }) {
                   aria-expanded="true"
                   aria-controls="accordion-filter-price"
                 >
-                  가격
+                  {t('price')}
                   <svg className="accordion-button__icon" viewBox="0 0 14 14">
                     <g aria-hidden="true" stroke="none" fillRule="evenodd">
                       <path
@@ -187,12 +187,12 @@ export default function ProductList({ petType, typeValue }) {
                 />
                 <div className="price-range__info d-flex align-items-center mt-2">
                   <div className="me-auto">
-                    <span className="text-secondary">최소 금액: </span>
-                    <span className="price-range__min">{priceRange[0]}원</span>
+                    <span className="text-secondary">{t('minPrice')}: </span>
+                    <span className="price-range__min">{priceRange[0]}{t('currencyWon')}</span>
                   </div>
                   <div>
-                    <span className="text-secondary">최대 금액: </span>
-                    <span className="price-range__max">{priceRange[1]}원</span>
+                    <span className="text-secondary">{t('maxPrice')}: </span>
+                    <span className="price-range__max">{priceRange[1]}{t('currencyWon')}</span>
                   </div>
                 </div>
               </div>
@@ -202,7 +202,7 @@ export default function ProductList({ petType, typeValue }) {
       </div>
       <div className="shop-list flex-grow-1">
         {filteredProducts.length === 0 ? (
-          <p>상품 준비 중입니다...</p>
+          <p>{t('productInPreparation')}</p>
         ) : (
           <>
             <div className="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
@@ -234,7 +234,7 @@ export default function ProductList({ petType, typeValue }) {
                     <use href="#icon_filter" />
                   </svg>
                   <span className="text-uppercase fw-medium d-inline-block align-middle">
-                    가격 필터
+                    {t('priceFilter')}
                   </span>
                 </button>
               </div>
@@ -268,7 +268,7 @@ export default function ProductList({ petType, typeValue }) {
                               <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
                                 <div className="pc-labels__left">
                                   <span className="pc-label pc-label_new d-block bg-white">
-                                    신상품
+                                    {t('newProduct')}
                                   </span>
                                 </div>
                               </div>
@@ -290,7 +290,7 @@ export default function ProductList({ petType, typeValue }) {
                             <div className="product-card__price d-flex flex-column">
                               {unitPrice ? (
                                 <span className="unit-price text-muted fs-6">
-                                  1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
+                                  1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
                                 </span>
                               ) : (
                                 <br />
@@ -298,15 +298,15 @@ export default function ProductList({ petType, typeValue }) {
                               {discountRate > 0 ? (
                                 <span>
                                   <span className="money price fs-5 text-muted text-decoration-line-through">
-                                    {formatPrice(productPrice)}원
+                                    {formatPrice(productPrice)}{t('currencyWon')}
                                   </span>
                                   <span className="money price fs-5 ms-2">
-                                    {formatPrice(discountedPrice)}원
+                                    {formatPrice(discountedPrice)}{t('currencyWon')}
                                   </span>
                                 </span>
                               ) : (
                                 <span className="money price fs-5">
-                                  {formatPrice(productPrice)}원
+                                  {formatPrice(productPrice)}{t('currencyWon')}
                                 </span>
                               )}
                             </div>

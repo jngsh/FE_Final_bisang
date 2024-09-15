@@ -26,11 +26,15 @@
   "categoryPetD": "강아지",
   "categoryPetC": "고양이",
   "categoryPetZ": "공용",
-  "featuredProducts": "추천 상품",
   "categoryItemA": "전체",
   "categoryItem1": "사료",
   "categoryItem2": "간식",
   "categoryItem3": "용품",
+  "categoryAgej": "주니어",
+  "categoryAgea": "어덜트",
+  "categoryAges": "시니어",
+  "categoryAgez": "전연령",
+  "featuredProducts": "추천 상품",
   "shopByCategory": "카테고리",
   "shopAllCategories": "모든 카테고리 보기",
   "categoryItemCount": "개",
@@ -55,5 +59,6 @@
   "sortByNew": "신상품순",
   "sortByDiscount": "할인율순",
   "sortByPriceDesc": "가격 내림차순",
-  "sortByPriceAsc": "가격 오름차순"
+  "sortByPriceAsc": "가격 오름차순",
+  "productInPreparation": "상품 준비 중입니다..."
 }
