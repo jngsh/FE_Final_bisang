@@ -60,5 +60,7 @@
   "sortByDiscount": "Remise",
   "sortByPriceDesc": "Prix décroissant",
   "sortByPriceAsc": "Prix croissant",
-  "productInPreparation": "Produit en préparation..."
+  "productInPreparation": "Produit en préparation...",
+  "paginationPrev": "Avant",
+  "paginationNext": "Suiv"
 }

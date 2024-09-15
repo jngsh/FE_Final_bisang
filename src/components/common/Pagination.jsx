@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Pagination({ totalPages, currentPage, onPageChange }) {
   const [pageOffset, setPageOffset] = useState(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (currentPage === 1) {
@@ -51,7 +53,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
           <svg className="me-1" width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
             <use href="#icon_prev_sm" />
           </svg>
-          <span className="fw-medium">이전</span>
+          <span className="fw-medium">{t('paginationPrev')}</span>
         </Link>
       }
       <ul className="pagination mb-0">
@@ -79,7 +81,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
             handleNextClick();
           }}
         >
-          <span className="fw-medium me-1">다음</span>
+          <span className="fw-medium me-1">{t('paginationNext')}</span>
           <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
             <use href="#icon_next_sm" />
           </svg>

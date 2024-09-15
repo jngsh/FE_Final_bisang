@@ -60,5 +60,7 @@
   "sortByDiscount": "Discount",
   "sortByPriceDesc": "Price: High to Low",
   "sortByPriceAsc": "Price: Low to High",
-  "productInPreparation": "Product is being prepared..."
+  "productInPreparation": "Product is being prepared...",
+  "paginationPrev": "Prev",
+  "paginationNext": "Next"
 }

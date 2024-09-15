@@ -60,5 +60,7 @@
   "sortByDiscount": "할인율순",
   "sortByPriceDesc": "가격 내림차순",
   "sortByPriceAsc": "가격 오름차순",
-  "productInPreparation": "상품 준비 중입니다..."
+  "productInPreparation": "상품 준비 중입니다...",
+  "paginationPrev": "이전",
+  "paginationNext": "다음"
 }
