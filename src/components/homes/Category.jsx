@@ -12,15 +12,15 @@ export default function Category() {
 
   const categoryMapping = {
     '1': {
-      type: t("category_item_1"),
+      type: t("categoryItem1"),
       image: "/assets/images/homeimages/category/itemType1.jpeg"
     },
     '2': {
-      type: t("category_item_2"),
+      type: t("categoryItem2"),
       image: "/assets/images/homeimages/category/itemType2.jpeg"
     },
     '3': {
-      type: t("category_item_3"),
+      type: t("categoryItem3"),
       image: "/assets/images/homeimages/category/itemType3.jpeg"
     }
   };
@@ -43,7 +43,7 @@ export default function Category() {
         });
 
         const finalCategories = [
-          { itemType: t("category_item_A"), itemCount: totalItemCount, image: "/assets/images/homeimages/category/itemTypeAll.jpg" },
+          { itemType: t("categoryItemA"), itemCount: totalItemCount, image: "/assets/images/homeimages/category/itemTypeAll.jpg" },
           ...allCategories
         ];
 
@@ -96,12 +96,12 @@ export default function Category() {
         <div className="mb-3 mb-xl-5 pb-3 pt-1 pb-xl-5"></div>
 
         <div className="category-header d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-          <h2 className="section-title fw-normal">{t('shop_by_category')}</h2>
+          <h2 className="section-title fw-normal">{t('shopByCategory')}</h2>
           <Link
             className="btn-link btn-link_md default-underline text-uppercase fw-medium"
             to="/shoplist"
           >
-            {t('shop_all_categories')}
+            {t('shopAllCategories')}
           </Link>
         </div>
 
@@ -129,7 +129,7 @@ export default function Category() {
                   </Link>
                   {elm.itemCount > 0 && (
                     <p className="mb-0 text-secondary">
-                      {elm.itemCount} {t('category_item_count')}
+                      {elm.itemCount} {t('categoryItemCount')}
                     </p>
                   )}
                 </div>

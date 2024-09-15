@@ -24,12 +24,12 @@ export default function Cta() {
               />
             </svg>
             <h3 className="mb-0 text-white fw-normal">
-              {t('service_issue')}
+              {t('serviceIssue')}
             </h3>
           </div>
           <h3 className="mb-0 text-white fw-normal">
-            <span>{t('customer_service')} </span>
-            <a href="tel:000-1234-5678">{t('phone_number')}</a>
+            <span>{t('customerService')} </span>
+            <a href="tel:000-1234-5678">{t('phoneNumber')}</a>
           </h3>
         </div>
 

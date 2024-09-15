@@ -1,13 +1,13 @@
 import Star from "@/components/common/Star";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
-import { sortingOptions } from "@/components/shoplist/filter/sorting.js";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 import Slider from 'rc-slider';
 import { closeModalShopFilter } from "@/utils/aside";
 import Pagination from "../common/Pagination";
+import { useTranslation } from 'react-i18next';
 
 const sortProducts = (products, sortBy) => {
   switch (sortBy) {
@@ -60,6 +60,14 @@ export default function ProductList({ petType, typeValue }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+  const { t } = useTranslation();
+
+  const sortingOptions = [
+    { label: t('sortByNew'), value: 'newest' },
+    { label: t('sortByDiscount'), value: 'discount' },
+    { label: t('sortByPriceAsc'), value: 'price-asc' },
+    { label: t('sortByPriceDesc'), value: 'price-desc' }
+  ];
 
   useEffect(() => {
     axios.get(`${BASE_URL}/bisang/category/products-list`)
@@ -76,37 +84,37 @@ export default function ProductList({ petType, typeValue }) {
   useEffect(() => {
     const newFilteredProducts = allProducts.filter(product => {
       const { productCode } = product;
-  
+
       if (productCode[0] !== petType) return false;
-  
+
       if (typeValue === 'all') {
         return true;
       } else if ((typeValue !== productCode[1]) && (typeValue !== productCode[2])) return false;
-  
+
       return true;
     });
-  
+
     const priceFilteredProducts = newFilteredProducts.filter(product => {
       const discountedPrice = product.discountRate
         ? product.productPrice * (1 - product.discountRate)
         : product.productPrice;
       return discountedPrice >= priceRange[0] && discountedPrice <= priceRange[1];
     });
-  
+
     const sortedProducts = sortProducts(priceFilteredProducts, sortBy);
-  
+
     setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
-  
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredProducts(sortedProducts.slice(startIndex, endIndex));
     console.log("새로운 카테고리 랜더링" + petType + typeValue + sortedProducts.length);
   }, [petType, typeValue, allProducts, priceRange, sortBy, currentPage]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setCurrentPage(1);
   }, [petType, typeValue]);
-  
+
   const handlePriceChange = (value) => {
     setPriceRange(value);
     setCurrentPage(1);
@@ -131,7 +139,7 @@ export default function ProductList({ petType, typeValue }) {
       <div className="shop-sidebar side-sticky bg-body">
         <div className="aside-filters aside aside_right" id="shopFilterAside">
           <div className="aside-header d-flex align-items-center">
-            <h3 className="text-uppercase fs-6 mb-0">가격 필터</h3>
+            <h3 className="text-uppercase fs-6 mb-0">{t('priceFilter')}</h3>
             <button
               onClick={() => closeModalShopFilter()}
               className="btn-close-lg js-close-aside btn-close-aside ms-auto"
@@ -148,7 +156,7 @@ export default function ProductList({ petType, typeValue }) {
                   aria-expanded="true"
                   aria-controls="accordion-filter-price"
                 >
-                  가격
+                  {t('price')}
                   <svg className="accordion-button__icon" viewBox="0 0 14 14">
                     <g aria-hidden="true" stroke="none" fillRule="evenodd">
                       <path
@@ -179,12 +187,12 @@ export default function ProductList({ petType, typeValue }) {
                 />
                 <div className="price-range__info d-flex align-items-center mt-2">
                   <div className="me-auto">
-                    <span className="text-secondary">최소 금액: </span>
-                    <span className="price-range__min">{priceRange[0]}원</span>
+                    <span className="text-secondary">{t('minPrice')}: </span>
+                    <span className="price-range__min">{priceRange[0]}{t('currencyWon')}</span>
                   </div>
                   <div>
-                    <span className="text-secondary">최대 금액: </span>
-                    <span className="price-range__max">{priceRange[1]}원</span>
+                    <span className="text-secondary">{t('maxPrice')}: </span>
+                    <span className="price-range__max">{priceRange[1]}{t('currencyWon')}</span>
                   </div>
                 </div>
               </div>
@@ -194,7 +202,7 @@ export default function ProductList({ petType, typeValue }) {
       </div>
       <div className="shop-list flex-grow-1">
         {filteredProducts.length === 0 ? (
-          <p>상품 준비 중입니다...</p>
+          <p>{t('productInPreparation')}</p>
         ) : (
           <>
             <div className="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
@@ -226,7 +234,7 @@ export default function ProductList({ petType, typeValue }) {
                     <use href="#icon_filter" />
                   </svg>
                   <span className="text-uppercase fw-medium d-inline-block align-middle">
-                    가격 필터
+                    {t('priceFilter')}
                   </span>
                 </button>
               </div>
@@ -260,7 +268,7 @@ export default function ProductList({ petType, typeValue }) {
                               <div className="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
                                 <div className="pc-labels__left">
                                   <span className="pc-label pc-label_new d-block bg-white">
-                                    신상품
+                                    {t('newProduct')}
                                   </span>
                                 </div>
                               </div>
@@ -275,14 +283,14 @@ export default function ProductList({ petType, typeValue }) {
                             </h6>
                             <div className="product-card__review d-flex align-items-center">
                               <div className="reviews-group d-flex">
-                              <Star productId={product.productId} />
+                                <Star productId={product.productId} />
                               </div>
                             </div>
 
                             <div className="product-card__price d-flex flex-column">
                               {unitPrice ? (
                                 <span className="unit-price text-muted fs-6">
-                                  1{product.unit}당 {formatPrice(unitPrice.toFixed(0))}원
+                                  1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
                                 </span>
                               ) : (
                                 <br />
@@ -290,15 +298,15 @@ export default function ProductList({ petType, typeValue }) {
                               {discountRate > 0 ? (
                                 <span>
                                   <span className="money price fs-5 text-muted text-decoration-line-through">
-                                    {formatPrice(productPrice)}원
+                                    {formatPrice(productPrice)}{t('currencyWon')}
                                   </span>
                                   <span className="money price fs-5 ms-2">
-                                    {formatPrice(discountedPrice)}원
+                                    {formatPrice(discountedPrice)}{t('currencyWon')}
                                   </span>
                                 </span>
                               ) : (
                                 <span className="money price fs-5">
-                                  {formatPrice(productPrice)}원
+                                  {formatPrice(productPrice)}{t('currencyWon')}
                                 </span>
                               )}
                             </div>

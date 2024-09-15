@@ -2,18 +2,20 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Categories({ onSelectCategory }) {
   const [categories, setCategories] = useState([]);
   const [selectedPetType, setSelectedPetType] = useState('D');
   const [selectedSecondType, setSelectedSecondType] = useState('all');
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     axios.get(`${BASE_URL}/bisang/category/type/${selectedPetType}`)
       .then(response => {
         const updatedCategories = [
-          { typeValue: 'all', typeName: '전체' },
+          { typeValue: 'all', typeName: t("categoryPetA") },
           ...response.data
         ];
         setCategories(updatedCategories);
@@ -24,7 +26,7 @@ export default function Categories({ onSelectCategory }) {
       .catch(error => {
         console.error("There was an error fetching the categories!", error);
       });
-  }, [selectedPetType]);
+  }, [selectedPetType], [t]);
 
   const handleCategoryClick = (elm) => {
     setSelectedSecondType(elm.typeValue);
@@ -37,23 +39,23 @@ export default function Categories({ onSelectCategory }) {
 
   const getPetTypeText = (selectedPetType) => {
     switch (selectedPetType) {
-      case 'Z': return '공용';
-      case 'D': return '강아지';
-      case 'C': return '고양이';
+      case 'Z': return t("categoryPetZ");
+      case 'D': return t("categoryPetD");
+      case 'C': return t("categoryPetC");
       default: return selectedPetType;
     }
   };
 
   const getCategoryText = (typeValue) => {
     switch (typeValue) {
-      case 'j': return '주니어';
-      case 'a': return '어덜트';
-      case 's': return '시니어';
-      case 'z': return '전연령';
-      case '1': return '사료';
-      case '2': return '간식';
-      case '3': return '용품';
-      case 'all': return '전체';
+      case 'j': return t("categoryAgej");
+      case 'a': return t("categoryAgea");
+      case 's': return t("categoryAges");
+      case 'z': return t("categoryAgez");
+      case '1': return t("categoryItem1");
+      case '2': return t("categoryItem2");
+      case '3': return t("categoryItem3");
+      case 'all': return t("categoryItemA");
       default: return typeValue;
     }
   };
@@ -83,7 +85,7 @@ export default function Categories({ onSelectCategory }) {
         </div>
 
         <div className="shop-categories__list d-flex align-items-center flex-wrap justify-content-center">
-        {Array.isArray(filteredCategories) && filteredCategories.map((elm, i)  => (
+          {Array.isArray(filteredCategories) && filteredCategories.map((elm, i) => (
             <Link
               key={i}
               to="/shoplist"
