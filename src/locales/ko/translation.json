@@ -46,5 +46,14 @@
   "cart": "쏙바구니",
   "my": "마이",
   "search": "검색",
-  "inputSearchPlaceholder": "검색어를 입력하세요"
+  "inputSearchPlaceholder": "검색어를 입력하세요",
+  "priceFilter": "가격 필터",
+  "price": "가격",
+  "minPrice": "최소 금액",
+  "maxPrice": "최대 금액",
+  "newProduct": "신상품",
+  "sortByNew": "신상품순",
+  "sortByDiscount": "할인율순",
+  "sortByPriceDesc": "가격 내림차순",
+  "sortByPriceAsc": "가격 오름차순"
 }

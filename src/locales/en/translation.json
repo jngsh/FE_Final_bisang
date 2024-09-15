@@ -46,5 +46,14 @@
   "cart": "쏙Cart",
   "my": "My",
   "search": "Search",
-  "inputSearchPlaceholder": "Enter a search term"
+  "inputSearchPlaceholder": "Enter a search term",
+  "priceFilter": "Price Filter",
+  "price": "Price",
+  "minPrice": "Min",
+  "maxPrice": "Max",
+  "newProduct": "New",
+  "sortByNew": "New Arrivals",
+  "sortByDiscount": "Discount",
+  "sortByPriceDesc": "Price: High to Low",
+  "sortByPriceAsc": "Price: Low to High"
 }

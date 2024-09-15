@@ -46,5 +46,14 @@
   "cart": "쏙Panier",
   "my": "Mon",
   "search": "Recherche",
-  "inputSearchPlaceholder": "Entrez un terme de recherche"
+  "inputSearchPlaceholder": "Entrez un terme de recherche",
+  "priceFilter": "Filtre de prix",
+  "price": "Prix",
+  "minPrice": "Min",
+  "maxPrice": "Max",
+  "newProduct": "Nouveau",
+  "sortByNew": "Nouveautés",
+  "sortByDiscount": "Remise",
+  "sortByPriceDesc": "Prix décroissant",
+  "sortByPriceAsc": "Prix croissant"
 }
