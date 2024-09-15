@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 import './ProductSearch.css';
+import { useTranslation } from 'react-i18next';
 
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -25,6 +26,7 @@ function ProductSearch({ setResults }) {
   const [showResults, setShowResults] = useState(false);
   const debouncedQuery = useDebounce(query, 500);
   const resultsRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (debouncedQuery) {
@@ -90,7 +92,7 @@ function ProductSearch({ setResults }) {
           value={query}
           onChange={handleInputChange}
           name="search-keyword"
-          placeholder="검색어를 입력하세요"
+          placeholder={t('inputSearchPlaceholder')}
           style={{ height: '40px', borderRadius: '4px', padding: '0 10px' }}
         />
         <button

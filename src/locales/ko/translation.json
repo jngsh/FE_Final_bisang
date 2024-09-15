@@ -7,16 +7,13 @@
   "send": "보내기",
   "subscription_thank_you": "구독해주셔서 감사합니다. 좋은 소식 전해드릴게요🤭",
   "email_required": "이메일 주소를 입력해 주세요.",
-
   "service_issue": "서비스에 문제가 있나요?",
   "customer_service": "고객센터",
   "phone_number": "000-1234-5678",
-
   "subtitle1": "댕냥이와 함께하는 행복한 일상",
   "subtitle2": "댕냥이를 위한 제품",
   "subtitle3": "반려동물을 등록해보세요",
   "peterpet": "Peter Pet",
-
   "features_cart_title": "쏙바구니에 담아 바로 결제",
   "features_cart_content": "장바구니에 담을 때 가격표 옆의 QR코드만 스캔하면 계산대에서 다시 물건을 스캔하지 않아도 돼요",
   "features_payment_title": "대기 없는 결제 서비스",
@@ -25,13 +22,11 @@
   "features_shipping_content": "제품 QR코드만 스캔해 쓱바구니에 담고 원하는 시간에 배송 받을 수 있어요",
   "features_pet_title": "반려동물 맞춤 서비스",
   "features_pet_content": "나의 반려동물을 peter pet에 등록하고 다양한 맞춤 서비스를 이용할 수 있어요",
-
   "category_pet_A": "전체",
   "category_pet_D": "강아지",
   "category_pet_C": "고양이",
   "category_pet_Z": "공용",
   "featured_products": "추천 상품",
-
   "category_item_A": "전체",
   "category_item_1": "사료",
   "category_item_2": "간식",
@@ -39,19 +34,17 @@
   "shop_by_category": "카테고리",
   "shop_all_categories": "모든 카테고리 보기",
   "category_item_count": "개",
-
   "top_selling_products": "인기 상품",
   "see_all_products": "모든 상품 보기",
   "currency_won": "원",
   "per": "당",
-
   "discount_title": "프로모션",
-
   "home": "홈",
   "QR": "QR",
   "Categories": "카테고리",
   "login": "로그인",
   "cart": "쏙바구니",
   "my": "마이",
-  "search": "검색"
+  "search": "검색",
+  "inputSearchPlaceholder": "검색어를 입력하세요"
 }
