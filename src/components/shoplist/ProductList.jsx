@@ -1,13 +1,13 @@
 import Star from "@/components/common/Star";
 import { Link } from "react-router-dom";
 import { openModalShopFilter } from "@/utils/aside";
-import { sortingOptions } from "@/components/shoplist/filter/sorting.js";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BASE_URL from '@/utils/globalBaseUrl';
 import Slider from 'rc-slider';
 import { closeModalShopFilter } from "@/utils/aside";
 import Pagination from "../common/Pagination";
+import { useTranslation } from 'react-i18next';
 
 const sortProducts = (products, sortBy) => {
   switch (sortBy) {
@@ -60,6 +60,14 @@ export default function ProductList({ petType, typeValue }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+  const { t } = useTranslation();
+
+  const sortingOptions = [
+    { label: t('sortByNew'), value: 'newest' },
+    { label: t('sortByDiscount'), value: 'discount' },
+    { label: t('sortByPriceAsc'), value: 'price-asc' },
+    { label: t('sortByPriceDesc'), value: 'price-desc' }
+  ];
 
   useEffect(() => {
     axios.get(`${BASE_URL}/bisang/category/products-list`)
@@ -76,37 +84,37 @@ export default function ProductList({ petType, typeValue }) {
   useEffect(() => {
     const newFilteredProducts = allProducts.filter(product => {
       const { productCode } = product;
-  
+
       if (productCode[0] !== petType) return false;
-  
+
       if (typeValue === 'all') {
         return true;
       } else if ((typeValue !== productCode[1]) && (typeValue !== productCode[2])) return false;
-  
+
       return true;
     });
-  
+
     const priceFilteredProducts = newFilteredProducts.filter(product => {
       const discountedPrice = product.discountRate
         ? product.productPrice * (1 - product.discountRate)
         : product.productPrice;
       return discountedPrice >= priceRange[0] && discountedPrice <= priceRange[1];
     });
-  
+
     const sortedProducts = sortProducts(priceFilteredProducts, sortBy);
-  
+
     setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
-  
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredProducts(sortedProducts.slice(startIndex, endIndex));
     console.log("새로운 카테고리 랜더링" + petType + typeValue + sortedProducts.length);
   }, [petType, typeValue, allProducts, priceRange, sortBy, currentPage]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setCurrentPage(1);
   }, [petType, typeValue]);
-  
+
   const handlePriceChange = (value) => {
     setPriceRange(value);
     setCurrentPage(1);
@@ -275,7 +283,7 @@ export default function ProductList({ petType, typeValue }) {
                             </h6>
                             <div className="product-card__review d-flex align-items-center">
                               <div className="reviews-group d-flex">
-                              <Star productId={product.productId} />
+                                <Star productId={product.productId} />
                               </div>
                             </div>
 
