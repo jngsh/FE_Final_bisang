@@ -167,11 +167,11 @@ export default function SearchedProductList({ searchedProducts }) {
                 <div className="price-range__info d-flex align-items-center mt-2">
                   <div className="me-auto">
                     <span className="text-secondary">{t('minPrice')}: </span>
-                    <span className="price-range__min">{priceRange[0]}{t('currency_won')}</span>
+                    <span className="price-range__min">{priceRange[0]}{t('currencyWon')}</span>
                   </div>
                   <div>
                     <span className="text-secondary">{t('maxPrice')}: </span>
-                    <span className="price-range__max">{priceRange[1]}{t('currency_won')}</span>
+                    <span className="price-range__max">{priceRange[1]}{t('currencyWon')}</span>
                   </div>
                 </div>
               </div>
@@ -265,7 +265,7 @@ export default function SearchedProductList({ searchedProducts }) {
                         <div className="product-card__price d-flex flex-column">
                           {unitPrice ? (
                             <span className="unit-price text-muted fs-6">
-                              1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currency_won')}
+                              1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
                             </span>
                           ) : (
                             <br />
@@ -273,15 +273,15 @@ export default function SearchedProductList({ searchedProducts }) {
                           {discountRate > 0 ? (
                             <span>
                               <span className="money price fs-5 text-muted text-decoration-line-through">
-                                {formatPrice(productPrice)}{t('currency_won')}
+                                {formatPrice(productPrice)}{t('currencyWon')}
                               </span>
                               <span className="money price fs-5 ms-2">
-                                {formatPrice(discountedPrice)}{t('currency_won')}
+                                {formatPrice(discountedPrice)}{t('currencyWon')}
                               </span>
                             </span>
                           ) : (
                             <span className="money price fs-5">
-                              {formatPrice(productPrice)}{t('currency_won')}
+                              {formatPrice(productPrice)}{t('currencyWon')}
                             </span>
                           )}
                         </div>

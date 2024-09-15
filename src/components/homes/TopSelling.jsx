@@ -87,12 +87,12 @@ export default function TopSelling() {
   return (
     <section className="product-carousel container">
       <div className="category-header d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-        <h2 className="section-title fw-normal">{t('top_selling_products')}</h2>
+        <h2 className="section-title fw-normal">{t('topSellingProducts')}</h2>
         <Link
           className="btn-link btn-link_md default-underline text-uppercase fw-medium"
           to="/shoplist"
         >
-          {t('see_all_products')}
+          {t('seeAllProducts')}
         </Link>
       </div>
 
@@ -140,23 +140,23 @@ export default function TopSelling() {
                   <div className="product-card__price d-flex flex-column">
                     {unitPrice ? (
                       <span className="unit-price text-muted fs-6">
-                        1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currency_won')}
+                        1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
                       </span>
                     ) : (
-                      <br/>
+                      <br />
                     )}
                     {discountedPrice ? (
                       <span>
                         <span className="money price fs-5 text-muted text-decoration-line-through">
-                          {formatPrice(product.productPrice)}{t('currency_won')}
+                          {formatPrice(product.productPrice)}{t('currencyWon')}
                         </span>
                         <span className="money price fs-5 ms-2">
-                          {formatPrice(discountedPrice.toFixed(0))}{t('currency_won')}
+                          {formatPrice(discountedPrice.toFixed(0))}{t('currencyWon')}
                         </span>
                       </span>
                     ) : (
                       <span className="money price fs-5">
-                        {formatPrice(product.productPrice)}{t('currency_won')}
+                        {formatPrice(product.productPrice)}{t('currencyWon')}
                       </span>
                     )}
                   </div>

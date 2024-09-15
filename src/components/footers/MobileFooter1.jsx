@@ -56,7 +56,7 @@ export default function MobileFooter1() {
               viewBox="0 0 18 18"
               fill="none"
             />
-                <use href="#icon_heart" />
+            <use href="#icon_heart" />
             <span>{t('QR')}</span>
           </Link>
         </div>
@@ -67,15 +67,15 @@ export default function MobileFooter1() {
             href="/shoplist"
             className="footer-mobile__link d-flex flex-column align-items-center"
           >
-          <img
+            <img
               src="/assets/images/mobilefooter1/categories.png"
               width="18"
               height="18"
               viewBox="0 0 18 18"
               fill="none"
             />
-              <use href="#icon_hanger" />
-            <span>{t('Categories')}</span>
+            <use href="#icon_hanger" />
+            <span>{t('categories')}</span>
           </a>
         </div>
 

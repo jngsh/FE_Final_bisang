@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Featured() {
   const { t } = useTranslation();
-  const filterCategories = [t("category_pet_A"), t("category_pet_D"), t("category_pet_C"), t("category_pet_Z")];
+  const filterCategories = [t("categoryPetA"), t("categoryPetD"), t("categoryPetC"), t("categoryPetZ")];
   const [currentCategory, setCurrentCategory] = useState(filterCategories[0]);
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -56,12 +56,12 @@ export default function Featured() {
     let filteredProducts = [];
 
     const categoryMap = {
-      "D": t("category_pet_D"),
-      "C": t("category_pet_C"),
-      "Z": t("category_pet_Z")
+      "D": t("categoryPetD"),
+      "C": t("categoryPetC"),
+      "Z": t("categoryPetZ")
     };
 
-    if (currentCategory === t("category_pet_A")) {
+    if (currentCategory === t("categoryPetA")) {
       filteredProducts = products;
 
     } else {
@@ -115,7 +115,7 @@ export default function Featured() {
     <section className="products-grid">
       <div className="container">
         <div className="category-header d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-          <h2 className="section-title fw-normal">{t('featured_products')}</h2>
+          <h2 className="section-title fw-normal">{t('featuredProducts')}</h2>
           <ul className="nav nav-tabs justify-content-center" id="collections-1-tab" role="tablist">
             {filterCategories.map((category, i) => (
               <li
@@ -171,7 +171,7 @@ export default function Featured() {
                       <div className="product-card__price d-flex flex-column">
                         {product.unitPrice ? (
                           <span className="unit-price text-muted fs-6">
-                            1{product.unit} {t('per')} {formatPrice(product.unitPrice.toFixed(0))}{t('currency_won')}
+                            1{product.unit} {t('per')} {formatPrice(product.unitPrice.toFixed(0))}{t('currencyWon')}
                           </span>
                         ) : (
                           <br />
@@ -179,15 +179,15 @@ export default function Featured() {
                         {product.discountedPrice ? (
                           <span>
                             <span className="money price fs-5 text-muted text-decoration-line-through">
-                              {formatPrice(product.productPrice)}{t('currency_won')}
+                              {formatPrice(product.productPrice)}{t('currencyWon')}
                             </span>
                             <span className="money price fs-5 ms-2">
-                              {formatPrice(product.discountedPrice.toFixed(0))}{t('currency_won')}
+                              {formatPrice(product.discountedPrice.toFixed(0))}{t('currencyWon')}
                             </span>
                           </span>
                         ) : (
                           <span className="money price fs-5">
-                            {formatPrice(product.productPrice)}{t('currency_won')}
+                            {formatPrice(product.productPrice)}{t('currencyWon')}
                           </span>
                         )}
                       </div>

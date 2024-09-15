@@ -38,11 +38,11 @@ export default function DiscountSlider() {
 
         data.forEach(item => {
           const { discountId, discountType, discountRate, startDate, endDate, ...product } = item;
-          
+
           if (!discountMap[discountId] && discountRate > 0) {
             discountMap[discountId] = { discountId, discountType, discountRate, startDate, endDate };
           }
-          
+
           if (discountRate > 0) {
             productList.push({ ...product, discountId });
           }
@@ -107,7 +107,7 @@ export default function DiscountSlider() {
     <section className="discount-carousel container">
       <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
         {discounts && discounts.length > 0 && (
-          <h2 className="section-title fw-normal">{t('discount_title')}</h2>
+          <h2 className="section-title fw-normal">{t('discountTitle')}</h2>
         )}
       </div>
       <div className="row">
@@ -174,23 +174,23 @@ export default function DiscountSlider() {
                                 <div className="product-card__price d-flex flex-column">
                                   {unitPrice ? (
                                     <span className="unit-price text-muted fs-6">
-                                      1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currency_won')}
+                                      1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
                                     </span>
                                   ) : (
-                                  <br/>
+                                    <br />
                                   )}
                                   {discountedPrice ? (
                                     <span>
                                       <span className="money price fs-5 text-muted text-decoration-line-through">
-                                        {formatPrice(product.productPrice)}{t('currency_won')}
+                                        {formatPrice(product.productPrice)}{t('currencyWon')}
                                       </span>
                                       <span className="money price fs-5 ms-2">
-                                        {formatPrice(discountedPrice)}{t('currency_won')}
+                                        {formatPrice(discountedPrice)}{t('currencyWon')}
                                       </span>
                                     </span>
                                   ) : (
                                     <span className="money price fs-5">
-                                      {formatPrice(product.productPrice)}{t('currency_won')}
+                                      {formatPrice(product.productPrice)}{t('currencyWon')}
                                     </span>
                                   )}
                                 </div>
@@ -204,7 +204,7 @@ export default function DiscountSlider() {
                 </div>
               </div>
             )}
-            <br/>
+            <br />
           </div>
         ))}
       </div>

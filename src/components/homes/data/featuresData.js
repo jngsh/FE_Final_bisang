@@ -7,26 +7,26 @@ export function FeaturesData() {
     {
       id: 1,
       icon: "#icon_shipping",
-      title: t('features_cart_title'),
-      content: t('features_cart_content'),
+      title: t('featuresCartTitle'),
+      content: t('featuresCartContent'),
     },
     {
       id: 2,
       icon: "#icon_headphone",
-      title: t('features_payment_title'),
-      content: t('features_payment_content'),
+      title: t('featuresPaymentTitle'),
+      content: t('featuresPaymentContent'),
     },
     {
       id: 3,
       icon: "#icon_shield",
-      title: t('features_shipping_title'),
-      content: t('features_shipping_content'),
+      title: t('featuresShippingTitle'),
+      content: t('featuresShippingContent'),
     },
     {
       id: 4,
       icon: "#icon_gift",
-      title: t('features_pet_title'),
-      content: t('features_pet_content'),
+      title: t('featuresPetTitle'),
+      content: t('featuresPetContent'),
     }
   ];
 }

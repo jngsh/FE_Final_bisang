@@ -14,22 +14,22 @@ import {
 const Footer1 = () => {
   const handleClick = (event) => {
     event.preventDefault();
-  
+
     const form = event.target.closest('form');
     const emailInput = form.querySelector('input[name="email"]');
-  
+
     if (!emailInput.value.trim()) {
       alert(t('email_required'));
       return;
     }
-  
+
     alert(t('subscription_thank_you'));
-  
+
     if (form) {
       form.reset();
     }
   };
-  
+
   const { i18n } = useTranslation();
   const { t } = useTranslation();
 
@@ -55,7 +55,7 @@ const Footer1 = () => {
             </div>
             {/* <!-- /.logo --> */}
             <p className="footer-address">
-            {t('address')}
+              {t('address')}
             </p>
 
             <p className="m-0">
@@ -132,7 +132,7 @@ const Footer1 = () => {
           <div className="footer-column footer-newsletter col-12 mb-4 mb-lg-0">
             <h5 className="sub-menu__title text-uppercase">{t('subscribe')}</h5>
             <p>
-              {t('news_prompt')}
+              {t('newsPrompt')}
               {/* Be the first to get the latest news about trends, promotions, and
               much more! */}
             </p>
@@ -144,7 +144,7 @@ const Footer1 = () => {
                 className="form-control border-white"
                 type="email"
                 name="email"
-                placeholder={t('enter_email')}
+                placeholder={t('enterEmail')}
               />
               <input
                 className="btn-link fw-medium bg-white position-absolute top-0 end-0 h-100"
