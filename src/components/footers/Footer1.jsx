@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  currencyOptions,
+  // currencyOptions,
   // footerLinks1,
   // footerLinks2,
   // footerLinks3,
@@ -206,7 +206,7 @@ const Footer1 = () => {
               </select>
             </div>
 
-            <div className="d-flex align-items-center">
+            {/* <div className="d-flex align-items-center">
               <label
                 htmlFor="footerSettingsCurrency"
                 className="ms-md-3 me-2 text-secondary"
@@ -229,7 +229,8 @@ const Footer1 = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
+            <br />
           </div>
           {/* <!-- /.footer-settings --> */}
         </div>
