@@ -47,6 +47,8 @@
   "qr": "QR",
   "categories": "Catégories",
   "login": "Connexion",
+  "signupLogin": "Inscription & Connexion",
+  "logout": "Déconnexion",
   "cart": "쏙Panier",
   "my": "Mon",
   "search": "Recherche",

@@ -47,6 +47,8 @@
   "qr": "QR",
   "categories": "Categories",
   "login": "Login",
+  "signupLogin": "Sign Up & Login",
+  "logout": "Logout",
   "cart": "쏙Cart",
   "my": "My",
   "search": "Search",

@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContextElement } from "@/context/Context";
+import { useTranslation } from 'react-i18next';
 
 // 모바일 Nav
 export default function MobileNav() {
 
   const userId = localStorage.getItem("userId");
-  const { setLogined, setCartId, setCartProducts, setOrderDetails} = useContextElement();
+  const { setLogined, setCartId, setCartProducts, setOrderDetails } = useContextElement();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const selectors = {
@@ -114,7 +116,7 @@ export default function MobileNav() {
       };
     }
   }, []);
-  
+
   useEffect(() => {
     const selectors = {
       mobileMenuActivator: ".mobile-nav-activator",
@@ -153,7 +155,7 @@ export default function MobileNav() {
     localStorage.setItem("cartId", null);
     localStorage.setItem("cartProducts", JSON.stringify([]));
     localStorage.setItem("orderDetails", JSON.stringify([]));
-    
+
     navigate("/login_register");
   }
 
@@ -166,7 +168,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/" ? "menu-active" : ""
             }`}
         >
-          홈
+          {t('home')}
         </Link>
       </li>
 
@@ -177,7 +179,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/QrReader" ? "menu-active" : ""
             }`}
         >
-          QR 스캔
+          {t('qr')}
         </Link>
       </li>
       {/* 모바일 화면 메뉴 - Cart 메뉴 */}
@@ -187,7 +189,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/shop_cart/null" ? "menu-active" : ""
             }`}
         >
-          쏙바구니
+          {t('cart')}
         </Link>
       </li>
 
@@ -198,7 +200,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/shoplist" ? "menu-active" : ""
             }`}
         >
-          카테고리
+          {t('categories')}
         </Link>
       </li>
 
@@ -209,7 +211,7 @@ export default function MobileNav() {
           className={`navigation__link ${pathname == "/about" ? "menu-active" : ""
             }`}
         >
-          피터펫
+          {t('peterpet')}
         </Link>
       </li>
 
@@ -220,15 +222,15 @@ export default function MobileNav() {
             to="#"
             onClick={handleLogout}
             className={`navigation__link ${pathname === "#" ? "menu-active" : ""}`}>
-              로그아웃
-            </Link>
-        ) : (<Link
-            to="/login_register"
-            className={`navigation__link ${pathname == "/login_register" ? "menu-active" : ""
-              }`}
-          >
-            회원가입 & 로그인
+            {t('logout')}
           </Link>
+        ) : (<Link
+          to="/login_register"
+          className={`navigation__link ${pathname == "/login_register" ? "menu-active" : ""
+            }`}
+        >
+          {t('signupLogin')}
+        </Link>
         )}
       </li>
     </>

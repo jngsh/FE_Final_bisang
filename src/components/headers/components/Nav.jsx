@@ -7,11 +7,13 @@ import {
 } from "@/data/menu";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 // 여기는 큰 화면일 때의 Nav 메뉴 !
 
 export default function Nav() {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   const isMenuActive = (menu) => {
     return menu.split("/")[1] === pathname.split("/")[1];
@@ -25,7 +27,7 @@ export default function Nav() {
 
   useEffect(() => {
     function setBoxMenuPosition(menu) {
-      const scrollBarWidth = 17; // You might need to calculate or define this value
+      const scrollBarWidth = 17;
       const limitR = window.innerWidth - menu.offsetWidth - scrollBarWidth;
       const limitL = 0;
       const menuPaddingLeft = parseInt(
@@ -59,17 +61,17 @@ export default function Nav() {
     <>
       <li className="navigation__item">
         <Link to="/" className={`navigation__link ${isActiveParentMenu(homePages) ? "menu-active" : ""}`}>
-          홈
+          {t('home')}
         </Link>
       </li>
 
-       {/* QR */}
-       <li className="navigation__item">
+      {/* QR */}
+      <li className="navigation__item">
         <Link
           to="/QrReader"
           className={`navigation__link ${pathname === "/contact" ? "menu-active" : ""}`}
         >
-          QR
+          {t('qr')}
         </Link>
       </li>
 
@@ -79,7 +81,7 @@ export default function Nav() {
           to="/shoplist"
           className={`navigation__link ${pathname === "/contact" ? "menu-active" : ""}`}
         >
-          카테고리
+          {t('categories')}
         </Link>
       </li>
 
@@ -88,7 +90,7 @@ export default function Nav() {
           to="/about"
           className={`navigation__link ${pathname === "/about" ? "menu-active" : ""}`}
         >
-          피터펫
+          {t('peterpet')}
         </Link>
       </li>
     </>
