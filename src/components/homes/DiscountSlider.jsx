@@ -103,108 +103,118 @@ export default function DiscountSlider() {
     return acc;
   }, {});
 
+  const today = new Date();
+
+  const activeDiscounts = discounts.filter(discount => {
+    const discountStartDate = new Date(discount.startDate);
+    const discountEndDate = new Date(discount.endDate);
+
+    return (
+      discount.discountRate > 0 &&
+      discountStartDate <= today &&
+      discountEndDate >= today
+    );
+  });
+
   return (
     <section className="discount-carousel container">
       <div className="d-flex align-items-center justify-content-center justify-content-md-between flex-wrap mb-3 pb-xl-2 mb-xl-4 gap-4">
-        {discounts && discounts.length > 0 && (
+        {activeDiscounts.length > 0 && (
           <h2 className="section-title fw-normal">{t('discountTitle')}</h2>
         )}
       </div>
       <div className="row">
-        {discounts.map(discount => (
+        {activeDiscounts.map(discount => (
           <div key={discount.discountId}>
-            {discount.discountRate > 0 && (
-              <div className="row">
-                <div className="col-sm-6 col-md-4 col-lg-3 col-xl-20per">
-                  <div className="position-relative w-100 h-sm-100 border-radius-4 overflow-hidden minh-240 mb-4 mb-sm-0">
-                    <div
-                      className="background-img"
-                      style={{
-                        backgroundColor: generateBackgroundColor(discount.discountId),
-                      }}
-                    ></div>
-                    <div className="position-absolute position-center text-white text-center w-100">
-                      <h2 className="section-title fw-bold text-white">{(discount.discountRate * 100).toFixed(0)}%</h2>
-                      <h3 className="text-white fw-normal">{discount.discountType}</h3>
-                      <p>{discount.startDate} - {discount.endDate}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 col-md-8 col-lg-9 col-xl-80per">
-                  <div id={`deals_carousel_${discount.discountId}`} className="position-relative">
-                    <Swiper
-                      {...swiperOptions}
-                      className="swiper-container js-swiper-slider"
-                    >
-                      {productsByDiscount[discount.discountId] && productsByDiscount[discount.discountId].length > 0 && (
-                        productsByDiscount[discount.discountId].map((product) => {
-                          const discountedPrice = (product.productPrice * (1 - discount.discountRate)).toFixed(0);
-                          const unitPrice = calculateUnitPrice(product);
-                          return (
-                            <SwiperSlide
-                              key={product.productId}
-                              className="swiper-slide product-card product-card_style9 border rounded-3"
-                            >
-                              <div className="position-relative pb-3">
-                                <div className="pc__img-wrapper pc__img-wrapper_wide3">
-                                  <a href={`/bisang/products/${product.productId}`}>
-                                    <img
-                                      loading="lazy"
-                                      src={product.productImage}
-                                      width="253"
-                                      height="198"
-                                      alt={product.productName}
-                                      className="pc__img"
-                                    />
-                                  </a>
-                                </div>
-                              </div>
-                              <div className="pc__info position-relative">
-                                <h6 className="pc__title">
-                                  <a href={`/bisang/products/${product.productId}`}>{product.productName}</a>
-                                </h6>
-                                <div className="product-card__review d-sm-flex align-items-center">
-                                  <div className="reviews-group d-flex">
-                                    <Star productId={product.productId} />
-                                  </div>
-                                  <span className="reviews-note text-lowercase text-secondary ms-sm-1">
-                                    {product.reviews || "No Reviews"}
-                                  </span>
-                                </div>
-                                <div className="product-card__price d-flex flex-column">
-                                  {unitPrice ? (
-                                    <span className="unit-price text-muted fs-6">
-                                      1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
-                                    </span>
-                                  ) : (
-                                    <br />
-                                  )}
-                                  {discountedPrice ? (
-                                    <span>
-                                      <span className="money price fs-5 text-muted text-decoration-line-through">
-                                        {formatPrice(product.productPrice)}{t('currencyWon')}
-                                      </span>
-                                      <span className="money price fs-5 ms-2">
-                                        {formatPrice(discountedPrice)}{t('currencyWon')}
-                                      </span>
-                                    </span>
-                                  ) : (
-                                    <span className="money price fs-5">
-                                      {formatPrice(product.productPrice)}{t('currencyWon')}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </SwiperSlide>
-                          );
-                        })
-                      )}
-                    </Swiper>
+            <div className="row">
+              <div className="col-sm-6 col-md-4 col-lg-3 col-xl-20per">
+                <div className="position-relative w-100 h-sm-100 border-radius-4 overflow-hidden minh-240 mb-4 mb-sm-0">
+                  <div
+                    className="background-img"
+                    style={{
+                      backgroundColor: generateBackgroundColor(discount.discountId),
+                    }}
+                  ></div>
+                  <div className="position-absolute position-center text-white text-center w-100">
+                    <h2 className="section-title fw-bold text-white">{(discount.discountRate * 100).toFixed(0)}%</h2>
+                    <h3 className="text-white fw-normal">{discount.discountType}</h3>
+                    <p>{discount.startDate} - {discount.endDate}</p>
                   </div>
                 </div>
               </div>
-            )}
-            <br />
+              <div className="col-sm-6 col-md-8 col-lg-9 col-xl-80per">
+                <div id={`deals_carousel_${discount.discountId}`} className="position-relative">
+                  <Swiper
+                    {...swiperOptions}
+                    className="swiper-container js-swiper-slider"
+                  >
+                    {productsByDiscount[discount.discountId] && productsByDiscount[discount.discountId].length > 0 && (
+                      productsByDiscount[discount.discountId].map((product) => {
+                        const discountedPrice = (product.productPrice * (1 - discount.discountRate)).toFixed(0);
+                        const unitPrice = calculateUnitPrice(product);
+                        return (
+                          <SwiperSlide
+                            key={product.productId}
+                            className="swiper-slide product-card product-card_style9 border rounded-3"
+                          >
+                            <div className="position-relative pb-3">
+                              <div className="pc__img-wrapper pc__img-wrapper_wide3">
+                                <a href={`/bisang/products/${product.productId}`}>
+                                  <img
+                                    loading="lazy"
+                                    src={product.productImage}
+                                    width="253"
+                                    height="198"
+                                    alt={product.productName}
+                                    className="pc__img"
+                                  />
+                                </a>
+                              </div>
+                            </div>
+                            <div className="pc__info position-relative">
+                              <h6 className="pc__title">
+                                <a href={`/bisang/products/${product.productId}`}>{product.productName}</a>
+                              </h6>
+                              <div className="product-card__review d-sm-flex align-items-center">
+                                <div className="reviews-group d-flex">
+                                  <Star productId={product.productId} />
+                                </div>
+                                <span className="reviews-note text-lowercase text-secondary ms-sm-1">
+                                  {product.reviews || "No Reviews"}
+                                </span>
+                              </div>
+                              <div className="product-card__price d-flex flex-column">
+                                {unitPrice ? (
+                                  <span className="unit-price text-muted fs-6">
+                                    1{product.unit} {t('per')} {formatPrice(unitPrice.toFixed(0))}{t('currencyWon')}
+                                  </span>
+                                ) : (
+                                  <br />
+                                )}
+                                {discountedPrice ? (
+                                  <span>
+                                    <span className="money price fs-5 text-muted text-decoration-line-through">
+                                      {formatPrice(product.productPrice)}{t('currencyWon')}
+                                    </span>
+                                    <span className="money price fs-5 ms-2">
+                                      {formatPrice(discountedPrice)}{t('currencyWon')}
+                                    </span>
+                                  </span>
+                                ) : (
+                                  <span className="money price fs-5">
+                                    {formatPrice(product.productPrice)}{t('currencyWon')}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </SwiperSlide>
+                        );
+                      })
+                    )}
+                  </Swiper>
+                </div>
+              </div>
+            </div>
           </div>
         ))}
       </div>
